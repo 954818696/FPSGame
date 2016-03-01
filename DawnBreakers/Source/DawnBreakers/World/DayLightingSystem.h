@@ -5,7 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "DayLightingSystem.generated.h"
 
-UCLASS()
+UCLASS(ABSTRACT)
 class DAWNBREAKERS_API ADayLightingSystem : public AActor
 {
 	GENERATED_BODY()
@@ -21,7 +21,7 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	int32 miLastServerUpdateTime;
-	int32 miTimeIncrement;
+	float miTimeIncrement;
 
 	UPROPERTY(BlueprintReadWrite, Category = "DayNight")
 	ADirectionalLight* mPrimarySunLight;

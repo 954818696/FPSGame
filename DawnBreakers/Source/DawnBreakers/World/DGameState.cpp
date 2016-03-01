@@ -6,7 +6,7 @@
 ADGameState::ADGameState()
 	:Super()
 {
-	mfTimeScale = 10.f;
+	mfTimeScale = 40.f;
 	mbIsNight = false;
 	mfSunsetTimeMark = 17.f;
 	mfSunriseTimeMark = 5.f;
