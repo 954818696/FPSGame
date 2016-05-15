@@ -2,7 +2,10 @@
 
 #include "DawnBreakers.h"
 #include "DPlayerController.h"
+#include "DPlayerCameraManager.h"
 
-
-
-
+ADPlayerController::ADPlayerController(const FObjectInitializer & ObjectInitializer)
+	:Super(ObjectInitializer)
+{
+	PlayerCameraManagerClass = ADPlayerCameraManager::StaticClass();
+}

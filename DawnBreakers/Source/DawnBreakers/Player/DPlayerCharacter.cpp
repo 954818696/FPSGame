@@ -17,15 +17,14 @@ ADPlayerCharacter::ADPlayerCharacter(const FObjectInitializer& ObjectInitializer
 	MoveComp->GravityScale = 1.5f;
 	MoveComp->JumpZVelocity = 620;
 	MoveComp->bCanWalkOffLedgesWhenCrouching = true;
-	MoveComp->MaxWalkSpeedCrouched = 200;
+	MoveComp->MaxWalkSpeedCrouched = 100;
 
 	
 	// 镜头控制
 	// fps camera.
-	mCameraFP = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CameraFp"));
-	mCameraFP->RelativeLocation = FVector(0, 0, 64.f); // Position the camera
-	mCameraFP->bUsePawnControlRotation = true;
-	mCameraFP->AttachParent = GetMesh();
+	//mCameraFP = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CameraFp"));
+	//mCameraFP->bUsePawnControlRotation = true;
+	//mCameraFP->AttachParent = GetMesh();
 
 	// third person camera.
 	mCameraBoomComp = ObjectInitializer.CreateDefaultSubobject<USpringArmComponent>(this, TEXT("CameraBoom"));
@@ -34,21 +33,8 @@ ADPlayerCharacter::ADPlayerCharacter(const FObjectInitializer& ObjectInitializer
 	mCameraBoomComp->bUsePawnControlRotation = true;
 	mCameraBoomComp->AttachParent = GetRootComponent();
 
-	mCameraTP = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CameraTP"));
-	mCameraTP->AttachParent = mCameraBoomComp;
-
-	// 第一人称视角模型
-	//mMeshFP = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("PawnMeshFP"));
-	//mMeshFP->bOnlyOwnerSee = true;
-	//mMeshFP->bOwnerNoSee = false;
-	//mMeshFP->bCastDynamicShadow = false;
-	//mMeshFP->bReceivesDecals = false;
-	//mMeshFP->MeshComponentUpdateFlag = EMeshComponentUpdateFlag::OnlyTickPoseWhenRendered;
-	//mMeshFP->PrimaryComponentTick.TickGroup = TG_PrePhysics;
-	//mMeshFP->SetCollisionObjectType(ECC_Pawn);
-	//mMeshFP->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//mMeshFP->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//mMeshFP->AttachParent = GetCapsuleComponent();
+	//mCameraTP = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CameraTP"));
+	//mCameraTP->AttachParent = mCameraBoomComp;
 
 	// 角色全身模型
 	//GetMesh()->bOnlyOwnerSee = false;
@@ -78,6 +64,8 @@ ADPlayerCharacter::ADPlayerCharacter(const FObjectInitializer& ObjectInitializer
 void ADPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//mCameraFP->RelativeLocation = mFPSCameraPos.GetLocation();
 	
 }
 
@@ -115,7 +103,6 @@ void ADPlayerCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > &
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION(ADPlayerCharacter, mbIsTargeting, COND_SkipOwner);
 	DOREPLIFETIME_CONDITION(ADPlayerCharacter, mbWantsToRun, COND_SkipOwner);
 	DOREPLIFETIME_CONDITION(ADPlayerCharacter, mbIsJumping, COND_SkipOwner);
 
@@ -216,25 +203,11 @@ void ADPlayerCharacter::OnStopTargeting()
 void ADPlayerCharacter::SetTargeting(bool bNewTargeting)
 {
 	mbIsTargeting = bNewTargeting;
-	if (Role < ROLE_Authority)
-	{
-		ServerSetTargeting(bNewTargeting);
-	}
 }
 
 float ADPlayerCharacter::GetTargetingSpeedModifier() const
 {
 	return mfTargetingSpeedModifier;
-}
-
-bool ADPlayerCharacter::ServerSetTargeting_Validate(bool bNewTargeting)
-{
-	return true;
-}
-
-void ADPlayerCharacter::ServerSetTargeting_Implementation(bool bNewTargeting)
-{
-	SetTargeting(bNewTargeting);
 }
 
 void ADPlayerCharacter::OnNextWeapon()
@@ -392,5 +365,36 @@ void ADPlayerCharacter::test()
 FName ADPlayerCharacter::GetWeaponAttachPoint() const
 {
 	return FName();
+}
+
+void ADPlayerCharacter::SetCameraPos(float deltaTime, bool bAim)
+{
+	float tX, tY, tZ;
+
+	if (bAim)
+	{
+		tX = mAimCameraPos.GetLocation().X;
+		tY = mAimCameraPos.GetLocation().Y;
+		tZ = mAimCameraPos.GetLocation().Z;
+	}
+	else
+	{
+		tX = mFPSCameraPos.GetLocation().X;
+		tY = mFPSCameraPos.GetLocation().Y;
+		tZ = mFPSCameraPos.GetLocation().Z;
+	}
+
+	if (mCameraFP)
+	{
+		mCameraFP->RelativeLocation.X = FMath::FInterpTo(mCameraFP->RelativeLocation.X, tX, deltaTime, 10.f);
+		mCameraFP->RelativeLocation.Y = FMath::FInterpTo(mCameraFP->RelativeLocation.Y, tY, deltaTime, 10.f);
+		mCameraFP->RelativeLocation.Z = FMath::FInterpTo(mCameraFP->RelativeLocation.Z, tZ, deltaTime, 10.f);
+	}
+
+}
+
+void ADPlayerCharacter::SwitchCameraMode()
+{
+	mCameraFP->AttachParent = mCameraBoomComp;
 }
 

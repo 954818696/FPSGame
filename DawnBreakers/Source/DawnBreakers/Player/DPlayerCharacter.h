@@ -63,9 +63,6 @@ public:
 	float mfTargetingSpeedModifier;
 	UFUNCTION(BlueprintCallable, Category = "Game|Weapon")
 	bool IsTargeting() const;
-	UFUNCTION(reliable, server, WithValidation)
-	void ServerSetTargeting(bool bNewTargeting);
-	UPROPERTY(Transient, Replicated)
 	bool mbIsTargeting;
 
 	// 开火处理
@@ -90,17 +87,35 @@ public:
 	// 武器挂载
 	FName GetWeaponAttachPoint() const;
 
-private:
+	// 镜头控制
+	void SetCameraPos(float delta, bool bAim);
+	
+
+public:
 
 	// 视角相机
-	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	void SwitchCameraMode();
+
+	UPROPERTY(BlueprintReadWrite, Category = "Camera")
 	UCameraComponent * mCameraFP;
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	UCameraComponent * mCameraTP;
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	USpringArmComponent * mCameraBoomComp;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	FTransform mAimCameraPos;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	FTransform mFPSCameraPos;
+
+
 	// 第一人称视角模型
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USkeletalMeshComponent* mMeshFP;
+
+
+
+
+
 };

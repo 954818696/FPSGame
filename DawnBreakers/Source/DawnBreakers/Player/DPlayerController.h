@@ -12,8 +12,8 @@ UCLASS()
 class DAWNBREAKERS_API ADPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
-	
-	
+
+
+	ADPlayerController(const FObjectInitializer& ObjectInitializer);
 	
 };
