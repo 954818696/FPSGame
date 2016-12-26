@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DayLightingSystem.h"
-#include "DGameState.h"
+#include "GameLogic/GameRules/DGameState.h"
 
 // Sets default values
 ADayLightingSystem::ADayLightingSystem()
