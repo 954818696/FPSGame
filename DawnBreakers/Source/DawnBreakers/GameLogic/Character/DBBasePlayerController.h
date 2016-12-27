@@ -11,7 +11,7 @@
 UCLASS()
 class DAWNBREAKERS_API ADBBasePlayerController : public APlayerController
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 public:
 

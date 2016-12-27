@@ -8,11 +8,7 @@ UEventSets* UEventSets::m_EventSetsInstance = nullptr;
 
 UEventSets* UEventSets::Instance()
 {
-	if (m_EventSetsInstance != nullptr && m_EventSetsInstance->IsValidLowLevel())
-	{
-		
-	}
-	else
+	if (m_EventSetsInstance == nullptr || ! m_EventSetsInstance->IsValidLowLevel())
 	{
 		m_EventSetsInstance = NewObject<UEventSets>(GEngine->GetWorld()->GetGameInstance());
 		m_EventSetsInstance->AddToRoot();

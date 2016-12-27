@@ -5,6 +5,18 @@
 #include "GameLogic/Character/DBBasePlayerController.h"
 #include "DBPlayerController.generated.h"
 
+
+struct FDeferredFireInput
+{
+	bool bStartFire;
+
+	FDeferredFireInput(uint8 InFireMode, bool bInStartFire)
+		: bStartFire(bInStartFire)
+	{
+
+	}
+};
+
 /**
  * 
  */
@@ -35,4 +47,5 @@ private:
 private:
 	class ADBCharacter* m_ControlledCharacter;
 	
+	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
 };

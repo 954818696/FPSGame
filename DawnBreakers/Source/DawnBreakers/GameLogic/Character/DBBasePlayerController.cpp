@@ -2,8 +2,13 @@
 
 #include "DawnBreakers.h"
 #include "DBBasePlayerController.h"
+#include "GameLogic/GameRules/DBCheatManager.h"
 
-
+ADBBasePlayerController::ADBBasePlayerController(const class FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	CheatClass = UDBCheatManager::StaticClass();
+}
 
 
 void ADBBasePlayerController::SetupInputComponent()
