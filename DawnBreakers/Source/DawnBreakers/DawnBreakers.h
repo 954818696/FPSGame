@@ -7,5 +7,6 @@
 #include "Net/UnrealNetwork.h"
 
 #include "Miscellaneous/GameDebugLog.h"
+#include "DawnBreakersEnvConfig.h"
 
 #endif

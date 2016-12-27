@@ -35,8 +35,8 @@ void ADBPlayerController::SetupInputComponent()
 	//InputComponent->BindAction("Targeting", IE_Pressed, this, &ADPlayerCharacter::OnStartTargeting);
 	//InputComponent->BindAction("Targeting", IE_Released, this, &ADPlayerCharacter::OnStopTargeting);
 
-	//InputComponent->BindAction("Fire", IE_Pressed, this, &ADPlayerCharacter::OnStartFire);
-	//InputComponent->BindAction("Fire", IE_Released, this, &ADPlayerCharacter::OnStopFire);
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ADBPlayerController::OnStartFire);
+	InputComponent->BindAction("Fire", IE_Released, this, &ADBPlayerController::OnStopFire);
 }
 
 void ADBPlayerController::MoveForward(float Delta)
@@ -52,5 +52,21 @@ void ADBPlayerController::MoveRight(float Delta)
 	if (Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->MoveRight(Delta);
+	}
+}
+
+void ADBPlayerController::OnStartFire()
+{
+	if (m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->OnStartFire();
+	}
+}
+
+void ADBPlayerController::OnStopFire()
+{
+	if (m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->OnStopFire();
 	}
 }

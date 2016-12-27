@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "DBCharacter.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class DAWNBREAKERS_API ADBCharacter : public ACharacter
 {
 	GENERATED_UCLASS_BODY()
@@ -24,6 +24,10 @@ public:
 	void MoveForward(float Delta);
 
 	void MoveRight(float Delta);
+
+	void OnStartFire();
+
+	void OnStopFire();
 
 	//////////////////////////////////////
 	

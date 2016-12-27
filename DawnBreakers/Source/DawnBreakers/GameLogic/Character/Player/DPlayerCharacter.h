@@ -3,7 +3,6 @@
 #pragma once
 #include "DPlayerCharacter.generated.h"
 
-#define  DEBUG_FIRE
 
 UCLASS(Abstract)
 class DAWNBREAKERS_API ADPlayerCharacter : public ACharacter
@@ -15,7 +14,7 @@ class DAWNBREAKERS_API ADPlayerCharacter : public ACharacter
 	virtual void Tick( float DeltaSeconds ) override;
 	virtual void PostInitializeComponents() override;
 	virtual void Destroyed() override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 public:
 

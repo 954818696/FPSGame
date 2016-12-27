@@ -26,6 +26,10 @@ private:
 	void MoveForward(float Delta);
 
 	void MoveRight(float Delta);
+
+	void OnStartFire();
+
+	void OnStopFire();
 	//////////////////////////////////////
 
 private:

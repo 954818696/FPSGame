@@ -13,7 +13,6 @@ class DAWNBREAKERS_API UDBCharacterMovementComponent : public UCharacterMovement
 {
 	GENERATED_BODY()
 	
-	
 public:
 	bool Is3DSpaceFreeMove() const;
 	
