@@ -78,27 +78,27 @@ void ADPlayerCharacter::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-//void ADPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
-//{
-//	Super::SetupPlayerInputComponent();
-//
-//	InputComponent->BindAxis("MoveForward", this, &ADPlayerCharacter::MoveForward);
-//	InputComponent->BindAxis("MoveRight", this, &ADPlayerCharacter::MoveRight);
-//	InputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-//	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-//	
-//
-//	InputComponent->BindAction("Jump", IE_Pressed, this, &ADPlayerCharacter::OnStartJump);
-//	InputComponent->BindAction("Jump", IE_Released, this, &ADPlayerCharacter::OnStopJump);
-//	InputComponent->BindAction("CrouchToggle", IE_Released, this, &ADPlayerCharacter::OnCrouchToggle);
-//	InputComponent->BindAction("Targeting", IE_Pressed, this, &ADPlayerCharacter::OnStartTargeting);
-//	InputComponent->BindAction("Targeting", IE_Released, this, &ADPlayerCharacter::OnStopTargeting);
-//
-//	InputComponent->BindAction("Fire", IE_Pressed, this, &ADPlayerCharacter::OnStartFire);
-//	InputComponent->BindAction("Fire", IE_Released, this, &ADPlayerCharacter::OnStopFire);
-//
-//
-//}
+void ADPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+{
+	Super::SetupPlayerInputComponent(InputComponent);
+
+	InputComponent->BindAxis("MoveForward", this, &ADPlayerCharacter::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ADPlayerCharacter::MoveRight);
+	InputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	
+
+	InputComponent->BindAction("Jump", IE_Pressed, this, &ADPlayerCharacter::OnStartJump);
+	InputComponent->BindAction("Jump", IE_Released, this, &ADPlayerCharacter::OnStopJump);
+	InputComponent->BindAction("CrouchToggle", IE_Released, this, &ADPlayerCharacter::OnCrouchToggle);
+	InputComponent->BindAction("Targeting", IE_Pressed, this, &ADPlayerCharacter::OnStartTargeting);
+	InputComponent->BindAction("Targeting", IE_Released, this, &ADPlayerCharacter::OnStopTargeting);
+
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ADPlayerCharacter::OnStartFire);
+	InputComponent->BindAction("Fire", IE_Released, this, &ADPlayerCharacter::OnStopFire);
+
+
+}
 
 void ADPlayerCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
