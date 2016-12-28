@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "DBCharacter.generated.h"
 
-UCLASS(Abstract)
+UCLASS()
 class DAWNBREAKERS_API ADBCharacter : public ACharacter
 {
 	GENERATED_UCLASS_BODY()

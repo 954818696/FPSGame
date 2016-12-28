@@ -70,6 +70,6 @@ void ADBCharacter::OnStartFire()
 
 void ADBCharacter::OnStopFire()
 {
-
+	DAWNBREAKERS_LOG_INFO("ADBCharacter::OnStopFire");
 }
 

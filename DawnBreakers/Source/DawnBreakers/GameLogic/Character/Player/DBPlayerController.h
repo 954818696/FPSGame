@@ -10,8 +10,8 @@ struct FDeferredFireInput
 {
 	bool bStartFire;
 
-	FDeferredFireInput(uint8 InFireMode, bool bInStartFire)
-		: bStartFire(bInStartFire)
+	FDeferredFireInput(bool bFire)
+		: bStartFire(bFire)
 	{
 
 	}
@@ -28,9 +28,18 @@ class DAWNBREAKERS_API ADBPlayerController : public ADBBasePlayerController
 	
 public:
 
+	virtual void SetPawn(APawn* InPawn);
+
 	virtual void Possess(APawn* ControlledPawn) override;
 
+	virtual void UnPossess() override;
+
 private:
+	
+	virtual void PlayerTick(float DeltaTime) override;
+
+	void ApplyDeferredInputs();
+
 	//////////////////////////////////////
 	// Input Control.
 	virtual void SetupInputComponent() override;
@@ -47,5 +56,6 @@ private:
 private:
 	class ADBCharacter* m_ControlledCharacter;
 	
+	// To Support Multikey press trigger firing.
 	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
 };

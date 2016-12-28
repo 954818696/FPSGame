@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameMode.h"
 #include "DBBaseGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DAWNBREAKERS_API ADBBaseGameMode : public AGameModeBase
+class DAWNBREAKERS_API ADBBaseGameMode : public AGameMode
 {
 	GENERATED_UCLASS_BODY()
 	

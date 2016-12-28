@@ -11,12 +11,58 @@ ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectI
 
 }
 
+void ADBPlayerController::SetPawn(APawn* InPawn)
+{
+	AController::SetPawn(InPawn);
+
+	m_ControlledCharacter = Cast<ADBCharacter>(InPawn);
+}
+
 void ADBPlayerController::Possess(APawn* ControlledPawn)
 {
 	Super::Possess(ControlledPawn);
 
 	m_ControlledCharacter = Cast<ADBCharacter>(ControlledPawn);
 
+}
+
+void ADBPlayerController::UnPossess()
+{
+	Super::UnPossess();
+
+	m_ControlledCharacter = nullptr;
+}
+
+void ADBPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	if (m_ControlledCharacter != nullptr)
+	{
+		ApplyDeferredInputs();
+	}
+}
+
+void ADBPlayerController::ApplyDeferredInputs()
+{
+	if (m_ControlledCharacter == nullptr)
+	{
+		return;
+	}
+
+	for (FDeferredFireInput& Input : m_DeferredFireInputs)
+	{
+		if (Input.bStartFire)
+		{
+			m_ControlledCharacter->OnStartFire();
+		}
+		else
+		{
+			m_ControlledCharacter->OnStopFire();
+		}
+	}
+
+	m_DeferredFireInputs.Empty();
 }
 
 void ADBPlayerController::SetupInputComponent()
@@ -59,7 +105,7 @@ void ADBPlayerController::OnStartFire()
 {
 	if (m_ControlledCharacter != nullptr)
 	{
-		m_ControlledCharacter->OnStartFire();
+		new(m_DeferredFireInputs)FDeferredFireInput(true);
 	}
 }
 
@@ -67,6 +113,6 @@ void ADBPlayerController::OnStopFire()
 {
 	if (m_ControlledCharacter != nullptr)
 	{
-		m_ControlledCharacter->OnStopFire();
+		new(m_DeferredFireInputs)FDeferredFireInput(false);
 	}
 }
