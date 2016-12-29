@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "GameLogic/Character/DBCharacter.h"
 #include "DBInventoryItemBase.generated.h"
 
 UCLASS(Blueprintable, Abstract, NotPlaceable)
@@ -19,6 +20,12 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	ADBCharacter* GetOwner() const 
+	{
+		return m_OwnerCharacter;
+	}
 	
+protected:
+	ADBCharacter* m_OwnerCharacter;
 	
 };
