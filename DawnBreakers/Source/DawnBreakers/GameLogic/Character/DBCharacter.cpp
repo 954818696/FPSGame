@@ -51,6 +51,16 @@ void ADBCharacter::MoveRight(float Delta)
 	}
 }
 
+void ADBCharacter::OnStartJump()
+{
+
+}
+
+void ADBCharacter::OnStopJump()
+{
+
+}
+
 void ADBCharacter::OnStartFire()
 {
 #ifdef DEBUG_FIRE
@@ -66,10 +76,27 @@ void ADBCharacter::OnStartFire()
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 20.0f, 0, 5);
 	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 20);
 #endif
+
+
 }
 
 void ADBCharacter::OnStopFire()
 {
 	DAWNBREAKERS_LOG_INFO("ADBCharacter::OnStopFire");
+}
+
+void ADBCharacter::OnStartTargeting()
+{
+	SetTargeting(true);
+}
+
+void ADBCharacter::OnStopTargeting()
+{
+	SetTargeting(false);
+}
+
+void ADBCharacter::SetTargeting(bool bNewTargeting)
+{
+
 }
 

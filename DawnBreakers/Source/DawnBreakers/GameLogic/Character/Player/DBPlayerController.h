@@ -48,14 +48,24 @@ private:
 
 	void MoveRight(float Delta);
 
+	void OnStartJump();
+
+	void OnStopJump();
+
+	void OnCrouchToggle();
+
 	void OnStartFire();
 
 	void OnStopFire();
+
+	void OnStartTargeting();
+
+	void OnStopTargeting();
 	//////////////////////////////////////
 
 private:
 	class ADBCharacter* m_ControlledCharacter;
 	
-	// To Support Multikey press trigger firing.
+	// To Support Multikeys press trigger firing.
 	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
 };

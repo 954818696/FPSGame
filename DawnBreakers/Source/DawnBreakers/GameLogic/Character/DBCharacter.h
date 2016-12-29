@@ -25,15 +25,28 @@ public:
 
 	void MoveRight(float Delta);
 
+	void OnStartJump();
+
+	void OnStopJump();
+
 	void OnStartFire();
 
 	void OnStopFire();
 
+	void OnStartTargeting();
+
+	void OnStopTargeting();
 	//////////////////////////////////////
-	
-	//////////////////////////////////////
+
+protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UDBCharacterMovementComponent* m_CharacterMovement;
+
+private:
+	void SetTargeting(bool bNewTargeting);
+	
+	//////////////////////////////////////
+
 	//////////////////////////////////////
 	
 };

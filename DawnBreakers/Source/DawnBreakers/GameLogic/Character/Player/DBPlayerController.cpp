@@ -8,14 +8,13 @@
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
+	//PlayerCameraManagerClass = ADPlayerCameraManager::StaticClass();
 }
 
 void ADBPlayerController::SetPawn(APawn* InPawn)
 {
 	AController::SetPawn(InPawn);
 
-	m_ControlledCharacter = Cast<ADBCharacter>(InPawn);
 }
 
 void ADBPlayerController::Possess(APawn* ControlledPawn)
@@ -75,11 +74,12 @@ void ADBPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("LookUp", this, &APlayerController::AddPitchInput);
 
 
-	//InputComponent->BindAction("Jump", IE_Pressed, this, &ADPlayerCharacter::OnStartJump);
-	//InputComponent->BindAction("Jump", IE_Released, this, &ADPlayerCharacter::OnStopJump);
-	//InputComponent->BindAction("CrouchToggle", IE_Released, this, &ADPlayerCharacter::OnCrouchToggle);
-	//InputComponent->BindAction("Targeting", IE_Pressed, this, &ADPlayerCharacter::OnStartTargeting);
-	//InputComponent->BindAction("Targeting", IE_Released, this, &ADPlayerCharacter::OnStopTargeting);
+	InputComponent->BindAction("Jump", IE_Pressed, this, &ADBPlayerController::OnStartJump);
+	InputComponent->BindAction("Jump", IE_Released, this, &ADBPlayerController::OnStopJump);
+	InputComponent->BindAction("CrouchToggle", IE_Released, this, &ADBPlayerController::OnCrouchToggle);
+	
+	InputComponent->BindAction("Targeting", IE_Pressed, this, &ADBPlayerController::OnStartTargeting);
+	InputComponent->BindAction("Targeting", IE_Released, this, &ADBPlayerController::OnStopTargeting);
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ADBPlayerController::OnStartFire);
 	InputComponent->BindAction("Fire", IE_Released, this, &ADBPlayerController::OnStopFire);
@@ -101,6 +101,21 @@ void ADBPlayerController::MoveRight(float Delta)
 	}
 }
 
+void ADBPlayerController::OnStartJump()
+{
+
+}
+
+void ADBPlayerController::OnStopJump()
+{
+
+}
+
+void ADBPlayerController::OnCrouchToggle()
+{
+
+}
+
 void ADBPlayerController::OnStartFire()
 {
 	if (m_ControlledCharacter != nullptr)
@@ -114,5 +129,21 @@ void ADBPlayerController::OnStopFire()
 	if (m_ControlledCharacter != nullptr)
 	{
 		new(m_DeferredFireInputs)FDeferredFireInput(false);
+	}
+}
+
+void ADBPlayerController::OnStartTargeting()
+{
+	if (m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->OnStartTargeting();
+	}
+}
+
+void ADBPlayerController::OnStopTargeting()
+{
+	if (m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->OnStopTargeting();
 	}
 }
