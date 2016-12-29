@@ -5,14 +5,13 @@
 #include "GameFramework/Actor.h"
 #include "DBInventoryItemBase.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, Abstract, NotPlaceable)
 class DAWNBREAKERS_API ADBInventoryItemBase : public AActor
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
-	ADBInventoryItemBase();
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

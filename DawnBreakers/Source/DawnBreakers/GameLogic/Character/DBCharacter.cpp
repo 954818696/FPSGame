@@ -3,6 +3,7 @@
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
+#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
 
 
 // Sets default values
@@ -77,12 +78,15 @@ void ADBCharacter::OnStartFire()
 	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 20);
 #endif
 
-
+	m_Weapon->OnStartFire();
+	
 }
 
 void ADBCharacter::OnStopFire()
 {
 	DAWNBREAKERS_LOG_INFO("ADBCharacter::OnStopFire");
+
+	m_Weapon->OnStopFire();
 }
 
 void ADBCharacter::OnStartTargeting()

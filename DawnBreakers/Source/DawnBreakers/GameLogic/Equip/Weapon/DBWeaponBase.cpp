@@ -6,3 +6,18 @@
 
 
 
+ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+
+}
+
+void ADBWeaponBase::OnStartFire()
+{
+
+}
+
+void ADBWeaponBase::OnStopFire()
+{
+
+}

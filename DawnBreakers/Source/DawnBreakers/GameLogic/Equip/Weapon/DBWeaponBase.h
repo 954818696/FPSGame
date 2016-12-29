@@ -8,12 +8,18 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, Abstract, NotPlaceable)
 class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
+public:
+
+	void OnStartFire();
+
+	void OnStopFire();
 	
-	
+private:
+	uint8 m_FireMode;
 	
 };
