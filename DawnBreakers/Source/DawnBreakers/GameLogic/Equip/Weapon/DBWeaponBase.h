@@ -19,7 +19,7 @@ public:
 
 	void OnStopFire();
 	
-private:
+protected:
 	uint8 m_FireMode;
 	
 };
