@@ -22,4 +22,5 @@ public:
 protected:
 	uint8 m_FireMode;
 	
+
 };
