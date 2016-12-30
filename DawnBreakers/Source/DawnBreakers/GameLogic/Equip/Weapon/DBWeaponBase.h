@@ -20,6 +20,10 @@ public:
 	void OnStopFire();
 	
 protected:
+
+	UPROPERTY(Instanced, EditDefaultsOnly, Category = "DBWeaponConfig", NoClear)
+	class UDBWeaponStateMachine* m_WeaponStateMachine;
+
 	uint8 m_FireMode;
 	
 

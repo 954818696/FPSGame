@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DBWeaponBase.h"
-
+#include "GameLogic/Equip/Weapon/WeaponState/DBWeaponStateMachine.h"
 
 
 

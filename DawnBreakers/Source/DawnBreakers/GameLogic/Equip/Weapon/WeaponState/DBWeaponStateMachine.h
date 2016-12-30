@@ -8,12 +8,15 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(DefaultToInstanced, EditInlineNew)
 class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 {
 	GENERATED_BODY()
 	
 	
-	
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Inner")
+	float InnerValue;
+
 	
 };
