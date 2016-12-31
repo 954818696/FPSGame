@@ -26,55 +26,55 @@ void ADShooterWeaponBase::Destroyed()
 
 void ADShooterWeaponBase::StartFire()
 {
-	SetWeaponState(EWeaponState::E_Firing);
+
 }
 
 void ADShooterWeaponBase::StopFire()
 {
-	SetWeaponState(EWeaponState::E_Idle);
+
 }
 
 void ADShooterWeaponBase::StartReload()
 {
-	SetWeaponState(EWeaponState::E_Reloading);
+
 }
 
 void ADShooterWeaponBase::StopReload()
 {
-	SetWeaponState(EWeaponState::E_Idle);
+
 }
 
 void ADShooterWeaponBase::OnEquip()
 {
-	SetWeaponState(EWeaponState::E_Equiping);
+
 }
 
 void ADShooterWeaponBase::OnEquipFinished()
 {
-	SetWeaponState(EWeaponState::E_Idle);
+	//SetWeaponState(EWeaponState::E_Idle);
 }
 
-void ADShooterWeaponBase::SetWeaponState(EWeaponState::Type NewWeaponState)
-{
-	const EWeaponState::Type PrevWeaponState = m_WeaponState;
+//void ADShooterWeaponBase::SetWeaponState(EWeaponState::Type NewWeaponState)
+//{
+//	const EWeaponState::Type PrevWeaponState = m_WeaponState;
+//
+//	if (PrevWeaponState == EWeaponState::E_Firing && NewWeaponState != EWeaponState::E_Firing)
+//	{
+//		DAWNBREAKERS_LOG_INFO("SetWeaponState Start Fire");
+//
+//	}
+//	else if (PrevWeaponState != EWeaponState::E_Firing && NewWeaponState == EWeaponState::E_Firing)
+//	{
+//		DAWNBREAKERS_LOG_INFO("SetWeaponState Stop Fire");
+//	}
+//
+//	m_WeaponState = NewWeaponState;
+//}
 
-	if (PrevWeaponState == EWeaponState::E_Firing && NewWeaponState != EWeaponState::E_Firing)
-	{
-		DAWNBREAKERS_LOG_INFO("SetWeaponState Start Fire");
-
-	}
-	else if (PrevWeaponState != EWeaponState::E_Firing && NewWeaponState == EWeaponState::E_Firing)
-	{
-		DAWNBREAKERS_LOG_INFO("SetWeaponState Stop Fire");
-	}
-
-	m_WeaponState = NewWeaponState;
-}
-
-EWeaponState::Type ADShooterWeaponBase::GetWeaponState() const
-{
-	return m_WeaponState;
-}
+//EWeaponState::Type ADShooterWeaponBase::GetWeaponState() const
+//{
+//	return m_WeaponState;
+//}
 
 void ADShooterWeaponBase::HandleFire()
 {

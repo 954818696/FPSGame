@@ -11,9 +11,18 @@
 UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateEquiping : public UDBWeaponStateBase
 {
-	GENERATED_BODY()
-	
-	
-	
+	GENERATED_UCLASS_BODY()
+
+
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_EquipTime;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	UAnimMontage* m_EquipAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundCue* m_EquipSound;
 	
 };

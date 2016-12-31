@@ -18,13 +18,19 @@ public:
 	void OnStartFire();
 
 	void OnStopFire();
+
+	FORCEINLINE int32 GetCurrentFireMode() const
+	{
+		return m_CurrentFireMode;
+	}
 	
 protected:
-
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = "DBWeaponConfig", NoClear)
+	/** Weapon State Machine */
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
-	uint8 m_FireMode;
-	
+	int32 m_CurrentFireMode;
+
+
 
 };

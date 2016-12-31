@@ -15,16 +15,6 @@ namespace EAmmoType
 
 }
 
-namespace EWeaponState
-{
-	enum Type
-	{
-		E_Idle					= 0,
-		E_Firing				= 1,
-		E_Reloading		= 2,
-		E_Equiping			= 3,
-	};
-}
 
 USTRUCT()
 struct FWeaponData

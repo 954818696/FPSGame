@@ -4,5 +4,9 @@
 #include "DBWeaponStateFiring.h"
 
 
-
+UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	m_StateID = EWeaponState::EWeaponState_Firing;
+}
 

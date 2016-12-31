@@ -11,9 +11,17 @@
 UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateFiring : public UDBWeaponStateBase
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 	
-	
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	UAnimMontage* m_FiringAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundCue* m_FiringSound;
+
+	UPROPERTY(EditAnywhere,  Category = WeaponState)
+	TArray<UParticleSystemComponent*> MuzzleFlash;
 	
 };

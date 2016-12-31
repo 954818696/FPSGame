@@ -4,5 +4,10 @@
 #include "DBWeaponStateEquiping.h"
 
 
+UDBWeaponStateEquiping::UDBWeaponStateEquiping(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	m_StateID = EWeaponState::EWeaponState_Equiping;
+}
 
 

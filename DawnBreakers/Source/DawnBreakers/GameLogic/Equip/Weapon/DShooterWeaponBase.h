@@ -34,10 +34,10 @@ public:
 
 	virtual void OnEquipFinished();
 
-protected:
-	void SetWeaponState(EWeaponState::Type NewWeaponState);
+//protected:
+	//void SetWeaponState(EWeaponState::Type NewWeaponState);
 
-	FORCEINLINE EWeaponState::Type GetWeaponState() const;
+	//FORCEINLINE EWeaponState::Type GetWeaponState() const;
 
 private:
 	void HandleFire();
@@ -82,7 +82,7 @@ protected:
 	TSubclassOf<UCameraShake> m_FireCameraShake;
 
 private:
-	EWeaponState::Type m_WeaponState;
+	//EWeaponState::Type m_WeaponState;
 
 	bool m_bPendingReload;
 
