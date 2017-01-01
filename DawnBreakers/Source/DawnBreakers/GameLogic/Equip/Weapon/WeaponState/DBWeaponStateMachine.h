@@ -11,7 +11,7 @@
 /**
  * 
  */
-UCLASS(DefaultToInstanced, EditInlineNew, Within = DBWeaponBase)
+UCLASS(DefaultToInstanced, Within = DBWeaponBase)
 class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 {
 	GENERATED_UCLASS_BODY()
