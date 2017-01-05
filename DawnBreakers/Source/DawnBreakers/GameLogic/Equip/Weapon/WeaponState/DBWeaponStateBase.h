@@ -36,6 +36,8 @@ public:
 
 	virtual void ExitWeaponState() {}
 
+	virtual bool IsHandled() { return false; }
+
 	virtual void Tick(float DeltaTime) {}
 
 	FORCEINLINE EWeaponState::Type GetStateID() const { return m_StateID; }
