@@ -2,7 +2,6 @@
 
 #include "GameUISystem.h"
 #include "FloatingPopMsgSys.h"
-#include "EventSets.h"
 
 
 AFloatingPopMsgSys::AFloatingPopMsgSys()
@@ -15,7 +14,7 @@ void AFloatingPopMsgSys::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UEventSets::Instance()->OnFloatingPopMsgEvent.AddDynamic(this, &AFloatingPopMsgSys::OnFloatingPopMesseageEvent);
+	//UEventSets::Instance()->OnFloatingPopMsgEvent.AddDynamic(this, &AFloatingPopMsgSys::OnFloatingPopMesseageEvent);
 
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	for (int32 i = 0; i < PopMsgWidgetArray.Num(); ++i)
