@@ -66,6 +66,8 @@ private:
 
 	void OnNextWeapon();
 
+	void OnSwitchCameraMode();
+
 	//////////////////////////////////////
 
 private:

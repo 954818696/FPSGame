@@ -86,6 +86,8 @@ void ADBPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("PrevWeapon", IE_Pressed, this, &ADBPlayerController::OnPrevWeapon);
 	InputComponent->BindAction("NextWeapon", IE_Pressed, this, &ADBPlayerController::OnNextWeapon);
+
+	InputComponent->BindAction("SwitchCameraMode", IE_Pressed, this, &ADBPlayerController::OnSwitchCameraMode);
 }
 
 void ADBPlayerController::MoveForward(float Delta)
@@ -164,5 +166,13 @@ void ADBPlayerController::OnNextWeapon()
 	if (m_ControlledCharacter)
 	{
 		m_ControlledCharacter->SwitchEquipWeapon(true);
+	}
+}
+
+void ADBPlayerController::OnSwitchCameraMode()
+{
+	if (m_ControlledCharacter)
+	{
+		m_ControlledCharacter->SwitchCamaraMode();
 	}
 }

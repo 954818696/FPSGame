@@ -10,6 +10,12 @@ class DAWNBREAKERS_API ADBCharacter : public ACharacter
 {
 	GENERATED_UCLASS_BODY()
 
+	enum ECameraMode
+	{
+		E_FirstPersonPerspective    = 1,
+		E_ThirdPersonPerspective  = 2,
+	};
+
 public:
 
 	// Called when the game starts or when spawned
@@ -20,7 +26,7 @@ public:
 
 
 	//////////////////////////////////////
-	// Motion.
+	// Motion and Controll
 	void MoveForward(float Delta);
 
 	void MoveRight(float Delta);
@@ -38,6 +44,8 @@ public:
 	void OnStopTargeting();
 
 	void SwitchEquipWeapon(bool bNext);
+
+	void SwitchCamaraMode();
 	//////////////////////////////////////
 
 	//////////////////////////////////////
@@ -57,6 +65,8 @@ private:
 	void SetTargeting(bool bNewTargeting);
 
 	void SetDefaultEquipWeapon();
+
+	void SetFPSCamera();
 	
 	//////////////////////////////////////
 
@@ -65,6 +75,17 @@ private:
 private:
 	class ADBWeaponBase* m_Weapon;
 
+	//////////////////////////////////////
+	// Camera.
+	UCameraComponent * m_CameraComp;
 
+	UPROPERTY(EditDefaultsOnly, Category = "DBCamera")
+	USpringArmComponent * m_CameraBoomComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "DBCamera")
+	FTransform m_FPSCameraPos;
+
+	ECameraMode m_CurCameraMode;
+	//////////////////////////////////////
 	
 };

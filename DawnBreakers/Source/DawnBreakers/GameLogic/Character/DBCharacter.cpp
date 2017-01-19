@@ -6,25 +6,50 @@
 #include "GameLogic/Equip/Weapon/DBWeaponBase.h"
 #include "GameLogic/Equip/Inventory/DBInventory.h"
 
-
-// Sets default values
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
+	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective)
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	// CharacterMovement Configuration.
 	m_CharacterMovement = Cast<UDBCharacterMovementComponent>(GetCharacterMovement());
+	m_CharacterMovement->GravityScale = 1.5f;
+	m_CharacterMovement->JumpZVelocity = 620;
+	m_CharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
+	m_CharacterMovement->MaxWalkSpeedCrouched = 100;
+
+	// Character Mesh Configuration.
+	GetMesh()->bReceivesDecals = false;
+	GetMesh()->SetCollisionObjectType(ECC_Pawn);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//GetMesh()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Block);
+	//GetMesh()->SetCollisionResponseToChannel(COLLISION_PROJECTILE, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(90.f);
+	GetCapsuleComponent()->SetCapsuleRadius(30.f);
+
+	// Camera Configuration.
+	m_CameraComp = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CharacterCamera"));
+	m_CameraComp->bUsePawnControlRotation = true;
+
+	m_CameraBoomComp = ObjectInitializer.CreateDefaultSubobject<USpringArmComponent>(this, TEXT("CameraBoom"));
+	m_CameraBoomComp->SocketOffset = FVector(0, 35, 0);
+	//m_CameraBoomComp->TargetOffset = FVector(0, 0, 55);
+	m_CameraBoomComp->bUsePawnControlRotation = true;
+	m_CameraBoomComp->SetupAttachment(GetRootComponent());
 }
 
-// Called when the game starts or when spawned
 void ADBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	SetDefaultEquipWeapon();
+	SetFPSCamera();
 }
 
-// Called every frame
 void ADBCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
@@ -106,6 +131,7 @@ void ADBCharacter::SwitchEquipWeapon(bool bNext)
 
 }
 
+
 void ADBCharacter::InitDefaultInventory()
 {
 
@@ -120,4 +146,28 @@ void ADBCharacter::SetTargeting(bool bNewTargeting)
 {
 
 }
+
+void ADBCharacter::SetFPSCamera()
+{
+	m_CameraComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("head")));
+	m_CameraComp->RelativeLocation = m_FPSCameraPos.GetLocation();
+	m_CurCameraMode = ECameraMode::E_FirstPersonPerspective;
+}
+
+void ADBCharacter::SwitchCamaraMode()
+{
+	if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective)
+	{
+		m_CurCameraMode = ECameraMode::E_ThirdPersonPerspective;
+		m_CameraComp->AttachToComponent(m_CameraBoomComp, FAttachmentTransformRules::KeepRelativeTransform);
+		m_CameraComp->RelativeLocation = FVector::ZeroVector;
+	}
+	else 
+	{
+		SetFPSCamera();
+	}
+}
+
+
+
 
