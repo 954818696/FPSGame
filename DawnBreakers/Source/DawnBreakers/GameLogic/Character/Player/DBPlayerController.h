@@ -61,6 +61,11 @@ private:
 	void OnStartTargeting();
 
 	void OnStopTargeting();
+
+	void OnPrevWeapon();
+
+	void OnNextWeapon();
+
 	//////////////////////////////////////
 
 private:

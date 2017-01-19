@@ -83,6 +83,9 @@ void ADBPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ADBPlayerController::OnStartFire);
 	InputComponent->BindAction("Fire", IE_Released, this, &ADBPlayerController::OnStopFire);
+
+	InputComponent->BindAction("PrevWeapon", IE_Pressed, this, &ADBPlayerController::OnPrevWeapon);
+	InputComponent->BindAction("NextWeapon", IE_Pressed, this, &ADBPlayerController::OnNextWeapon);
 }
 
 void ADBPlayerController::MoveForward(float Delta)
@@ -145,5 +148,21 @@ void ADBPlayerController::OnStopTargeting()
 	if (m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->OnStopTargeting();
+	}
+}
+
+void ADBPlayerController::OnPrevWeapon()
+{
+	if (m_ControlledCharacter)
+	{
+		m_ControlledCharacter->SwitchEquipWeapon(false);
+	}
+}
+
+void ADBPlayerController::OnNextWeapon()
+{
+	if (m_ControlledCharacter)
+	{
+		m_ControlledCharacter->SwitchEquipWeapon(true);
 	}
 }

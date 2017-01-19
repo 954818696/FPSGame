@@ -36,14 +36,27 @@ public:
 	void OnStartTargeting();
 
 	void OnStopTargeting();
+
+	void SwitchEquipWeapon(bool bNext);
+	//////////////////////////////////////
+
+	//////////////////////////////////////
+	// Born Default Data Initializing.
+	void InitDefaultInventory();
+
 	//////////////////////////////////////
 
 protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UDBCharacterMovementComponent* m_CharacterMovement;
 
+	UPROPERTY(BlueprintReadOnly, Category = Inventory)
+	class ADBInventory* m_Inventory;
+
 private:
 	void SetTargeting(bool bNewTargeting);
+
+	void SetDefaultEquipWeapon();
 	
 	//////////////////////////////////////
 
@@ -51,5 +64,7 @@ private:
 
 private:
 	class ADBWeaponBase* m_Weapon;
+
+
 	
 };

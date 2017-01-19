@@ -4,6 +4,7 @@
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
 #include "GameLogic/Equip/Weapon/DBWeaponBase.h"
+#include "GameLogic/Equip/Inventory/DBInventory.h"
 
 
 // Sets default values
@@ -20,6 +21,7 @@ void ADBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetDefaultEquipWeapon();
 }
 
 // Called every frame
@@ -97,6 +99,21 @@ void ADBCharacter::OnStartTargeting()
 void ADBCharacter::OnStopTargeting()
 {
 	SetTargeting(false);
+}
+
+void ADBCharacter::SwitchEquipWeapon(bool bNext)
+{
+
+}
+
+void ADBCharacter::InitDefaultInventory()
+{
+
+}
+
+void ADBCharacter::SetDefaultEquipWeapon()
+{
+
 }
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)
