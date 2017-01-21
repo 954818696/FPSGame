@@ -6,24 +6,34 @@
 
 // Sets default values
 ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_bForceAttachToOwner(false),
+	m_EInventorySlot(EInventorySlot::InvisiblePack)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 }
 
-// Called when the game starts or when spawned
 void ADBInventoryItemBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
-void ADBInventoryItemBase::Tick( float DeltaTime )
+void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 {
-	Super::Tick( DeltaTime );
+	if (ItemOwner && ItemOwner->IsValidLowLevel())
+	{
+		m_OwnerCharacter = ItemOwner;
 
+		if (m_AttachSocketName.IsValid())
+		{
+			AttachToComponent(m_OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
+		}
+		else if (m_bForceAttachToOwner)
+		{
+			AttachToComponent(m_OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+		}
+	}
 }
 

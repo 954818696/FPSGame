@@ -3,8 +3,8 @@
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
-//#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
-#include "GameLogic/Equip/Inventory/DBInventory.h"
+#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
+#include "GameLogic/Equip/Inventory/DBInventoryBase.h"
 
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
@@ -37,7 +37,6 @@ ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 
 	m_CameraBoomComp = ObjectInitializer.CreateDefaultSubobject<USpringArmComponent>(this, TEXT("CameraBoom"));
 	m_CameraBoomComp->SocketOffset = FVector(0, 35, 0);
-	//m_CameraBoomComp->TargetOffset = FVector(0, 0, 55);
 	m_CameraBoomComp->bUsePawnControlRotation = true;
 	m_CameraBoomComp->SetupAttachment(GetRootComponent());
 }
@@ -125,9 +124,44 @@ void ADBCharacter::OnStopTargeting()
 	SetTargeting(false);
 }
 
-void ADBCharacter::SwitchEquipWeapon(bool bNext)
+void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 {
+	if (m_Inventory && m_Inventory->IsValidLowLevel())
+	{
+		bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
+		if (bCanAddToInventory)
+		{
+			// Attach to Human.
+			NewItem->SetItemOwner(this);
 
+			// Equip Directly or not.
+			if (m_HoldWeapon == nullptr)
+			{
+				if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+				{
+					ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
+					EquipHandWeapon(NewWeapon);
+				}
+			}
+		}
+	}
+}
+
+void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon)
+{
+	if (NewWeapon && NewWeapon->IsValidLowLevel())
+	{
+
+	}
+}
+
+void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
+{
+	if (m_Inventory && m_Inventory->IsValidLowLevel())
+	{
+		ADBWeaponBase* SwitchWeapon = Cast<ADBWeaponBase>(m_Inventory->GetOneItemByItemSequence(m_HoldWeapon, bNext));
+		EquipHandWeapon(SwitchWeapon);
+	}
 }
 
 
@@ -135,8 +169,11 @@ void ADBCharacter::CreateInventory()
 {
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	m_Inventory = GetWorld()->SpawnActor<ADBInventory>(SpawnInfo);
-	m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	m_Inventory = GetWorld()->SpawnActor<ADBInventoryBase>(m_InventoryClass ,SpawnInfo);
+	if (m_Inventory && m_Inventory->IsValidLowLevel())
+	{
+		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	}
 }
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)

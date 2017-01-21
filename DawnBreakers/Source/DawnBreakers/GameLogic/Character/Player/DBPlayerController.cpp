@@ -157,7 +157,7 @@ void ADBPlayerController::OnPrevWeapon()
 {
 	if (m_ControlledCharacter)
 	{
-		m_ControlledCharacter->SwitchEquipWeapon(false);
+		m_ControlledCharacter->SwitchEquipHandWeapon(false);
 	}
 }
 
@@ -165,7 +165,7 @@ void ADBPlayerController::OnNextWeapon()
 {
 	if (m_ControlledCharacter)
 	{
-		m_ControlledCharacter->SwitchEquipWeapon(true);
+		m_ControlledCharacter->SwitchEquipHandWeapon(true);
 	}
 }
 

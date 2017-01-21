@@ -26,7 +26,7 @@ public:
 
 
 	//////////////////////////////////////
-	// Motion and Controll
+	// Motion and Control
 	void MoveForward(float Delta);
 
 	void MoveRight(float Delta);
@@ -43,7 +43,11 @@ public:
 
 	void OnStopTargeting();
 
-	void SwitchEquipWeapon(bool bNext);
+	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
+
+	void EquipHandWeapon(class ADBWeaponBase* NewWeapon);
+
+	void SwitchEquipHandWeapon(bool bNext);
 
 	void SwitchCamaraMode();
 	//////////////////////////////////////
@@ -55,23 +59,21 @@ public:
 	//////////////////////////////////////
 
 protected:
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ADBCharacter)
 	class UDBCharacterMovementComponent* m_CharacterMovement;
 
-	UPROPERTY(BlueprintReadOnly, Category = Inventory)
-	class ADBInventory* m_Inventory;
+	UPROPERTY(EditDefaultsOnly , Category = Inventory)
+	TSubclassOf<class ADBInventoryBase> m_InventoryClass;
 
 private:
 	void SetTargeting(bool bNewTargeting);
 
 	void SetFPSCamera();
-	
-	//////////////////////////////////////
-
-	//////////////////////////////////////
 
 private:
-	//ADBWeaponBase* m_HoldWeapon;
+	ADBInventoryBase* m_Inventory;
+
+	ADBWeaponBase* m_HoldWeapon;
 
 	//////////////////////////////////////
 	// Camera.
