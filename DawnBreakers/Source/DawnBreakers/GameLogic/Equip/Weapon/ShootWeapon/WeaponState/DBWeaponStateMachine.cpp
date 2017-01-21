@@ -41,7 +41,7 @@ void UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 		break;
 	case EWeaponState::EWeaponState_Firing:
 	{
-		uint8 FireMode = GetOuterADBWeaponBase()->GetCurrentFireMode();
+		uint8 FireMode = GetOuterADBShootWeaponBase()->GetCurrentFireMode();
 		m_CurrentWeaponState = m_WeaponStateFiring[FireMode];
 	}
 

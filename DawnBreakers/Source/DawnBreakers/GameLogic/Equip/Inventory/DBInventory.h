@@ -13,15 +13,15 @@ class DAWNBREAKERS_API ADBInventory : public AActor
 	GENERATED_UCLASS_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
-	ADBInventory();
-
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
+	void AddToInventory(class ADBInventoryItemBase* NewEquipment);
+
+	void RemoveFromInventory(ADBInventoryItemBase* NewEquipment);
+
+private:
+	TArray<ADBInventoryItemBase*> m_ItemsContainer;
 	
 };

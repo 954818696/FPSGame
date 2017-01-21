@@ -3,7 +3,7 @@
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
-#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
+//#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
 #include "GameLogic/Equip/Inventory/DBInventory.h"
 
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
@@ -46,8 +46,9 @@ void ADBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	SetDefaultEquipWeapon();
 	SetFPSCamera();
+
+	CreateInventory();
 }
 
 void ADBCharacter::Tick( float DeltaTime )
@@ -105,7 +106,6 @@ void ADBCharacter::OnStartFire()
 	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 20);
 #endif
 
-	m_Weapon->OnStartFire();
 	
 }
 
@@ -113,7 +113,6 @@ void ADBCharacter::OnStopFire()
 {
 	DAWNBREAKERS_LOG_INFO("ADBCharacter::OnStopFire");
 
-	m_Weapon->OnStopFire();
 }
 
 void ADBCharacter::OnStartTargeting()
@@ -132,14 +131,12 @@ void ADBCharacter::SwitchEquipWeapon(bool bNext)
 }
 
 
-void ADBCharacter::InitDefaultInventory()
+void ADBCharacter::CreateInventory()
 {
-
-}
-
-void ADBCharacter::SetDefaultEquipWeapon()
-{
-
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	m_Inventory = GetWorld()->SpawnActor<ADBInventory>(SpawnInfo);
+	m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)

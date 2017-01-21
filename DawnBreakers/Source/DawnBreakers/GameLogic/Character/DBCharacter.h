@@ -50,7 +50,7 @@ public:
 
 	//////////////////////////////////////
 	// Born Default Data Initializing.
-	void InitDefaultInventory();
+	void CreateInventory();
 
 	//////////////////////////////////////
 
@@ -64,8 +64,6 @@ protected:
 private:
 	void SetTargeting(bool bNewTargeting);
 
-	void SetDefaultEquipWeapon();
-
 	void SetFPSCamera();
 	
 	//////////////////////////////////////
@@ -73,7 +71,7 @@ private:
 	//////////////////////////////////////
 
 private:
-	class ADBWeaponBase* m_Weapon;
+	//ADBWeaponBase* m_HoldWeapon;
 
 	//////////////////////////////////////
 	// Camera.

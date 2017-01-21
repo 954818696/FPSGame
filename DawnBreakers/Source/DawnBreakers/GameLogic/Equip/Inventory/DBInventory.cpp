@@ -2,13 +2,12 @@
 
 #include "DawnBreakers.h"
 #include "DBInventory.h"
+#include "DBInventoryItemBase.h"
 
 
-// Sets default values
 ADBInventory::ADBInventory(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -25,5 +24,21 @@ void ADBInventory::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+}
+
+void ADBInventory::AddToInventory(ADBInventoryItemBase* NewEquipment)
+{
+	if (NewEquipment && NewEquipment->IsValidLowLevel())
+	{
+		m_ItemsContainer.AddUnique(NewEquipment);
+	}
+}
+
+void ADBInventory::RemoveFromInventory(ADBInventoryItemBase* NewEquipment)
+{
+	if (NewEquipment && NewEquipment->IsValidLowLevel())
+	{
+		m_ItemsContainer.RemoveSwap(NewEquipment);
+	}
 }
 
