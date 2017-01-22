@@ -8,7 +8,8 @@
 
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
-	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective)
+	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective),
+	m_MaxInteractableDistance(400.f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -53,6 +54,8 @@ void ADBCharacter::BeginPlay()
 void ADBCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+
+	InteractQueryTick();
 
 }
 
@@ -104,8 +107,6 @@ void ADBCharacter::OnStartFire()
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 20.0f, 0, 5);
 	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 20);
 #endif
-
-	
 }
 
 void ADBCharacter::OnStopFire()
@@ -174,6 +175,58 @@ void ADBCharacter::CreateInventory()
 	{
 		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	}
+}
+
+void ADBCharacter::InteractQueryTick()
+{
+	if (Controller && Controller->IsLocalController())
+	{
+		ADBInventoryItemBase* InteractedItem = InteractWithItemInView();
+
+		if (InteractedItem)
+		{
+			if (m_FocusedInteractItem != InteractedItem)
+			{
+				InteractedItem->SetInteractFocus();
+				if (m_FocusedInteractItem)
+				{
+					m_FocusedInteractItem->LoseInteractFocus();
+				}
+				m_FocusedInteractItem = InteractedItem;
+			}
+		}
+		else
+		{
+			if (m_FocusedInteractItem)
+			{
+				m_FocusedInteractItem->LoseInteractFocus();
+			}
+			m_FocusedInteractItem = nullptr;
+		}
+	}
+}
+
+ADBInventoryItemBase* ADBCharacter::InteractWithItemInView()
+{
+	FVector   CamLocation;
+	FRotator CamRotator;
+	Controller->GetPlayerViewPoint(CamLocation, CamRotator);
+
+	const FVector TraceStart = CamLocation;
+	const FVector Direction = CamRotator.Vector();
+	const FVector TraceEnd = TraceStart + (Direction * m_MaxInteractableDistance);
+
+	FCollisionQueryParams TraceParams(TEXT("TraceItem"), true, this);
+	TraceParams.bTraceAsyncScene = true;
+	TraceParams.bReturnPhysicalMaterial = false;
+	TraceParams.bTraceComplex = false;
+
+	FHitResult Hit(ForceInit);
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
+
+	return Cast<ADBInventoryItemBase>(Hit.GetActor());
 }
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)

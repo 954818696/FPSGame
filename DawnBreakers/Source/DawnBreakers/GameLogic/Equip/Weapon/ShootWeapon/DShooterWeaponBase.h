@@ -10,7 +10,7 @@
 
 
 
-UCLASS(Abstract, Blueprintable)
+UCLASS(Blueprintable)
 class DAWNBREAKERS_API ADShooterWeaponBase : public AActor
 {
 	GENERATED_BODY()

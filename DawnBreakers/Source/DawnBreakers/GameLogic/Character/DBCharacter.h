@@ -57,23 +57,32 @@ public:
 	void CreateInventory();
 
 	//////////////////////////////////////
+private:
+	void InteractQueryTick();
+
+	ADBInventoryItemBase* InteractWithItemInView();
+
+	void SetTargeting(bool bNewTargeting);
+
+	void SetFPSCamera();
+
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ADBCharacter)
 	class UDBCharacterMovementComponent* m_CharacterMovement;
 
-	UPROPERTY(EditDefaultsOnly , Category = Inventory)
+	UPROPERTY(EditDefaultsOnly , Category = ADBCharacter)
 	TSubclassOf<class ADBInventoryBase> m_InventoryClass;
 
-private:
-	void SetTargeting(bool bNewTargeting);
-
-	void SetFPSCamera();
+	UPROPERTY(EditDefaultsOnly, Category = ADBCharacter)
+	float m_MaxInteractableDistance;
 
 private:
 	ADBInventoryBase* m_Inventory;
 
 	ADBWeaponBase* m_HoldWeapon;
+
+	ADBInventoryItemBase* m_FocusedInteractItem;
 
 	//////////////////////////////////////
 	// Camera.

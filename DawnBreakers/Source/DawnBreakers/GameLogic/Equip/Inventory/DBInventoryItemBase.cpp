@@ -12,6 +12,12 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	m_StaticMeshComp = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("StaticMesh"));
+	m_StaticMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
+	//m_StaticMeshComp->SetSimulatePhysics(true);
+	//m_StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	m_StaticMeshComp->SetVisibility(false);
+	m_StaticMeshComp->SetupAttachment(GetRootComponent());
 }
 
 void ADBInventoryItemBase::BeginPlay()
@@ -35,5 +41,15 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 			AttachToComponent(m_OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 		}
 	}
+}
+
+void ADBInventoryItemBase::SetInteractFocus()
+{
+	m_StaticMeshComp->SetRenderCustomDepth(true);
+}
+
+void ADBInventoryItemBase::LoseInteractFocus()
+{
+	m_StaticMeshComp->SetRenderCustomDepth(false);
 }
 

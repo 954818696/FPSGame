@@ -31,7 +31,7 @@ protected:
 	FInventory m_Inventory;
 
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
-	FAmmoSlot m_Ammo;
+	TArray<FAmmoSlot> m_Ammo;
 
 private:
 

@@ -29,8 +29,15 @@ public:
 	{
 		return m_EInventorySlot;
 	}
+
+	virtual void SetInteractFocus();
+
+	virtual void LoseInteractFocus();
 	
 protected:
+	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
+	UStaticMeshComponent* m_StaticMeshComp;
+
 	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
 	EInventorySlot m_EInventorySlot;
 
