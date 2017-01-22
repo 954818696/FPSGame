@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "DBInventoryItemBase.h"
+#include "ItemType.h"
 #include "InventoryStruct.generated.h"
 
 /**
@@ -22,19 +22,22 @@ struct FInventorySlot
 
 	bool IsCanPutIn() const { return m_UsedSlotSize < m_SlotSize; }
 
-	void Put(class ADBInventoryItemBase* NetItem)
+	void PutFinal(class ADBInventoryItemBase* NetItem)
 	{
-
+		m_ItemsContainer.AddUnique(NetItem);
+		++m_UsedSlotSize;
 	}
 
-	void RemoveOne(ADBInventoryItemBase* RemovedItem)
+	void RemoveOneFinal(ADBInventoryItemBase* RemovedItem)
 	{
-		m_ItemsContainer.Remove(RemovedItem);
+		int32  RemoveCount = m_ItemsContainer.Remove(RemovedItem);
+		m_UsedSlotSize -= RemoveCount;
 	}
 
-	void RemoveAll()
+	void RemoveAllFinal()
 	{
 		m_ItemsContainer.Empty();
+		m_UsedSlotSize = 0;
 	}
 
 	TArray<ADBInventoryItemBase*> m_ItemsContainer;
@@ -42,39 +45,51 @@ struct FInventorySlot
 	int32 m_UsedSlotSize;
 
 	UPROPERTY(EditDefaultsOnly, Category = FInventorySlot)
-		int32 m_SlotSize;
+	int32 m_SlotSize;
 
 	UPROPERTY(EditDefaultsOnly, Category = FInventorySlot)
-		EInventorySlot	m_SlotType;
+	EInventorySlot	m_SlotType;
 };
+
+USTRUCT(BlueprintType)
+struct FAmmoSlot
+{
+	GENERATED_USTRUCT_BODY()
+
+	FAmmoSlot() :
+		m_MaxAmount(60),
+		m_AmmoType(EAmmoType::RifleAmmo),
+		m_CurrentAmount(0)
+	{
+
+	}
+
+	UPROPERTY(EditDefaultsOnly, Category = FAmmoSlot)
+	EAmmoType m_AmmoType;
+
+	UPROPERTY(EditDefaultsOnly, Category = FAmmoSlot)
+	int32 m_MaxAmount;
+
+	int32 m_CurrentAmount;
+
+};
+
 
 USTRUCT(BlueprintType)
 struct FInventory
 {
 	GENERATED_USTRUCT_BODY()
 
-		UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
-		TArray<FInventorySlot> m_SlotsContainer;
+	bool Put(ADBInventoryItemBase* NewItem);
 
-	TArray<ADBInventoryItemBase*> m_AllCached;
+	void RemoveOne(ADBInventoryItemBase* RemovedItem);
 
-	bool Put(ADBInventoryItemBase* NewItem)
-	{
-		//for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
-		//{
+	void RemoveAllTypeSlot();
 
-		//}
-		//m_ItemsContainer.AddUnique(NetItem);
-		//++m_UsedSlotSize;
-	}
+	void RemoveAllOneSlot(EInventorySlot RemoveSlotType);
 
-	void RemoveOne(ADBInventoryItemBase* RemovedItem)
-	{
+	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
+	TArray<FInventorySlot> m_SlotsContainer;
 
-	}
-
-	void RemoveAll()
-	{
-
-	}
+	TArray<ADBInventoryItemBase*> m_CachedForSwitch;
 };

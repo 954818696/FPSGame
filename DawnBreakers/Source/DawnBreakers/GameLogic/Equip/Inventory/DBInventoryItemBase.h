@@ -4,15 +4,10 @@
 
 #include "GameFramework/Actor.h"
 #include "GameLogic/Character/DBCharacter.h"
+#include "ItemType.h"
 #include "DBInventoryItemBase.generated.h"
 
-UENUM(BlueprintType)
-enum class EInventorySlot : uint8
-{
-	BackPack = 0,
-	WaistPack = 1,
-	InvisiblePack = 2,
-};
+
 
 UCLASS(Blueprintable, Abstract, NotPlaceable)
 class DAWNBREAKERS_API ADBInventoryItemBase : public AActor

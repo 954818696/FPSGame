@@ -27,59 +27,45 @@ void ADBInventoryBase::Tick( float DeltaTime )
 
 bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 {
-	bool result = false;
-	//if (NewEquipment && NewEquipment->IsValidLowLevel())
-	//{
-	//	EInventorySlot SlotType = NewEquipment->GetStorageSlotType();
+	bool Result = false;
+	if (NewEquipment && NewEquipment->IsValidLowLevel())
+	{
+		EInventorySlot SlotType = NewEquipment->GetStorageSlotType();
+		Result = m_Inventory.Put(NewEquipment);
+	}
 
-	//	for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
-	//	{
-	//		if (m_SlotsContainer[i].m_SlotType == SlotType && m_SlotsContainer[i].IsCanPutIn())
-	//		{
-	//			result = true;
-	//			m_SlotsContainer[i].Put(NewEquipment);
-	//		}
-	//	}
-	//}
-
-	return result;
+	return Result;
 }
 
 void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment)
 {
 	if (RemovedEquipment && RemovedEquipment->IsValidLowLevel())
 	{
-		//EInventorySlot SlotType = RemovedEquipment->GetStorageSlotType();
-		//for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
-		//{
-		//	if (m_SlotsContainer[i].m_SlotType == SlotType)
-		//	{
-		//		m_SlotsContainer[i].RemoveOne(RemovedEquipment);
-		//	}
-		//}
+		m_Inventory.RemoveOne(RemovedEquipment);
 	}
 }
 
 ADBInventoryItemBase* ADBInventoryBase::GetOneItemByItemSequence(const ADBInventoryItemBase* FindBaseItem, bool bNext)
 {
-
 	ADBInventoryItemBase* ReturnItem = nullptr;
-	//if (m_SlotsContainer.Num() > 1)
-	//{
-	//	const int32 CurrentItemIndex = m_ItemsContainer.IndexOfByKey(FindBaseItem);
-	//	if (CurrentItemIndex != INDEX_NONE)
-	//	{
-	//		const int32 ItemCount = m_ItemsContainer.Num();
-	//		if (bNext)
-	//		{
-	//			ReturnItem = m_ItemsContainer[(CurrentItemIndex + 1) % ItemCount];
-	//		}
-	//		else
-	//		{
-	//			ReturnItem = m_ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
-	//		}
-	//	}
-	//}
+ 
+	const TArray<ADBInventoryItemBase*> &ItemsContainer = m_Inventory.m_CachedForSwitch;
+	const int32 ItemCount = ItemsContainer.Num();
+	if (ItemCount > 1)
+	{
+		const int32 CurrentItemIndex = ItemsContainer.IndexOfByKey(FindBaseItem);
+		if (CurrentItemIndex != INDEX_NONE)
+		{
+			if (bNext)
+			{
+				ReturnItem = ItemsContainer[(CurrentItemIndex + 1) % ItemCount];
+			}
+			else
+			{
+				ReturnItem = ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
+			}
+		}
+	}
 
 	return ReturnItem;
 }

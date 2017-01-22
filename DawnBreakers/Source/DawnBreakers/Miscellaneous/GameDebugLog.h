@@ -18,3 +18,5 @@ DAWNBREAKERS_API DECLARE_LOG_CATEGORY_EXTERN(GameDebugWarning, Warning, All);
 #define DAWNBREAKERS_LOG_ERROR(formatStr, ...) UE_LOG(GameDebugError, Error, TEXT(formatStr), ##__VA_ARGS__)
 #define DAWNBREAKERS_LOG_WARNING(formatStr, ...) UE_LOG(GameDebugWarning, Warning, TEXT(formatStr), ##__VA_ARGS__)
 
+#define GETENUMSTRING(etype, evalue) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetEnumName((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?") )
+

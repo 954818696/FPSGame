@@ -6,11 +6,8 @@
 #include "InventoryStruct.h"
 #include "DBInventoryBase.generated.h"
 
-class ADBInventoryItemBase;
+// This Inventory means all things  equiped on the body.
 
-
-
-// Inventory Visualize in the future.
 UCLASS(Abstract)
 class DAWNBREAKERS_API ADBInventoryBase : public AActor
 {
@@ -27,7 +24,16 @@ public:
 
 	ADBInventoryItemBase* GetOneItemByItemSequence(const ADBInventoryItemBase* FindBaseItem, bool bNext);
 
+	bool AddAmmo() { return true; }
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
 	FInventory m_Inventory;
+
+	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
+	FAmmoSlot m_Ammo;
+
+private:
+
+	FAmmoSlot* m_CurrentUsedAmmo;
 };

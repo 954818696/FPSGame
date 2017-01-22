@@ -4,16 +4,6 @@
 
 #include "WeaponConfig.generated.h"
 
-namespace EAmmoType
-{
-	enum Type
-	{
-		E_Bullet		= 0,
-		E_Rocket	= 1,
-		E_Max,
-	};
-
-}
 
 
 USTRUCT()
