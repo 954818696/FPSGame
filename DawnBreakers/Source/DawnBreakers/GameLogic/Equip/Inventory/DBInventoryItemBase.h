@@ -29,6 +29,11 @@ public:
 	}
 
 	void SetItemOwner(ADBCharacter* ItemOwner);
+
+	EInventorySlot GetStorageSlotType() const
+	{
+		return m_EInventorySlot;
+	}
 	
 protected:
 	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)

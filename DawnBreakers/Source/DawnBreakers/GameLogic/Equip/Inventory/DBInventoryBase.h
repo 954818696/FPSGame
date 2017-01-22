@@ -3,26 +3,12 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "DBInventoryItemBase.h"
+#include "InventoryStruct.h"
 #include "DBInventoryBase.generated.h"
 
-USTRUCT(BlueprintType)
-struct FInventorySlot
-{
-	GENERATED_USTRUCT_BODY()
+class ADBInventoryItemBase;
 
-		FInventorySlot() :
-		m_SlotSize(1),
-		m_SlotType(EInventorySlot::InvisiblePack)
-	{
 
-	}
-	UPROPERTY(EditDefaultsOnly, Category = FInventorySlot)
-	int32 m_SlotSize;
-
-	UPROPERTY(EditDefaultsOnly, Category = FInventorySlot)
-	EInventorySlot	m_SlotType;
-};
 
 // Inventory Visualize in the future.
 UCLASS(Abstract)
@@ -37,15 +23,11 @@ public:
 
 	bool AddToInventory(class ADBInventoryItemBase* NewEquipment);
 
-	void RemoveFromInventory(ADBInventoryItemBase* NewEquipment);
+	void RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment);
 
 	ADBInventoryItemBase* GetOneItemByItemSequence(const ADBInventoryItemBase* FindBaseItem, bool bNext);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
-	TArray<FInventorySlot> m_ItemContainer;
-
-private:
-	TArray<ADBInventoryItemBase*> m_ItemsContainer;
-	
+	FInventory m_Inventory;
 };

@@ -27,19 +27,36 @@ void ADBInventoryBase::Tick( float DeltaTime )
 
 bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 {
-	if (NewEquipment && NewEquipment->IsValidLowLevel())
-	{
-		m_ItemsContainer.AddUnique(NewEquipment);
-	}
+	bool result = false;
+	//if (NewEquipment && NewEquipment->IsValidLowLevel())
+	//{
+	//	EInventorySlot SlotType = NewEquipment->GetStorageSlotType();
 
-	return true;
+	//	for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
+	//	{
+	//		if (m_SlotsContainer[i].m_SlotType == SlotType && m_SlotsContainer[i].IsCanPutIn())
+	//		{
+	//			result = true;
+	//			m_SlotsContainer[i].Put(NewEquipment);
+	//		}
+	//	}
+	//}
+
+	return result;
 }
 
-void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* NewEquipment)
+void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment)
 {
-	if (NewEquipment && NewEquipment->IsValidLowLevel())
+	if (RemovedEquipment && RemovedEquipment->IsValidLowLevel())
 	{
-		m_ItemsContainer.Remove(NewEquipment);
+		//EInventorySlot SlotType = RemovedEquipment->GetStorageSlotType();
+		//for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
+		//{
+		//	if (m_SlotsContainer[i].m_SlotType == SlotType)
+		//	{
+		//		m_SlotsContainer[i].RemoveOne(RemovedEquipment);
+		//	}
+		//}
 	}
 }
 
@@ -47,22 +64,22 @@ ADBInventoryItemBase* ADBInventoryBase::GetOneItemByItemSequence(const ADBInvent
 {
 
 	ADBInventoryItemBase* ReturnItem = nullptr;
-	if (m_ItemsContainer.Num() > 1)
-	{
-		const int32 CurrentItemIndex = m_ItemsContainer.IndexOfByKey(FindBaseItem);
-		if (CurrentItemIndex != INDEX_NONE)
-		{
-			const int32 ItemCount = m_ItemsContainer.Num();
-			if (bNext)
-			{
-				ReturnItem = m_ItemsContainer[(CurrentItemIndex + 1) % ItemCount];
-			}
-			else
-			{
-				ReturnItem = m_ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
-			}
-		}
-	}
+	//if (m_SlotsContainer.Num() > 1)
+	//{
+	//	const int32 CurrentItemIndex = m_ItemsContainer.IndexOfByKey(FindBaseItem);
+	//	if (CurrentItemIndex != INDEX_NONE)
+	//	{
+	//		const int32 ItemCount = m_ItemsContainer.Num();
+	//		if (bNext)
+	//		{
+	//			ReturnItem = m_ItemsContainer[(CurrentItemIndex + 1) % ItemCount];
+	//		}
+	//		else
+	//		{
+	//			ReturnItem = m_ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
+	//		}
+	//	}
+	//}
 
 	return ReturnItem;
 }
