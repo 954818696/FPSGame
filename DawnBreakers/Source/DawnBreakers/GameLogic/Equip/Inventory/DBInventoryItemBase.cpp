@@ -47,11 +47,11 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 
 void ADBInventoryItemBase::SetInteractFocus()
 {
-	m_StaticMeshComp->SetRenderCustomDepth(true);
+	m_MeshComp->SetRenderCustomDepth(true);
 }
 
 void ADBInventoryItemBase::LoseInteractFocus()
 {
-	m_StaticMeshComp->SetRenderCustomDepth(false);
+	m_MeshComp->SetRenderCustomDepth(false);
 }
 

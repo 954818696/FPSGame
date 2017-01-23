@@ -15,7 +15,6 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 	GENERATED_UCLASS_BODY()
 
 public:
-	virtual void PostInitializeComponents() override;
 
 	virtual void OnEquip();
 
@@ -36,9 +35,9 @@ public:
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
 
-	virtual void SetInteractFocus() override;
+	//virtual void SetInteractFocus() override;
 
-	virtual void LoseInteractFocus() override;
+	//virtual void LoseInteractFocus() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
 		USkeletalMeshComponent* m_SkeletalMeshComp;

@@ -6,26 +6,16 @@
 ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	m_StaticMeshComp->SetVisibility(false);
-	m_StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	m_StaticMeshComp->SetSimulatePhysics(false);
-
 	m_SkeletalMeshComp = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("SkeletalMesh"));
 	m_SkeletalMeshComp->SetVisibility(true);
 	m_SkeletalMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
 	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	m_SkeletalMeshComp->SetSimulatePhysics(true);
-
+	m_MeshComp = m_SkeletalMeshComp;
 	RootComponent = m_SkeletalMeshComp;
 	//m_SkeletalMeshComp->SetupAttachment(m_SceneComponentRoot);
 
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
-}
-
-void ADBWeaponBase::PostInitializeComponents()
-{
-
-	
 }
 
 void ADBWeaponBase::OnEquip()
@@ -67,12 +57,12 @@ bool ADBWeaponBase::IsInState(EWeaponState::Type WeaponState) const
 	return false;
 }
 
-void ADBWeaponBase::SetInteractFocus()
-{
-	m_SkeletalMeshComp->SetRenderCustomDepth(true);
-}
-
-void ADBWeaponBase::LoseInteractFocus()
-{
-	m_SkeletalMeshComp->SetRenderCustomDepth(false);
-}
+//void ADBWeaponBase::SetInteractFocus()
+//{
+//	m_SkeletalMeshComp->SetRenderCustomDepth(true);
+//}
+//
+//void ADBWeaponBase::LoseInteractFocus()
+//{
+//	m_SkeletalMeshComp->SetRenderCustomDepth(false);
+//}

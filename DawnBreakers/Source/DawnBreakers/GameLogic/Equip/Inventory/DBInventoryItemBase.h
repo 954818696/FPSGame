@@ -36,7 +36,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "ADBInventoryItemBase")
-	UStaticMeshComponent* m_StaticMeshComp;
+	UMeshComponent* m_MeshComp;
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	EInventorySlot m_EInventorySlot;
