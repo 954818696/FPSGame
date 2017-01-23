@@ -107,7 +107,7 @@ void ADBCharacter::OnStartFire()
 	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, this);
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 20.0f, 0, 5);
-	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 20);
+	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1);
 #endif
 }
 
@@ -147,7 +147,19 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 		if (bCanAddToInventory)
 		{
 			// Attach to Human.
+
+			{
+				ADBWeaponBase* test = Cast<ADBWeaponBase>(NewItem);
+				if (test)
+				{
+					test->m_SkeletalMeshComp->SetSimulatePhysics(false);
+					test->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				}
+
+			}
+
 			NewItem->SetItemOwner(this);
+			
 
 			// Equip Directly or not.
 			if (m_HoldWeapon == nullptr)
@@ -212,7 +224,7 @@ void ADBCharacter::InteractQueryTick()
 {
 	if (Controller && Controller->IsLocalController())
 	{
-		ADBInventoryItemBase* InteractedItem = InteractWithItemInView();
+		ADBInventoryItemBase* InteractedItem = QueryItemByRay();
 
 		if (InteractedItem)
 		{
@@ -237,7 +249,7 @@ void ADBCharacter::InteractQueryTick()
 	}
 }
 
-ADBInventoryItemBase* ADBCharacter::InteractWithItemInView()
+ADBInventoryItemBase* ADBCharacter::QueryItemByRay()
 {
 	FVector   CamLocation;
 	FRotator CamRotator;
@@ -251,11 +263,9 @@ ADBInventoryItemBase* ADBCharacter::InteractWithItemInView()
 	TraceParams.bTraceAsyncScene = true;
 	TraceParams.bReturnPhysicalMaterial = false;
 	TraceParams.bTraceComplex = false;
-
 	FHitResult Hit(ForceInit);
-	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldDynamic, TraceParams);
+//	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
 
 	return Cast<ADBInventoryItemBase>(Hit.GetActor());
 }

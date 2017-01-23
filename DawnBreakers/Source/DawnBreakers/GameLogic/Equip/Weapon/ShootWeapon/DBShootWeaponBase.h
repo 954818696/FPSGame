@@ -13,18 +13,5 @@ class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 {
 	GENERATED_UCLASS_BODY()
 	
-public:
-
-	virtual void SetInteractFocus() override;
-
-	virtual void LoseInteractFocus() override;
-	
-protected:
-	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
-	UBoxComponent* m_FakeSkeletalMeshPhysicBoxComp;
-
-	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
-	USkeletalMeshComponent* m_SkeletalMeshComp;
-
 
 };

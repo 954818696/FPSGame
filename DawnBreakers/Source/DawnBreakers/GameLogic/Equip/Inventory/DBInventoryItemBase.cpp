@@ -12,12 +12,13 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	m_StaticMeshComp = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("StaticMesh"));
-	m_StaticMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
+	//m_StaticMeshComp = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("StaticMesh"));
+	//m_StaticMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
 	//m_StaticMeshComp->SetSimulatePhysics(true);
 	//m_StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	m_StaticMeshComp->SetVisibility(false);
-	m_StaticMeshComp->SetupAttachment(GetRootComponent());
+	//m_StaticMeshComp->SetVisibility(true);
+	////m_StaticMeshComp->SetupAttachment(m_SceneComponentRoot);
+	//RootComponent = m_StaticMeshComp;
 }
 
 void ADBInventoryItemBase::BeginPlay()
@@ -30,15 +31,16 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 {
 	if (ItemOwner && ItemOwner->IsValidLowLevel())
 	{
-		m_OwnerCharacter = ItemOwner;
+		SetOwner(ItemOwner);
+		Instigator = ItemOwner;
 
 		if (m_AttachSocketName.IsValid())
 		{
-			AttachToComponent(m_OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
+			AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
 		}
 		else if (m_bForceAttachToOwner)
 		{
-			AttachToComponent(m_OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+			AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
 		}
 	}
 }

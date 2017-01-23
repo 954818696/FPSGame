@@ -18,9 +18,9 @@ public:
 
 	virtual void BeginPlay() override;
 
-	ADBCharacter* GetItemOwner() const 
+	ADBCharacter* GetItemOwner() const
 	{
-		return m_OwnerCharacter;
+		return Cast<ADBCharacter>(GetOwner());
 	}
 
 	void SetItemOwner(ADBCharacter* ItemOwner);
@@ -33,7 +33,7 @@ public:
 	virtual void SetInteractFocus();
 
 	virtual void LoseInteractFocus();
-	
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "ADBInventoryItemBase")
 	UStaticMeshComponent* m_StaticMeshComp;
@@ -46,7 +46,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	bool m_bForceAttachToOwner;
-
-	ADBCharacter* m_OwnerCharacter;
-	
 };

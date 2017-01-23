@@ -62,7 +62,7 @@ public:
 private:
 	void InteractQueryTick();
 
-	ADBInventoryItemBase* InteractWithItemInView();
+	ADBInventoryItemBase* QueryItemByRay();
 
 	void SetTargeting(bool bNewTargeting);
 
