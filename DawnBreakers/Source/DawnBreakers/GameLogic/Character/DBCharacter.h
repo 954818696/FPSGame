@@ -43,6 +43,8 @@ public:
 
 	void OnStopTargeting();
 
+	void InteractWithItem();
+
 	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
 
 	void EquipHandWeapon(class ADBWeaponBase* NewWeapon);
@@ -66,6 +68,7 @@ private:
 
 	void SetFPSCamera();
 
+	void EquipPendedWeapon();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ADBCharacter)
@@ -82,7 +85,11 @@ private:
 
 	ADBWeaponBase* m_HoldWeapon;
 
+	ADBWeaponBase* m_PendEquipWeapon;
+
 	ADBInventoryItemBase* m_FocusedInteractItem;
+
+	FTimerHandle TimerHandle_PendWeaponEquip;
 
 	//////////////////////////////////////
 	// Camera.

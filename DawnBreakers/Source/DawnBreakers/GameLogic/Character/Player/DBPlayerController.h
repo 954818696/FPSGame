@@ -68,6 +68,8 @@ private:
 
 	void OnSwitchCameraMode();
 
+	void OnInteractWithItem();
+
 	//////////////////////////////////////
 
 private:

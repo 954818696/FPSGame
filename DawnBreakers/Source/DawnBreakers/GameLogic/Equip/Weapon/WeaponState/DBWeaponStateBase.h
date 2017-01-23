@@ -25,7 +25,7 @@ namespace EWeaponState
 /**
  * 
  */
-UCLASS(DefaultToInstanced, EditInlineNew)
+UCLASS(DefaultToInstanced, EditInlineNew, Within = DBWeaponStateMachine)
 class DAWNBREAKERS_API UDBWeaponStateBase : public UObject
 {
 	GENERATED_BODY()
@@ -43,7 +43,6 @@ public:
 	FORCEINLINE EWeaponState::Type GetStateID() const { return m_StateID; }
 
 protected:
-
 	EWeaponState::Type m_StateID;
 	
 };

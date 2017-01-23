@@ -2,8 +2,6 @@
 
 #include "DawnBreakers.h"
 #include "DBShootWeaponBase.h"
-#include "GameLogic/Equip/Weapon/ShootWeapon/WeaponState/DBWeaponStateMachine.h"
-
 
 
 ADBShootWeaponBase::ADBShootWeaponBase(const FObjectInitializer& ObjectInitializer)
@@ -16,18 +14,6 @@ ADBShootWeaponBase::ADBShootWeaponBase(const FObjectInitializer& ObjectInitializ
 	m_SkeletalMeshComp = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("SkeletalMesh"));
 	m_SkeletalMeshComp->SetVisibility(true);
 	m_SkeletalMeshComp->SetupAttachment(m_FakeSkeletalMeshPhysicBoxComp);
-
-	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
-}
-
-void ADBShootWeaponBase::OnStartFire()
-{
-
-}
-
-void ADBShootWeaponBase::OnStopFire()
-{
-
 }
 
 void ADBShootWeaponBase::SetInteractFocus()

@@ -9,7 +9,9 @@
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
 	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective),
-	m_MaxInteractableDistance(400.f)
+	m_MaxInteractableDistance(400.f),
+	m_PendEquipWeapon(nullptr),
+	m_HoldWeapon(nullptr)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -125,6 +127,18 @@ void ADBCharacter::OnStopTargeting()
 	SetTargeting(false);
 }
 
+void ADBCharacter::InteractWithItem()
+{
+	if (m_FocusedInteractItem == nullptr || !m_FocusedInteractItem->IsValidLowLevel())
+	{
+		return;
+	}
+	// 1.Pick Up.
+	OnPickUpItem(m_FocusedInteractItem);
+
+	// 2.Interact With
+}
+
 void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 {
 	if (m_Inventory && m_Inventory->IsValidLowLevel())
@@ -145,14 +159,31 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 				}
 			}
 		}
+		else if (m_HoldWeapon)
+		{
+			if (NewItem->IsA(m_HoldWeapon->GetClass()))
+			{
+				// abandon it. equip new one.
+				// 1.Drop weapon
+				// 2.Equip new.
+			}
+		}
 	}
 }
 
 void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon)
 {
-	if (NewWeapon && NewWeapon->IsValidLowLevel())
+	if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
 	{
-
+		m_PendEquipWeapon = NewWeapon;
+		GetWorldTimerManager().SetTimer(TimerHandle_PendWeaponEquip, this, &ADBCharacter::EquipPendedWeapon, 1.f, true);
+	}
+	else
+	{
+		if (NewWeapon && NewWeapon->IsValidLowLevelFast())
+		{
+			NewWeapon->OnEquip();
+		}
 	}
 }
 
@@ -239,6 +270,13 @@ void ADBCharacter::SetFPSCamera()
 	m_CameraComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("head")));
 	m_CameraComp->RelativeLocation = m_FPSCameraPos.GetLocation();
 	m_CurCameraMode = ECameraMode::E_FirstPersonPerspective;
+}
+
+void ADBCharacter::EquipPendedWeapon()
+{
+	//if (m_)
+	GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
+	EquipHandWeapon(m_PendEquipWeapon);
 }
 
 void ADBCharacter::SwitchCamaraMode()

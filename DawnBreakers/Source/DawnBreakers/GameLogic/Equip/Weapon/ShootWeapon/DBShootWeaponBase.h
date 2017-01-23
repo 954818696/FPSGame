@@ -8,20 +8,12 @@
 /**
  * 
  */
-UCLASS(Placeable)
+UCLASS(Abstract, Placeable)
 class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 {
 	GENERATED_UCLASS_BODY()
 	
 public:
-	void OnStartFire();
-
-	void OnStopFire();
-
-	FORCEINLINE int32 GetCurrentFireMode() const
-	{
-		return m_CurrentFireMode;
-	}
 
 	virtual void SetInteractFocus() override;
 
@@ -34,11 +26,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
 	USkeletalMeshComponent* m_SkeletalMeshComp;
 
-	
 
-	/** Weapon State Machine */
-	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)
-	class UDBWeaponStateMachine* m_WeaponStateMachine;
-
-	int32 m_CurrentFireMode;
 };

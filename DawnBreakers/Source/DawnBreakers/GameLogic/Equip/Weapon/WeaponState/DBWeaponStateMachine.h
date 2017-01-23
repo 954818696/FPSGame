@@ -11,7 +11,7 @@
 /**
  * 
  */
-UCLASS(DefaultToInstanced, Within = DBShootWeaponBase)
+UCLASS(DefaultToInstanced, Within = DBWeaponBase)
 class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 {
 	GENERATED_UCLASS_BODY()
@@ -48,8 +48,6 @@ protected:
 
 	UPROPERTY(Instanced, EditDefaultsOnly, NoClear, Category = WeaponState)
 	class UDBWeaponStateReload* m_WeaponStateReloading;
-
-
 
 private:
 	class UDBWeaponStateBase* m_CurrentWeaponState;

@@ -35,16 +35,16 @@ public:
 	virtual void LoseInteractFocus();
 	
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
+	UPROPERTY(EditAnywhere, Category = "ADBInventoryItemBase")
 	UStaticMeshComponent* m_StaticMeshComp;
 
-	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
+	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	EInventorySlot m_EInventorySlot;
 
-	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
+	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	FName m_AttachSocketName;
 
-	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
+	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	bool m_bForceAttachToOwner;
 
 	ADBCharacter* m_OwnerCharacter;

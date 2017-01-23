@@ -17,9 +17,6 @@ class DAWNBREAKERS_API UDBWeaponStateEquiping : public UDBWeaponStateBase
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	float m_EquipTime;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_EquipAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)

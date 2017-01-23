@@ -13,12 +13,12 @@
 UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	m_WeaponStateActive			= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateActive>(this, TEXT("WeaponStateActive"), false);
-	m_WeaponStateInactive		= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WeaponStateInactive"), false);
-	m_WeaponStateEquiping		= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquiping>(this, TEXT("WeaponStateEquiping"), false);
-	m_WeaponStateUnequiping	= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateUnEquiping>(this, TEXT("WeaponStateUnEquiping"), false);
-	m_WeaponStateSwitchMode	= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateSwitchMode>(this, TEXT("WeaponStateSwitchMode"), false);
-	m_WeaponStateReloading		= ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateReload>(this, TEXT("WeaponStateReloading"), false);
+	m_WeaponStateActive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateActive>(this, TEXT("WeaponStateActive"), false);
+	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WeaponStateInactive"), false);
+	m_WeaponStateEquiping = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquiping>(this, TEXT("WeaponStateEquiping"), false);
+	m_WeaponStateUnequiping = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateUnEquiping>(this, TEXT("WeaponStateUnEquiping"), false);
+	m_WeaponStateSwitchMode = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateSwitchMode>(this, TEXT("WeaponStateSwitchMode"), false);
+	m_WeaponStateReloading = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateReload>(this, TEXT("WeaponStateReloading"), false);
 
 	// Multi-Fire Mode.
 	//for (int32 i = 0; i < m_TotalFireModes; ++i)
@@ -41,7 +41,7 @@ void UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 		break;
 	case EWeaponState::EWeaponState_Firing:
 	{
-		uint8 FireMode = GetOuterADBShootWeaponBase()->GetCurrentFireMode();
+		uint8 FireMode = GetOuterADBWeaponBase()->GetCurrentFireMode();
 		m_CurrentWeaponState = m_WeaponStateFiring[FireMode];
 	}
 
@@ -65,7 +65,12 @@ void UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 
 void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponState)
 {
-
+	if (m_CurrentWeaponState->GetStateID() != WeaponState)
+	{
+		//m_CurrentWeaponState->ExitWeaponState();
+		//m_CurrentWeaponState = WeaponState;
+		//m_CurrentWeaponState->EnterWeaponState();
+	}
 }
 
 bool UDBWeaponStateMachine::IsInState(EWeaponState::Type WeaponState)
