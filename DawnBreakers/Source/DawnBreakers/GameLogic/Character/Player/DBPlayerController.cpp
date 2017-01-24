@@ -15,13 +15,15 @@ void ADBPlayerController::SetPawn(APawn* InPawn)
 {
 	AController::SetPawn(InPawn);
 
+	m_ControlledCharacter = Cast<ADBCharacter>(InPawn);
+
 }
 
 void ADBPlayerController::Possess(APawn* ControlledPawn)
 {
 	Super::Possess(ControlledPawn);
 
-	m_ControlledCharacter = Cast<ADBCharacter>(ControlledPawn);
+
 
 }
 

@@ -8,14 +8,24 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 	m_bForceAttachToOwner(false),
 	m_EInventorySlot(EInventorySlot::InvisiblePack)
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	m_SkeletalMeshComp = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("SkeletalMesh"));
-	m_SkeletalMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
+	RootComponent = m_SkeletalMeshComp;
+	//m_SkeletalMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
+	//m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
+	m_SkeletalMeshComp->SetCollisionProfileName(FName(TEXT("PhysicsActor")));
+	m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	m_SkeletalMeshComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	m_SkeletalMeshComp->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
 	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	m_SkeletalMeshComp->SetSimulatePhysics(true);
-	//m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
-	RootComponent = m_SkeletalMeshComp;
+	m_SkeletalMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+	m_SkeletalMeshComp->bEnablePhysicsOnDedicatedServer = true;
+	bReplicates = true;
+	bAlwaysRelevant = true;
+
+
 }
 
 void ADBInventoryItemBase::BeginPlay()
