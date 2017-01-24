@@ -62,7 +62,7 @@ public:
 private:
 	void InteractQueryTick();
 
-	ADBInventoryItemBase* QueryItemByRay();
+	AActor* QueryItemByRay();
 
 	void SetTargeting(bool bNewTargeting);
 
@@ -87,7 +87,7 @@ private:
 
 	ADBWeaponBase* m_PendEquipWeapon;
 
-	ADBInventoryItemBase* m_FocusedInteractItem;
+	AActor* m_FocusedInteractItem;
 
 	FTimerHandle TimerHandle_PendWeaponEquip;
 

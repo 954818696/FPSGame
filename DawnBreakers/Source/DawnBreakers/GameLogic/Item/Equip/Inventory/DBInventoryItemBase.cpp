@@ -3,8 +3,6 @@
 #include "DawnBreakers.h"
 #include "DBInventoryItemBase.h"
 
-
-// Sets default values
 ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
 	m_bForceAttachToOwner(false),
@@ -12,13 +10,12 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	//m_StaticMeshComp = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("StaticMesh"));
-	//m_StaticMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
-	//m_StaticMeshComp->SetSimulatePhysics(true);
-	//m_StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	//m_StaticMeshComp->SetVisibility(true);
-	////m_StaticMeshComp->SetupAttachment(m_SceneComponentRoot);
-	//RootComponent = m_StaticMeshComp;
+	m_SkeletalMeshComp = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("SkeletalMesh"));
+	m_SkeletalMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
+	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	m_SkeletalMeshComp->SetSimulatePhysics(true);
+	//m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
+	RootComponent = m_SkeletalMeshComp;
 }
 
 void ADBInventoryItemBase::BeginPlay()
@@ -47,11 +44,11 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 
 void ADBInventoryItemBase::SetInteractFocus()
 {
-	m_MeshComp->SetRenderCustomDepth(true);
+	m_SkeletalMeshComp->SetRenderCustomDepth(true);
 }
 
 void ADBInventoryItemBase::LoseInteractFocus()
 {
-	m_MeshComp->SetRenderCustomDepth(false);
+	m_SkeletalMeshComp->SetRenderCustomDepth(false);
 }
 

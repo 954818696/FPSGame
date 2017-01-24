@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
+#include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
 #include "DBMeleeWeaponBase.generated.h"
 
 /**

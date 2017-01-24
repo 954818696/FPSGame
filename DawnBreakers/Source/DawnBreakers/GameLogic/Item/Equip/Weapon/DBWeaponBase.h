@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "GameLogic/Equip/Inventory/DBInventoryItemBase.h"
+#include "GameLogic/Item/Equip/Inventory/DBInventoryItemBase.h"
 #include "WeaponState/DBWeaponStateMachine.h"
 #include "DBWeaponBase.generated.h"
 
@@ -34,17 +34,8 @@ public:
 	}
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
-
-	//virtual void SetInteractFocus() override;
-
-	//virtual void LoseInteractFocus() override;
-
-	UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
-		USkeletalMeshComponent* m_SkeletalMeshComp;
 	
 protected:
-	//UPROPERTY(VisibleAnywhere, Category = "ADBInventoryItemBase")
-	//USkeletalMeshComponent* m_SkeletalMeshComp;
 
 	/** Weapon State Machine */
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)

@@ -3,8 +3,8 @@
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
-#include "GameLogic/Equip/Weapon/DBWeaponBase.h"
-#include "GameLogic/Equip/Inventory/DBInventoryBase.h"
+#include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
+#include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
 
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
@@ -106,8 +106,8 @@ void ADBCharacter::OnStartFire()
 	FHitResult Hit(ForceInit);
 	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, this);
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 20.0f, 0, 5);
-	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1);
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f);
+	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
 #endif
 }
 
@@ -129,12 +129,17 @@ void ADBCharacter::OnStopTargeting()
 
 void ADBCharacter::InteractWithItem()
 {
-	if (m_FocusedInteractItem == nullptr || !m_FocusedInteractItem->IsValidLowLevel())
+	if (m_FocusedInteractItem == nullptr || !m_FocusedInteractItem->IsValidLowLevelFast())
 	{
 		return;
 	}
+
+	if (m_FocusedInteractItem->IsA(ADBInventoryItemBase::StaticClass()))
+	{
+		ADBInventoryItemBase* InventoryItem = Cast<ADBInventoryItemBase>(m_FocusedInteractItem);
+		OnPickUpItem(InventoryItem);
+	}
 	// 1.Pick Up.
-	OnPickUpItem(m_FocusedInteractItem);
 
 	// 2.Interact With
 }
@@ -148,16 +153,8 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 		{
 			// Attach to Human.
 
-			{
-				ADBWeaponBase* test = Cast<ADBWeaponBase>(NewItem);
-				if (test)
-				{
-					test->m_SkeletalMeshComp->SetSimulatePhysics(false);
-					test->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-				}
-
-			}
-
+			NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
+			NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			NewItem->SetItemOwner(this);
 			
 
@@ -224,32 +221,41 @@ void ADBCharacter::InteractQueryTick()
 {
 	if (Controller && Controller->IsLocalController())
 	{
-		ADBInventoryItemBase* InteractedItem = QueryItemByRay();
+		AActor* InteractedItem = QueryItemByRay();
 
 		if (InteractedItem)
 		{
-			if (m_FocusedInteractItem != InteractedItem)
+			IItemInteractInterface* IItemInteract = Cast<IItemInteractInterface>(InteractedItem);
+			if (IItemInteract)
 			{
-				InteractedItem->SetInteractFocus();
-				if (m_FocusedInteractItem)
+				if (m_FocusedInteractItem != InteractedItem)
 				{
-					m_FocusedInteractItem->LoseInteractFocus();
+					IItemInteract->SetInteractFocus();
+					if (m_FocusedInteractItem)
+					{
+						IItemInteractInterface* IItemInteractPrev = Cast<IItemInteractInterface>(InteractedItem);
+						if (IItemInteractPrev)
+						{
+							IItemInteractPrev->LoseInteractFocus();
+						}
+					}
+					m_FocusedInteractItem = InteractedItem;
 				}
-				m_FocusedInteractItem = InteractedItem;
 			}
 		}
 		else
 		{
 			if (m_FocusedInteractItem)
 			{
-				m_FocusedInteractItem->LoseInteractFocus();
+				IItemInteractInterface* IItemInteractPrev = Cast<IItemInteractInterface>(m_FocusedInteractItem);
+				IItemInteractPrev->LoseInteractFocus();
 			}
 			m_FocusedInteractItem = nullptr;
 		}
 	}
 }
 
-ADBInventoryItemBase* ADBCharacter::QueryItemByRay()
+AActor* ADBCharacter::QueryItemByRay()
 {
 	FVector   CamLocation;
 	FRotator CamRotator;
@@ -265,9 +271,10 @@ ADBInventoryItemBase* ADBCharacter::QueryItemByRay()
 	TraceParams.bTraceComplex = false;
 	FHitResult Hit(ForceInit);
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldDynamic, TraceParams);
-//	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
+    //DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
+	//DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
 
-	return Cast<ADBInventoryItemBase>(Hit.GetActor());
+	return Hit.GetActor();
 }
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)

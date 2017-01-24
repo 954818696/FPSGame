@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "GameLogic/Item/ItemInteractInterface.h"
 #include "GameLogic/Character/DBCharacter.h"
 #include "ItemType.h"
 #include "DBInventoryItemBase.generated.h"
@@ -10,7 +11,7 @@
 
 
 UCLASS(Blueprintable, Abstract, NotPlaceable)
-class DAWNBREAKERS_API ADBInventoryItemBase : public AActor
+class DAWNBREAKERS_API ADBInventoryItemBase : public AActor, public IItemInteractInterface
 {
 	GENERATED_UCLASS_BODY()
 	
@@ -30,13 +31,16 @@ public:
 		return m_EInventorySlot;
 	}
 
-	virtual void SetInteractFocus();
+	virtual void SetInteractFocus() override;
 
-	virtual void LoseInteractFocus();
+	virtual void LoseInteractFocus() override;
+
+	UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
+		USkeletalMeshComponent* m_SkeletalMeshComp;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "ADBInventoryItemBase")
-	UMeshComponent* m_MeshComp;
+	//UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
+	//USkeletalMeshComponent* m_SkeletalMeshComp;
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	EInventorySlot m_EInventorySlot;
