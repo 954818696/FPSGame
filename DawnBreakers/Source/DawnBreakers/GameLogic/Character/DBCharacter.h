@@ -47,7 +47,9 @@ public:
 
 	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
 
-	void EquipHandWeapon(class ADBWeaponBase* NewWeapon);
+	void EquipHandWeapon(class ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory);
+
+
 
 	void SwitchEquipHandWeapon(bool bNext);
 
@@ -67,6 +69,8 @@ private:
 	void SetTargeting(bool bNewTargeting);
 
 	void SetFPSCamera();
+
+	void PutHandWeaponToInventory();
 
 	void EquipPendedWeapon();
 

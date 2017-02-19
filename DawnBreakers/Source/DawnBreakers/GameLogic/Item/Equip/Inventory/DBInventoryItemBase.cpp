@@ -41,14 +41,14 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 		SetOwner(ItemOwner);
 		Instigator = ItemOwner;
 
-		if (m_AttachSocketName.IsValid())
-		{
-			AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
-		}
-		else if (m_bForceAttachToOwner)
-		{
-			AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
-		}
+		//if (m_AttachSocketName.IsValid())
+		//{
+		//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
+		//}
+		//else if (m_bForceAttachToOwner)
+		//{
+		//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+		//}
 	}
 }
 

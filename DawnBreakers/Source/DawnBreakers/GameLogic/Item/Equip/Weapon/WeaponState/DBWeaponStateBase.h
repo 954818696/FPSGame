@@ -10,15 +10,16 @@ namespace EWeaponState
 	enum Type
 	{
 		EWeaponState_Invalid = -1,
-		EWeaponState_Active = 0,
-		EWeaponState_Inactive = 1,
-		EWeaponState_Firing = 2,
-		EWeaponState_Equiping = 3,
-		EWeaponState_Unequiping = 4,
-		EWeaponState_SwitchMode = 5,
-		EWeaponState_Reloading = 6,
+		EWeaponState_Active = 0,												// 已经装备在手上
+		EWeaponState_Inactive = 1,												// 放在背包里
+		EWeaponState_Firing = 2,												// 开火
+		EWeaponState_EquipingDirectly = 3,								// 直接捡起来装备
+		EWeaponState_EquipingFromInventory = 4,					// 把背包里的取出装备到手上
+		EWeaponState_Unequiping = 5,										// 从手上移到背包
+		EWeaponState_SwitchMode = 6,										// 切换开火模式
+		EWeaponState_Reloading = 7,											// 装填子弹
 
-		EWeaponState_Max = 7,
+		EWeaponState_Max = 8,
 	};
 }
 

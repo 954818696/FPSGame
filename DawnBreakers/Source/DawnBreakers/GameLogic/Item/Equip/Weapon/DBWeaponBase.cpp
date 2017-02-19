@@ -11,10 +11,22 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
-void ADBWeaponBase::OnEquip()
+void ADBWeaponBase::OnEquip(ADBCharacter* ItemOwner, bool bEquipedWeaponFromInventory)
 {
+	// 挂到人物模型上，必须先关掉物理和碰撞
+	m_SkeletalMeshComp->SetSimulatePhysics(false);
+	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetItemOwner(ItemOwner);
 
-	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Equiping);
+	//  为了日后做捡起武器和身上现有武器切换的区分
+	if (bEquipedWeaponFromInventory)
+	{
+		m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_EquipingFromInventory);
+	}
+	else 
+	{
+		m_WeaponStateMachine->SetCurrentState(EWeaponState::EWeaponState_EquipingDirectly);
+	}
 }
 
 void ADBWeaponBase::OnUnEquip()
@@ -29,7 +41,7 @@ void ADBWeaponBase::OnSwitchMode()
 
 void ADBWeaponBase::OnReload()
 {
-	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Equiping);
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Reloading);
 }
 
 void ADBWeaponBase::OnStartFire()

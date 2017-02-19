@@ -141,66 +141,91 @@ void ADBCharacter::InteractWithItem()
 		return;
 	}
 
+	// 1.Pick Up.
 	if (m_FocusedInteractItem->IsA(ADBInventoryItemBase::StaticClass()))
 	{
 		ADBInventoryItemBase* InventoryItem = Cast<ADBInventoryItemBase>(m_FocusedInteractItem);
 		OnPickUpItem(InventoryItem);
 	}
-	// 1.Pick Up.
-
 	// 2.Interact With
+	else
+	{
+		// My Great OS In the Future.
+	}
 }
 
 void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 {
-	if (m_Inventory && m_Inventory->IsValidLowLevel())
+	if (NewItem == nullptr || NewItem->IsValidLowLevel() == false)
 	{
-		bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
-		if (bCanAddToInventory)
+		return;
+	}
+
+	// 非武器物品直接进背包，如果是枪，近战武器则考虑是否直接装备
+	if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+	{
+		// 手中无握持武器,直接装备
+		if (!m_HoldWeapon)
 		{
-			// Attach to Human.
-
-			NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
-			NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			NewItem->SetItemOwner(this);
-			
-
-			// Equip Directly or not.
-			if (m_HoldWeapon == nullptr)
+			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
+			EquipHandWeapon(NewWeapon, false);
+		}
+		// 手中有握持武器
+		// 1.相同握持优先级别，或比手中武器握持优先级高，则将手中武器放入背包，然后装备捡起的武器。
+		// 2.低握持优先级，直接进入背包
+		else
+		{
+			if (m_Inventory && m_Inventory->IsValidLowLevel())
 			{
-				if (NewItem->IsA(ADBWeaponBase::StaticClass()))
-				{
-					ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
-					EquipHandWeapon(NewWeapon);
-				}
+			//	bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
+			//	if (bCanAddToInventory)
+			//	{
+			//		NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
+			//		NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			//		NewItem->SetItemOwner(this);
+
+			//		// Equip Directly or not.
+			//		if (m_HoldWeapon == nullptr)
+			//		{
+			//			if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+			//			{
+			//				ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
+			//				EquipHandWeapon(NewWeapon);
+			//			}
+			//		}
+			//	}
 			}
 		}
-		else if (m_HoldWeapon)
-		{
-			if (NewItem->IsA(m_HoldWeapon->GetClass()))
-			{
-				// abandon it. equip new one.
-				// 1.Drop weapon
-				// 2.Equip new.
-			}
-		}
+	}
+	// 直接进背包
+	else
+	{
+
 	}
 }
 
-void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon)
+void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory)
+{
+	if (NewWeapon && NewWeapon->IsValidLowLevel())
+	{
+		NewWeapon->OnEquip(this, bEquipedWeaponFromInventory);
+	}
+}
+
+void ADBCharacter::PutHandWeaponToInventory()
 {
 	if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
 	{
-		m_PendEquipWeapon = NewWeapon;
+		//m_PendEquipWeapon = NewWeapon;
 		GetWorldTimerManager().SetTimer(TimerHandle_PendWeaponEquip, this, &ADBCharacter::EquipPendedWeapon, 1.f, true);
 	}
-	else
-	{
-		if (NewWeapon && NewWeapon->IsValidLowLevelFast())
-		{
-			NewWeapon->OnEquip();
-		}
-	}
+}
+
+void ADBCharacter::EquipPendedWeapon()
+{
+	//if (m_)
+	GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
+	EquipHandWeapon(m_PendEquipWeapon, true);
 }
 
 void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
@@ -208,7 +233,9 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 	if (m_Inventory && m_Inventory->IsValidLowLevel())
 	{
 		ADBWeaponBase* SwitchWeapon = Cast<ADBWeaponBase>(m_Inventory->GetOneItemByItemSequence(m_HoldWeapon, bNext));
-		EquipHandWeapon(SwitchWeapon);
+		PutHandWeaponToInventory();
+		EquipPendedWeapon();
+		//EquipHandWeapon(SwitchWeapon);
 	}
 }
 
@@ -294,13 +321,6 @@ void ADBCharacter::SetFPSCamera()
 	m_CameraComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("head")));
 	m_CameraComp->RelativeLocation = m_FPSCameraPos.GetLocation();
 	m_CurCameraMode = ECameraMode::E_FirstPersonPerspective;
-}
-
-void ADBCharacter::EquipPendedWeapon()
-{
-	//if (m_)
-	GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
-	EquipHandWeapon(m_PendEquipWeapon);
 }
 
 void ADBCharacter::SwitchCamaraMode()

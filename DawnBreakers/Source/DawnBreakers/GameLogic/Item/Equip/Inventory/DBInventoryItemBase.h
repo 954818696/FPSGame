@@ -35,12 +35,9 @@ public:
 
 	virtual void LoseInteractFocus() override;
 
-	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
-		USkeletalMeshComponent* m_SkeletalMeshComp;
-
 protected:
-	//UPROPERTY(VisibleAnywhere, Category = ADBInventoryItemBase)
-	//USkeletalMeshComponent* m_SkeletalMeshComp;
+	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
+	USkeletalMeshComponent* m_SkeletalMeshComp;
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	EInventorySlot m_EInventorySlot;

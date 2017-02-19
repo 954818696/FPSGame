@@ -44,9 +44,10 @@ void UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 		uint8 FireMode = GetOuterADBWeaponBase()->GetCurrentFireMode();
 		m_CurrentWeaponState = m_WeaponStateFiring[FireMode];
 	}
-
+	case EWeaponState:: EWeaponState_EquipingDirectly:
+		m_CurrentWeaponState = m_WeaponStateEquiping;
 		break;
-	case EWeaponState::EWeaponState_Equiping:
+	case EWeaponState::EWeaponState_EquipingFromInventory:
 		m_CurrentWeaponState = m_WeaponStateEquiping;
 		break;
 	case EWeaponState::EWeaponState_Unequiping:
