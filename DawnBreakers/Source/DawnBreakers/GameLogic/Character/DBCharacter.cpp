@@ -161,6 +161,7 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 		return;
 	}
 
+	NewWeapon->ConfigAttachToTargetSceneComponent(GetMesh());
 	// 非武器物品直接进背包，如果是枪，近战武器则考虑是否直接装备
 	if (NewItem->IsA(ADBWeaponBase::StaticClass()))
 	{
@@ -168,6 +169,7 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 		if (!m_HoldWeapon)
 		{
 			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
+
 			EquipHandWeapon(NewWeapon, false);
 		}
 		// 手中有握持武器

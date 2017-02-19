@@ -10,4 +10,19 @@ UDBWeaponStateEquipDirectly::UDBWeaponStateEquipDirectly(const FObjectInitialize
 	m_StateID = EWeaponState::EWeaponState_EquipingDirectly;
 }
 
+void UDBWeaponStateEquipDirectly::EnterWeaponState()
+{
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingDirectly");
+
+}
+
+void UDBWeaponStateEquipDirectly::ExitWeaponState()
+{
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingDirectly");
+}
+
+bool UDBWeaponStateEquipDirectly::IsHandled()
+{
+	return true;
+}
 

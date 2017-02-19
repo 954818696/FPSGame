@@ -32,6 +32,17 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 	{
 		EInventorySlot SlotType = NewEquipment->GetStorageSlotType();
 		Result = m_Inventory.Put(NewEquipment);
+		if (Result)
+		{
+			if (NewEquipment->IsNeedAttachToTarget())
+			{
+				NewEquipment->AttachToTarget(EItemAttachToTargetType::AttachToInventory);
+			}
+			else 
+			{
+				NewEquipment->SetActorHiddenInGame(true);
+			}
+		}
 	}
 
 	return Result;

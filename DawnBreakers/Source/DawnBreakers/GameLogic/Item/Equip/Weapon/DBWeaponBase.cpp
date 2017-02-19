@@ -25,7 +25,7 @@ void ADBWeaponBase::OnEquip(ADBCharacter* ItemOwner, bool bEquipedWeaponFromInve
 	}
 	else 
 	{
-		m_WeaponStateMachine->SetCurrentState(EWeaponState::EWeaponState_EquipingDirectly);
+		m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_EquipingDirectly);
 	}
 }
 

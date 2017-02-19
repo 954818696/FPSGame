@@ -8,8 +8,6 @@
 #include "ItemType.h"
 #include "DBInventoryItemBase.generated.h"
 
-
-
 UCLASS(Blueprintable, Abstract, NotPlaceable)
 class DAWNBREAKERS_API ADBInventoryItemBase : public AActor, public IItemInteractInterface
 {
@@ -35,6 +33,12 @@ public:
 
 	virtual void LoseInteractFocus() override;
 
+	void AttachToTarget(EItemAttachToTargetType TargetType);
+
+	bool IsNeedAttachToTarget() const { return m_AttachToTargetConfigs.Num() > 0; }
+
+	void ConfigAttachToTargetSceneComponent(USceneComponent* AttachToTargetSceneComponent);
+
 protected:
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	USkeletalMeshComponent* m_SkeletalMeshComp;
@@ -43,8 +47,5 @@ protected:
 	EInventorySlot m_EInventorySlot;
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
-	FName m_AttachSocketName;
-
-	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
-	bool m_bForceAttachToOwner;
+	TArray<FItemAttachToTargetSocket> m_AttachToTargetConfigs;
 };

@@ -45,5 +45,4 @@ public:
 
 protected:
 	EWeaponState::Type m_StateID;
-	
 };

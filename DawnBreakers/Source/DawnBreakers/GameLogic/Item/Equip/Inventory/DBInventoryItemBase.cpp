@@ -5,7 +5,6 @@
 
 ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
-	m_bForceAttachToOwner(false),
 	m_EInventorySlot(EInventorySlot::InvisiblePack)
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -24,8 +23,6 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 	m_SkeletalMeshComp->bEnablePhysicsOnDedicatedServer = true;
 	bReplicates = true;
 	bAlwaysRelevant = true;
-
-
 }
 
 void ADBInventoryItemBase::BeginPlay()
@@ -40,15 +37,6 @@ void ADBInventoryItemBase::SetItemOwner(ADBCharacter* ItemOwner)
 	{
 		SetOwner(ItemOwner);
 		Instigator = ItemOwner;
-
-		//if (m_AttachSocketName.IsValid())
-		//{
-		//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
-		//}
-		//else if (m_bForceAttachToOwner)
-		//{
-		//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
-		//}
 	}
 }
 
@@ -60,5 +48,31 @@ void ADBInventoryItemBase::SetInteractFocus()
 void ADBInventoryItemBase::LoseInteractFocus()
 {
 	m_SkeletalMeshComp->SetRenderCustomDepth(false);
+}
+
+void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType)
+{
+	//if (m_AttachSocketName.IsValid())
+	//{
+	//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
+	//}
+	//else if (m_bForceAttachToOwner)
+	//{
+	//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+	//}
+
+	for (auto ConfigItem : m_AttachToTargetConfigs)
+	{
+		if (ConfigItem.AttachToTargetType == TargetType)
+		{
+			AttachToComponent(ConfigItem.AttachToTargetSceneComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
+			return;
+		}
+	}
+}
+
+void ADBInventoryItemBase::ConfigAttachToTargetSceneComponent(USceneComponent* AttachToTargetSceneComponent)
+{
+
 }
 

@@ -13,7 +13,11 @@ class DAWNBREAKERS_API UDBWeaponStateEquipDirectly : public UDBWeaponStateBase
 {
 	GENERATED_UCLASS_BODY()
 	
-	
-	
+public:
+	virtual void EnterWeaponState();
+
+	virtual void ExitWeaponState();
+
+	virtual bool IsHandled();
 	
 };

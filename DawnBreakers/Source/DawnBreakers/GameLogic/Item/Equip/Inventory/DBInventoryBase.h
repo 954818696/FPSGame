@@ -9,7 +9,7 @@
 // This Inventory means all things  equiped on the body.
 
 UCLASS(Abstract)
-class DAWNBREAKERS_API ADBInventoryBase : public AActor
+class DAWNBREAKERS_API ADBInventoryBase : public ADBInventoryItemBase
 {
 	GENERATED_UCLASS_BODY()
 	
@@ -32,6 +32,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
 	TArray<FAmmoSlot> m_Ammo;
+
+	// Mesh.
 
 private:
 
