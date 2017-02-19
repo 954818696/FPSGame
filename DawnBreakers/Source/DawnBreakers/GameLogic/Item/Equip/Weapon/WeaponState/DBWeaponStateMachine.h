@@ -17,14 +17,13 @@ class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 	GENERATED_UCLASS_BODY()
 	
 public:
-	void SetCurrentState(EWeaponState::Type WeaponState);
+	bool SetCurrentState(EWeaponState::Type WeaponState);
 
 	void GotoState(EWeaponState::Type WeaponState);
 
 	bool IsInState(EWeaponState::Type WeaponState);
 
 	void Tick(float DeltaTime);
-
 	
 protected:
 
@@ -38,7 +37,10 @@ protected:
 	TArray<class UDBWeaponStateFiring*> m_WeaponStateFiring;
 
 	UPROPERTY(Instanced, EditDefaultsOnly, NoClear, Category = WeaponState)
-	class UDBWeaponStateEquiping* m_WeaponStateEquiping;
+	class UDBWeaponStateEquipDirectly* m_WeaponStateEquipDirectly;
+
+	UPROPERTY(Instanced, EditDefaultsOnly, NoClear, Category = WeaponState)
+	class UDBWeaponStateEquipFromInventory* m_WeaponStateEquipFromInventory;
 
 	UPROPERTY(Instanced, EditDefaultsOnly, NoClear, Category = WeaponState)
 	class UDBWeaponStateUnEquiping* m_WeaponStateUnequiping;

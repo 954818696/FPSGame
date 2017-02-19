@@ -78,7 +78,7 @@ void ADPlayerCharacter::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-void ADPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void ADPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* TInputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 

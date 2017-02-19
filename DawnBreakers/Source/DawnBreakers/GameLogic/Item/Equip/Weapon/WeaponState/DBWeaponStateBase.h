@@ -33,7 +33,7 @@ class DAWNBREAKERS_API UDBWeaponStateBase : public UObject
 
 public:
 
-	virtual void EnterWeaponState(const UDBWeaponStateBase* PrevWeaponState) {}
+	virtual void EnterWeaponState() {}
 
 	virtual void ExitWeaponState() {}
 

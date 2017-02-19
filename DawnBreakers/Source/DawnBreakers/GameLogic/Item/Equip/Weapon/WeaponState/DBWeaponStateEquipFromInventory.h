@@ -16,9 +16,8 @@ class DAWNBREAKERS_API UDBWeaponStateEquipFromInventory : public UDBWeaponStateB
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-		UAnimMontage* m_EquipAnim;
+	UAnimMontage* m_EquipAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-		USoundCue* m_EquipSound;
-	
+	USoundCue* m_EquipSound;
 };
