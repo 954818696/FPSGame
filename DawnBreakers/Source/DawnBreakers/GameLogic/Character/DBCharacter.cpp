@@ -172,7 +172,6 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 			if (!m_HoldWeapon)
 			{
 				ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
-
 				EquipHandWeapon(NewWeapon, false);
 			}
 			// 手中有握持武器
@@ -181,28 +180,18 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 			else
 			{
 				// Temp attach directly.
-
-				//if (m_Inventory && m_Inventory->IsValidLowLevel())
-				//{
-				//	m_Inventory->AddToInventory(NewItem);
-				//		bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
-				//		if (bCanAddToInventory)
-				//		{
-				//			NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
-				//			NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-				//			NewItem->SetItemOwner(this);
-
-				//			// Equip Directly or not.
-				//			if (m_HoldWeapon == nullptr)
-				//			{
-				//				if (NewItem->IsA(ADBWeaponBase::StaticClass()))
-				//				{
-				//					ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
-				//					EquipHandWeapon(NewWeapon);
-				//				}
-				//			}
-				//		}
-				//}
+				USceneComponent* TParentComp = GetMesh();
+				if (TParentComp)
+				{
+					if (NewItem->IsNeedAttachToTarget())
+					{
+						NewItem->AttachToTarget(EItemAttachToTargetType::AttachToInventory, TParentComp);
+					}
+					else
+					{
+						NewItem->AttachToTarget(EItemAttachToTargetType::AttachToNone, TParentComp);
+					}
+				}
 			}
 		}
 	}

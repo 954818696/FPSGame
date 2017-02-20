@@ -34,22 +34,10 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 		Result = m_Inventory.Put(NewEquipment);
 		if (Result)
 		{
-			ADBCharacter* TOwner = Cast<ADBCharacter>(NewEquipment->GetOwner());
+			ADBCharacter* TOwner = Cast<ADBCharacter>(GetOwner());
 			if (TOwner)
 			{
 				SetItemOwner(TOwner);
-				if (NewEquipment->IsNeedAttachToTarget())
-				{
-					if (TOwner)
-					{
-						USceneComponent* TParentComp = TOwner->GetMesh();
-						NewEquipment->AttachToTarget(EItemAttachToTargetType::AttachToInventory, TParentComp);
-					}
-				}
-				else
-				{
-					//NewEquipment->SetActorHiddenInGame(true);
-				}
 			}
 		}
 	}

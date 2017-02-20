@@ -52,24 +52,23 @@ void ADBInventoryItemBase::LoseInteractFocus()
 
 void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType, USceneComponent* ParentComp)
 {
-	//if (m_AttachSocketName.IsValid())
-	//{
-	//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, m_AttachSocketName);
-	//}
-	//else if (m_bForceAttachToOwner)
-	//{
-	//	AttachToComponent(ItemOwner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
-	//}
-
-	for (auto ConfigItem : m_AttachToTargetConfigs)
+	if (TargetType == EItemAttachToTargetType::AttachToNone)
 	{
-		if (ConfigItem.AttachToTargetType == TargetType)
+		SetActorHiddenInGame(true);
+		AttachToComponent(ParentComp, FAttachmentTransformRules::KeepRelativeTransform);
+	}
+	else 
+	{
+		for (auto ConfigItem : m_AttachToTargetConfigs)
 		{
-			// 挂到人物模型上，必须先关掉物理和碰撞
-			m_SkeletalMeshComp->SetSimulatePhysics(false);
-			m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			AttachToComponent(ParentComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
-			return;
+			if (ConfigItem.AttachToTargetType == TargetType)
+			{
+				// 挂到人物模型上，必须先关掉物理和碰撞
+				m_SkeletalMeshComp->SetSimulatePhysics(false);
+				m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				AttachToComponent(ParentComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
+				return;
+			}
 		}
 	}
 }
