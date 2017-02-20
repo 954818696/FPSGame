@@ -16,7 +16,7 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 
 public:
 
-	virtual void OnEquip(ADBCharacter* ItemOwner, bool bEquipedWeaponFromInventory);
+	virtual void OnEquip(bool bEquipedWeaponFromInventory);
 
 	virtual void OnUnEquip();
 

@@ -212,7 +212,7 @@ void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon, bool bEquipedWeapon
 {
 	if (NewWeapon && NewWeapon->IsValidLowLevel())
 	{
-		NewWeapon->OnEquip(this, bEquipedWeaponFromInventory);
+		NewWeapon->OnEquip(bEquipedWeaponFromInventory);
 	}
 }
 
