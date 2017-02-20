@@ -20,14 +20,11 @@ struct FItemAttachToTargetSocket
 
 	FItemAttachToTargetSocket()
 	{
-		AttachToTargetSceneComponent = nullptr;
 		AttachToTargetType = EItemAttachToTargetType::AttachToNone;
 	}
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	EItemAttachToTargetType AttachToTargetType;
-
-	USceneComponent* AttachToTargetSceneComponent;
 
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	FName AttachToParentSocketName;

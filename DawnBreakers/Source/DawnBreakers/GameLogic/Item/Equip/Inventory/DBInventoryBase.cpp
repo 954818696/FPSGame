@@ -36,11 +36,16 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 		{
 			if (NewEquipment->IsNeedAttachToTarget())
 			{
-				NewEquipment->AttachToTarget(EItemAttachToTargetType::AttachToInventory);
+				ADBCharacter* TOwner = Cast<ADBCharacter>(GetOwner());
+				if (TOwner)
+				{
+					USceneComponent* TParentComp = TOwner->GetMesh();
+					NewEquipment->AttachToTarget(EItemAttachToTargetType::AttachToInventory, TParentComp);
+				}
 			}
 			else 
 			{
-				NewEquipment->SetActorHiddenInGame(true);
+				//NewEquipment->SetActorHiddenInGame(true);
 			}
 		}
 	}

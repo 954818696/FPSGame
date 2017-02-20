@@ -33,7 +33,7 @@ public:
 
 	virtual void LoseInteractFocus() override;
 
-	void AttachToTarget(EItemAttachToTargetType TargetType);
+	void AttachToTarget(EItemAttachToTargetType TargetType, USceneComponent* ParentComp);
 
 	bool IsNeedAttachToTarget() const { return m_AttachToTargetConfigs.Num() > 0; }
 

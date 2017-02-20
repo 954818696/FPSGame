@@ -161,48 +161,50 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 		return;
 	}
 
-	NewWeapon->ConfigAttachToTargetSceneComponent(GetMesh());
+//	NewWeapon->ConfigAttachToTargetSceneComponent(GetMesh());
 	// 非武器物品直接进背包，如果是枪，近战武器则考虑是否直接装备
-	if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+	bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
+	if (bCanAddToInventory)
 	{
-		// 手中无握持武器,直接装备
-		if (!m_HoldWeapon)
+		if (NewItem->IsA(ADBWeaponBase::StaticClass()))
 		{
-			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
-
-			EquipHandWeapon(NewWeapon, false);
-		}
-		// 手中有握持武器
-		// 1.相同握持优先级别，或比手中武器握持优先级高，则将手中武器放入背包，然后装备捡起的武器。
-		// 2.低握持优先级，直接进入背包
-		else
-		{
-			if (m_Inventory && m_Inventory->IsValidLowLevel())
+			// 手中无握持武器,直接装备
+			if (!m_HoldWeapon)
 			{
-			//	bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
-			//	if (bCanAddToInventory)
-			//	{
-			//		NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
-			//		NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			//		NewItem->SetItemOwner(this);
+				ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
 
-			//		// Equip Directly or not.
-			//		if (m_HoldWeapon == nullptr)
-			//		{
-			//			if (NewItem->IsA(ADBWeaponBase::StaticClass()))
-			//			{
-			//				ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
-			//				EquipHandWeapon(NewWeapon);
-			//			}
-			//		}
-			//	}
+				EquipHandWeapon(NewWeapon, false);
+			}
+			// 手中有握持武器
+			// 1.相同握持优先级别，或比手中武器握持优先级高，则将手中武器放入背包，然后装备捡起的武器。
+			// 2.低握持优先级，直接进入背包
+			else
+			{
+				// Temp attach directly.
+
+				//if (m_Inventory && m_Inventory->IsValidLowLevel())
+				//{
+				//	m_Inventory->AddToInventory(NewItem);
+				//		bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
+				//		if (bCanAddToInventory)
+				//		{
+				//			NewItem->m_SkeletalMeshComp->SetSimulatePhysics(false);
+				//			NewItem->m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				//			NewItem->SetItemOwner(this);
+
+				//			// Equip Directly or not.
+				//			if (m_HoldWeapon == nullptr)
+				//			{
+				//				if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+				//				{
+				//					ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
+				//					EquipHandWeapon(NewWeapon);
+				//				}
+				//			}
+				//		}
+				//}
 			}
 		}
-	}
-	// 直接进背包
-	else
-	{
-
 	}
 }
 
@@ -250,6 +252,7 @@ void ADBCharacter::CreateInventory()
 	if (m_Inventory && m_Inventory->IsValidLowLevel())
 	{
 		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		m_Inventory->SetItemOwner(this);
 	}
 }
 

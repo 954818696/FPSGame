@@ -13,9 +13,7 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 
 void ADBWeaponBase::OnEquip(ADBCharacter* ItemOwner, bool bEquipedWeaponFromInventory)
 {
-	// 挂到人物模型上，必须先关掉物理和碰撞
-	m_SkeletalMeshComp->SetSimulatePhysics(false);
-	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	SetItemOwner(ItemOwner);
 
 	//  为了日后做捡起武器和身上现有武器切换的区分

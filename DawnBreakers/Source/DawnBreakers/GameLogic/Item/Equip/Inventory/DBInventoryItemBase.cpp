@@ -50,7 +50,7 @@ void ADBInventoryItemBase::LoseInteractFocus()
 	m_SkeletalMeshComp->SetRenderCustomDepth(false);
 }
 
-void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType)
+void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType, USceneComponent* ParentComp)
 {
 	//if (m_AttachSocketName.IsValid())
 	//{
@@ -65,7 +65,10 @@ void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType)
 	{
 		if (ConfigItem.AttachToTargetType == TargetType)
 		{
-			AttachToComponent(ConfigItem.AttachToTargetSceneComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
+			// 挂到人物模型上，必须先关掉物理和碰撞
+			m_SkeletalMeshComp->SetSimulatePhysics(false);
+			m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			AttachToComponent(ParentComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
 			return;
 		}
 	}
