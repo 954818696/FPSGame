@@ -13,7 +13,17 @@ UDBWeaponStateEquipDirectly::UDBWeaponStateEquipDirectly(const FObjectInitialize
 void UDBWeaponStateEquipDirectly::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingDirectly");
-
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TWeapon)
+	{
+		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
+		USceneComponent* TParentComp = TOwner->GetMesh();
+		if (TParentComp)
+		{
+			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
+		}
+	}
+	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 
 void UDBWeaponStateEquipDirectly::ExitWeaponState()

@@ -54,6 +54,4 @@ protected:
 private:
 	class UDBWeaponStateBase* m_CurrentWeaponState;
 
-
-	
 };

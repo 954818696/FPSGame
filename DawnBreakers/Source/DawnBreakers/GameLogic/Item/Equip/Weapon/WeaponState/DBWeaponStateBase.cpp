@@ -5,3 +5,13 @@
 
 
 
+ADBWeaponBase* UDBWeaponStateBase::GetWeapon()
+{
+	UDBWeaponStateMachine* TWeaponStateMachine = GetOuterUDBWeaponStateMachine();
+	if (TWeaponStateMachine)
+	{
+		return TWeaponStateMachine->GetOuterADBWeaponBase();
+	}
+
+	return nullptr;
+}

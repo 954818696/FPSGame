@@ -11,9 +11,12 @@
 UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateInactive : public UDBWeaponStateBase
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
-	
-	
+public:
+
+	virtual void EnterWeaponState();
+
+	virtual void ExitWeaponState();
 	
 };

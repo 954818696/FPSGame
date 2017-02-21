@@ -28,6 +28,8 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	//	m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, ObjName, false));
 	//}
 	m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, TEXT("WeaponStateFiring"), false));
+
+	m_CurrentWeaponState = m_WeaponStateInactive;
 }
 
 bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
@@ -73,7 +75,7 @@ bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 
 void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponState)
 {
-	if (m_CurrentWeaponState->GetStateID() != WeaponState)
+	if (m_CurrentWeaponState && m_CurrentWeaponState->GetStateID() != WeaponState)
 	{
 		m_CurrentWeaponState->ExitWeaponState();
 		bool bSuccess = SetCurrentState(WeaponState);
