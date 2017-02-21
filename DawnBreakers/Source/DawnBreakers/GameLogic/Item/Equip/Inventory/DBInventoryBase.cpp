@@ -37,7 +37,7 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 			ADBCharacter* TOwner = Cast<ADBCharacter>(GetOwner());
 			if (TOwner)
 			{
-				SetItemOwner(TOwner);
+				NewEquipment->SetItemOwner(TOwner);
 			}
 		}
 	}

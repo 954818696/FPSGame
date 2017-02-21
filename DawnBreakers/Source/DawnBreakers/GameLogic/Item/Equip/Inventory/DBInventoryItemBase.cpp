@@ -52,6 +52,10 @@ void ADBInventoryItemBase::LoseInteractFocus()
 
 void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType, USceneComponent* ParentComp)
 {
+	// 挂到人物模型上，必须先关掉物理和碰撞
+	m_SkeletalMeshComp->SetSimulatePhysics(false);
+	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	if (TargetType == EItemAttachToTargetType::AttachToNone)
 	{
 		SetActorHiddenInGame(true);
@@ -63,9 +67,6 @@ void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType, US
 		{
 			if (ConfigItem.AttachToTargetType == TargetType)
 			{
-				// 挂到人物模型上，必须先关掉物理和碰撞
-				m_SkeletalMeshComp->SetSimulatePhysics(false);
-				m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 				AttachToComponent(ParentComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale, ConfigItem.AttachToParentSocketName);
 				return;
 			}
