@@ -13,7 +13,11 @@ class DAWNBREAKERS_API UDBWeaponStateEquipFromInventory : public UDBWeaponStateB
 {
 	GENERATED_UCLASS_BODY()
 	
-	
+public:
+	virtual void EnterWeaponState() override;
+
+	virtual void ExitWeaponState() override;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_EquipAnim;

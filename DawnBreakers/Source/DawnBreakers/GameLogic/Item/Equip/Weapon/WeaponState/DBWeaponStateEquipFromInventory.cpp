@@ -11,3 +11,13 @@ UDBWeaponStateEquipFromInventory::UDBWeaponStateEquipFromInventory(const FObject
 	m_StateID = EWeaponState::EWeaponState_EquipingFromInventory;
 }
 
+void UDBWeaponStateEquipFromInventory::EnterWeaponState()
+{
+
+}
+
+void UDBWeaponStateEquipFromInventory::ExitWeaponState()
+{
+
+}
+
