@@ -3,6 +3,20 @@
 #include "DawnBreakers.h"
 #include "InventoryStruct.h"
 
+template<typename TEnum>
+FString GetEnumValueAsString(const FString& Name, TEnum Value)
+{
+	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
+	if (!enumPtr)
+	{
+		return FString("Invalid");
+	}
+
+	auto index = enumPtr->GetIndexByValue((uint8)Value);
+	return enumPtr->GetEnumName(index);
+}
+
+
 bool FInventory::Put(ADBInventoryItemBase* NewItem)
 {
 	bool Result = false;
@@ -16,7 +30,7 @@ bool FInventory::Put(ADBInventoryItemBase* NewItem)
 			{
 				m_SlotsContainer[i].PutFinal(NewItem);
 				Result = true;
-				DAWNBREAKERS_LOG_INFO("Put %s in slot %s", *NewItem->GetName(), *GETENUMSTRING("EInventorySlot ", m_SlotsContainer[i].m_SlotType));
+				DAWNBREAKERS_LOG_INFO("Put %s in slot %s", *NewItem->GetName(), *GETENUMSTRING("EInventorySlot", m_SlotsContainer[i].m_SlotType));
 				if (SlotType == EInventorySlot::BackPack || SlotType == EInventorySlot::WaistPack)
 				{
 					m_CachedForSwitch.AddUnique(NewItem);
@@ -25,7 +39,7 @@ bool FInventory::Put(ADBInventoryItemBase* NewItem)
 			else 
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Put Failed Pack full!");
-				DAWNBREAKERS_LOG_WARNING("Put %s failed %s slot full", *NewItem->GetName(), *GETENUMSTRING("EInventorySlot ", m_SlotsContainer[i].m_SlotType));
+				DAWNBREAKERS_LOG_WARNING("Put %s failed %s slot full", *NewItem->GetName(), *GETENUMSTRING("EInventorySlot", m_SlotsContainer[i].m_SlotType));
 			}
 			break;
 		}
