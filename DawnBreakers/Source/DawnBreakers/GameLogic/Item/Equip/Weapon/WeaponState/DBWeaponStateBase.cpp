@@ -3,7 +3,12 @@
 #include "DawnBreakers.h"
 #include "DBWeaponStateBase.h"
 
+UDBWeaponStateBase::UDBWeaponStateBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer),
+	 m_bHandled(true)
+{
 
+}
 
 ADBWeaponBase* UDBWeaponStateBase::GetWeapon()
 {
@@ -11,6 +16,18 @@ ADBWeaponBase* UDBWeaponStateBase::GetWeapon()
 	if (TWeaponStateMachine)
 	{
 		return TWeaponStateMachine->GetOuterADBWeaponBase();
+	}
+
+	return nullptr;
+}
+
+ADBCharacter* UDBWeaponStateBase::GetWeaponOwner()
+{
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TWeapon)
+	{
+		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
+		return TOwner;
 	}
 
 	return nullptr;

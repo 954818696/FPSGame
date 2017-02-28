@@ -8,12 +8,14 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(const, hidecategories = Object, collapsecategories, meta = (DisplayName = "EquipFinishNotify"))
 class DAWNBREAKERS_API UAnimNotifyEquipFinish : public UAnimNotify
 {
 	GENERATED_BODY()
 	
-	
-	
+public:
+	UAnimNotifyEquipFinish();
+
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
 	
 };

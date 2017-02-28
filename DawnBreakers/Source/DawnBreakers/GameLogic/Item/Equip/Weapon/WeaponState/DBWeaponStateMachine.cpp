@@ -77,11 +77,14 @@ void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponState)
 {
 	if (m_CurrentWeaponState && m_CurrentWeaponState->GetStateID() != WeaponState)
 	{
-		m_CurrentWeaponState->ExitWeaponState();
-		bool bSuccess = SetCurrentState(WeaponState);
-		if (bSuccess)
+		if (m_CurrentWeaponState->CanTransferTo(WeaponState))
 		{
-			m_CurrentWeaponState->EnterWeaponState();
+			m_CurrentWeaponState->ExitWeaponState();
+			bool bSuccess = SetCurrentState(WeaponState);
+			if (bSuccess)
+			{
+				m_CurrentWeaponState->EnterWeaponState();
+			}
 		}
 	}
 }

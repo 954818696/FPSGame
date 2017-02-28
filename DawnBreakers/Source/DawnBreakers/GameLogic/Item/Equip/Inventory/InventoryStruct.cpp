@@ -3,20 +3,6 @@
 #include "DawnBreakers.h"
 #include "InventoryStruct.h"
 
-template<typename TEnum>
-FString GetEnumValueAsString(const FString& Name, TEnum Value)
-{
-	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *Name, true);
-	if (!enumPtr)
-	{
-		return FString("Invalid");
-	}
-
-	auto index = enumPtr->GetIndexByValue((uint8)Value);
-	return enumPtr->GetEnumName(index);
-}
-
-
 bool FInventory::Put(ADBInventoryItemBase* NewItem)
 {
 	bool Result = false;

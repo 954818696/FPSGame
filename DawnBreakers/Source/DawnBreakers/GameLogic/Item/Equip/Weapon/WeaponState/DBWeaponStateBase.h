@@ -29,7 +29,7 @@ namespace EWeaponState
 UCLASS(DefaultToInstanced, EditInlineNew, Within = DBWeaponStateMachine)
 class DAWNBREAKERS_API UDBWeaponStateBase : public UObject
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 public:
 
@@ -37,7 +37,9 @@ public:
 
 	virtual void ExitWeaponState() {}
 
-	virtual bool IsHandled() { return false; }
+	virtual bool IsHandled() { return m_bHandled; }
+
+	virtual bool CanTransferTo(EWeaponState::Type NewState) { return true; }
 
 	virtual void Tick(float DeltaTime) {}
 
@@ -45,6 +47,10 @@ public:
 
 	ADBWeaponBase* GetWeapon();
 
+	ADBCharacter* GetWeaponOwner();
+
 protected:
 	EWeaponState::Type m_StateID;
+
+	bool m_bHandled;
 };

@@ -6,3 +6,27 @@
 
 
 
+UAnimNotifyEquipFinish::UAnimNotifyEquipFinish()
+{
+
+}
+
+void UAnimNotifyEquipFinish::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+{
+	DAWNBREAKERS_LOG_INFO("UAnimNotifyEquipFinish::Notify");
+	
+	UAnimInstance* TAnimInstance = MeshComp->GetAnimInstance();
+	if (TAnimInstance && TAnimInstance->IsValidLowLevel())
+	{
+		UDBCharacterAnimInstance* TDBCharacterAnimInstance = Cast<UDBCharacterAnimInstance>(TAnimInstance);
+		if (TDBCharacterAnimInstance && TDBCharacterAnimInstance->IsValidLowLevel())
+		{
+			ADBCharacter* TDBCharacter = TDBCharacterAnimInstance->GetCharacter();
+			if (TDBCharacter)
+			{
+
+			}
+		}
+	}
+
+}

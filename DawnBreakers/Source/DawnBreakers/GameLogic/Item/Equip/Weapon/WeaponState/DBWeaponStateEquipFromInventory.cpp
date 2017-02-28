@@ -13,11 +13,19 @@ UDBWeaponStateEquipFromInventory::UDBWeaponStateEquipFromInventory(const FObject
 
 void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 {
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingFromInventory");
+	m_bHandled = false;
 
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->PlayAnimMontage(m_EquipAnim, 1.f, NAME_None);
+	}
+	//GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 
 void UDBWeaponStateEquipFromInventory::ExitWeaponState()
 {
-
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingFromInventory");
 }
 

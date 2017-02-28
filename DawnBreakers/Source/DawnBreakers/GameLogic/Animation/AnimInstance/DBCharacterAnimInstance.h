@@ -13,7 +13,8 @@ class DAWNBREAKERS_API UDBCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	
-	
-	
+public:
+
+	class ADBCharacter* GetCharacter() const;
 	
 };
