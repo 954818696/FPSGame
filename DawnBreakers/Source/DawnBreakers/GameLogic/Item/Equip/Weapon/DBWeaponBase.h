@@ -6,6 +6,8 @@
 #include "WeaponState/DBWeaponStateMachine.h"
 #include "DBWeaponBase.generated.h"
 
+DECLARE_EVENT(ADBWeaponBase, FEquipAnimFinishEvent)
+
 /**
  * 
  */
@@ -34,6 +36,8 @@ public:
 	}
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
+
+	FEquipAnimFinishEvent& OnEquipAnimFinish() { return EquipAnimFinishEvent; }
 	
 protected:
 
@@ -42,4 +46,7 @@ protected:
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	int32 m_CurrentFireMode;
+
+private:
+	FEquipAnimFinishEvent EquipAnimFinishEvent;
 };

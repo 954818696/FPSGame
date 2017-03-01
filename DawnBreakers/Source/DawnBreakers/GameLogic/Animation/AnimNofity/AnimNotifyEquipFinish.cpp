@@ -2,6 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "AnimNotifyEquipFinish.h"
+#include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
 
 
 
@@ -24,9 +25,8 @@ void UAnimNotifyEquipFinish::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 			ADBCharacter* TDBCharacter = TDBCharacterAnimInstance->GetCharacter();
 			if (TDBCharacter)
 			{
-
+				TDBCharacter->GetHoldWeapon()->OnEquipAnimFinish().Broadcast();
 			}
 		}
 	}
-
 }

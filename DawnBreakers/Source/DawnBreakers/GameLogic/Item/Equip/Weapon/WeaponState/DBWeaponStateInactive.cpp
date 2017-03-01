@@ -18,3 +18,14 @@ void UDBWeaponStateInactive::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Inactive");
 }
+
+bool UDBWeaponStateInactive::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (NewState == EWeaponState::EWeaponState_EquipingDirectly ||
+		NewState == EWeaponState::EWeaponState_EquipingFromInventory)
+	{
+		return true;
+	}
+
+	return false;
+}

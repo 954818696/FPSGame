@@ -61,6 +61,11 @@ public:
 	void CreateInventory();
 
 	//////////////////////////////////////
+
+	FORCEINLINE void SetHoldWeapon(ADBWeaponBase* NewWeapon) { m_HoldWeapon = NewWeapon; }
+
+	FORCEINLINE ADBWeaponBase* GetHoldWeapon() { return m_HoldWeapon; }
+
 private:
 	void InteractQueryTick();
 

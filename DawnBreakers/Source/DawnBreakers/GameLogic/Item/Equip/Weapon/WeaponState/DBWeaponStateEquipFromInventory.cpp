@@ -11,6 +11,16 @@ UDBWeaponStateEquipFromInventory::UDBWeaponStateEquipFromInventory(const FObject
 	m_StateID = EWeaponState::EWeaponState_EquipingFromInventory;
 }
 
+void UDBWeaponStateEquipFromInventory::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	if (!EquipAnimFinishHandle.IsValid())
+	{
+		GetWeapon()->OnEquipAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
+	}
+}
+
 void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingFromInventory");
@@ -21,11 +31,26 @@ void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 	{
 		TCharacter->PlayAnimMontage(m_EquipAnim, 1.f, NAME_None);
 	}
-	//GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 
 void UDBWeaponStateEquipFromInventory::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingFromInventory");
+}
+
+bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (IsHandled())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
+{
+	m_bHandled = true;
+	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 

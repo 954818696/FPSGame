@@ -22,6 +22,7 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 		{
 			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
 		}
+		TOwner->SetHoldWeapon(TWeapon);
 	}
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
