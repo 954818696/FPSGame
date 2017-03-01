@@ -14,7 +14,7 @@ class DAWNBREAKERS_API UDBWeaponStateEquipFromInventory : public UDBWeaponStateB
 	GENERATED_UCLASS_BODY()
 	
 public:
-	virtual void PostInitProperties() override;
+	virtual void InitState() override;
 
 	virtual void EnterWeaponState() override;
 

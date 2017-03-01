@@ -18,6 +18,8 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 
 public:
 
+	virtual void PostInitProperties() override;
+
 	virtual void OnEquip(bool bEquipedWeaponFromInventory);
 
 	virtual void OnUnEquip();

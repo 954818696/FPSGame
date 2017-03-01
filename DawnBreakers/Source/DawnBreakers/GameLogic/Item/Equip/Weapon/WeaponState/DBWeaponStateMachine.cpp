@@ -32,6 +32,12 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	m_CurrentWeaponState = m_WeaponStateInactive;
 }
 
+void UDBWeaponStateMachine::InitStateMachine()
+{
+	m_WeaponStateEquipDirectly->InitState();
+	m_WeaponStateEquipFromInventory->InitState();
+}
+
 bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 {
 	bool bResult = true;

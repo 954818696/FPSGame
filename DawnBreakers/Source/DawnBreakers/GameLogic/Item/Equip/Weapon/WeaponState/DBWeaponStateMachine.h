@@ -17,6 +17,8 @@ class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 	GENERATED_UCLASS_BODY()
 	
 public:
+	void InitStateMachine();
+
 	bool SetCurrentState(EWeaponState::Type WeaponState);
 
 	void GotoState(EWeaponState::Type WeaponState);

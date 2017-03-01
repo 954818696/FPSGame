@@ -32,6 +32,7 @@ class DAWNBREAKERS_API UDBWeaponStateBase : public UObject
 	GENERATED_UCLASS_BODY()
 
 public:
+	virtual void InitState() {}
 
 	virtual void EnterWeaponState() {}
 

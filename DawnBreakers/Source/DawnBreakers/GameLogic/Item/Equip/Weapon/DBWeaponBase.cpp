@@ -9,6 +9,13 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
+void ADBWeaponBase::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	m_WeaponStateMachine->InitStateMachine();
+}
+
 void ADBWeaponBase::OnEquip(bool bEquipedWeaponFromInventory)
 {
 	//  为了日后做捡起武器和身上现有武器切换的区分

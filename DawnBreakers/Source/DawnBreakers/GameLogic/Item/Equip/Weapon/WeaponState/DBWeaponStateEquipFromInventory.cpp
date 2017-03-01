@@ -9,12 +9,11 @@ UDBWeaponStateEquipFromInventory::UDBWeaponStateEquipFromInventory(const FObject
 	: Super(ObjectInitializer)
 {
 	m_StateID = EWeaponState::EWeaponState_EquipingFromInventory;
+
 }
 
-void UDBWeaponStateEquipFromInventory::PostInitProperties()
+void UDBWeaponStateEquipFromInventory::InitState()
 {
-	Super::PostInitProperties();
-
 	if (!EquipAnimFinishHandle.IsValid())
 	{
 		GetWeapon()->OnEquipAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
