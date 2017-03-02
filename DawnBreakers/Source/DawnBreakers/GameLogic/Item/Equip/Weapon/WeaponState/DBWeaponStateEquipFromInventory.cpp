@@ -39,7 +39,8 @@ void UDBWeaponStateEquipFromInventory::ExitWeaponState()
 
 bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState)
 {
-	if (IsHandled())
+	if (NewState == EWeaponState::EWeaponState_Inactive  &&
+		IsHandled())
 	{
 		return true;
 	}
