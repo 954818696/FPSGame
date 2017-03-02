@@ -19,5 +19,9 @@ public:
 	virtual void ExitWeaponState() override;
 
 	virtual bool IsHandled() override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundCue* m_EquipSound;
 	
 };

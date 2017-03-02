@@ -4,7 +4,10 @@
 
 #include "GameLogic/Item/Equip/Inventory/DBInventoryItemBase.h"
 #include "WeaponState/DBWeaponStateMachine.h"
+#include "DBWeaponConfig.h"
 #include "DBWeaponBase.generated.h"
+
+
 
 DECLARE_EVENT(ADBWeaponBase, FEquipAnimFinishEvent)
 DECLARE_EVENT(ADBWeaponBase, FUnEquipAnimFinishEvent)
@@ -33,10 +36,9 @@ public:
 
 	virtual void OnStopFire();
 
-	FORCEINLINE int32 GetCurrentFireMode() const
-	{
-		return m_CurrentFireMode;
-	}
+	void PlayWeaponSound(USoundCue* SoundToPlay);
+
+	FORCEINLINE int32 GetCurrentFireMode() const { return m_CurrentFireMode;}
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
 
@@ -48,6 +50,12 @@ protected:
 	/** Weapon State Machine */
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
+
+	/* Plays the idle, wandering or hunting sound */
+	UPROPERTY(VisibleAnywhere, Category = "Sound")
+	UAudioComponent* m_AudioComp;
+
+	EWeaponTypeForEquipAnim m_WeaponHoldType;
 
 	int32 m_CurrentFireMode;
 

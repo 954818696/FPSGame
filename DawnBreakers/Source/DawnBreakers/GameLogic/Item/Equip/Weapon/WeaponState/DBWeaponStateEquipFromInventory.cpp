@@ -29,6 +29,7 @@ void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 	if (TCharacter)
 	{
 		TCharacter->PlayAnimMontage(m_EquipAnim, 1.f, NAME_None);
+		GetWeapon()->PlayWeaponSound(m_EquipSound);
 	}
 }
 
@@ -52,5 +53,16 @@ void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 {
 	m_bHandled = true;
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TWeapon)
+	{
+		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
+		USceneComponent* TParentComp = TOwner->GetMesh();
+		if (TParentComp)
+		{
+			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
+		}
+		TOwner->SetHoldWeapon(TWeapon);
+	}
 }
 

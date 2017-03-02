@@ -44,40 +44,4 @@ struct FWeaponData
 	}
 };
 
-USTRUCT()
-struct FWeaponAnim
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnimation)
-	UAnimMontage* Idle;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnimation)
-	UAnimMontage* StartFire;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnimation)
-	UAnimMontage* Reload;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnimation)
-	UAnimMontage* Equip;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnimation)
-	UAnimMontage* UnEquip;
-};
-
-
-USTRUCT()
-struct FWeaponSFX
-{
-	GENERATED_USTRUCT_BODY()
-};
-
-USTRUCT()
-struct FWeaponVFX
-{
-	GENERATED_USTRUCT_BODY()
-};
-
-
-
 
