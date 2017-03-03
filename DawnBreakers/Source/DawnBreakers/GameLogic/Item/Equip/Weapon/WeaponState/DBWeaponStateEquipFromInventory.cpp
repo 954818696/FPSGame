@@ -16,7 +16,7 @@ void UDBWeaponStateEquipFromInventory::InitState()
 {
 	if (!EquipAnimFinishHandle.IsValid())
 	{
-		GetWeapon()->OnEquipAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
+		EquipAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
 	}
 }
 

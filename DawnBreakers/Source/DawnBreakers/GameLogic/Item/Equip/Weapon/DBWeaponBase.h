@@ -9,8 +9,6 @@
 
 
 DECLARE_EVENT(ADBWeaponBase, FWeaponAnimFinishEvent)
-DECLARE_EVENT(ADBWeaponBase, FEquipAnimFinishEvent)
-DECLARE_EVENT(ADBWeaponBase, FUnEquipAnimFinishEvent)
 
 /**
  * 
@@ -38,10 +36,6 @@ public:
 
 	FORCEINLINE FWeaponAnimFinishEvent& OnWeaponAnimFinish() { return WeaponAnimFinishEvent; }
 
-	FORCEINLINE FEquipAnimFinishEvent& OnEquipAnimFinish() { return EquipAnimFinishEvent; }
-
-	FORCEINLINE FUnEquipAnimFinishEvent& OnUnEquipAnimFinish() { return UnEquipAnimFinishEvent; }
-
 	FORCEINLINE int32 GetWeaponHoldStanceType();
 	
 protected:
@@ -60,6 +54,4 @@ protected:
 
 private:
 	FWeaponAnimFinishEvent	WeaponAnimFinishEvent;
-	FEquipAnimFinishEvent		EquipAnimFinishEvent;
-	FUnEquipAnimFinishEvent UnEquipAnimFinishEvent;
 };

@@ -14,8 +14,24 @@ class DAWNBREAKERS_API UDBWeaponStateReload : public UDBWeaponStateBase
 	GENERATED_UCLASS_BODY()
 	
 public:
+	virtual void InitState() override;
 
+	virtual void EnterWeaponState() override;
+
+	virtual void ExitWeaponState() override;
+
+	virtual bool CanTransferTo(EWeaponState::Type NewState);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	UAnimMontage* m_ReloadAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundCue* m_ReloadSound;
 	
-	
+private:
+	void OnReloadAnimFinish();
+
+	FDelegateHandle ReloadAnimFinishHandle;
 	
 };

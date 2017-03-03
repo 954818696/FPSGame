@@ -2,6 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "AnimNotifyWeaponAnimFinish.h"
+#include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
 
 UAnimNotifyWeaponAnimFinish::UAnimNotifyWeaponAnimFinish()
 {

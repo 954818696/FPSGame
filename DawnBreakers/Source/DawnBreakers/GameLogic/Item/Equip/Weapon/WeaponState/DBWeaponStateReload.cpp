@@ -10,5 +10,56 @@ UDBWeaponStateReload::UDBWeaponStateReload(const FObjectInitializer& ObjectIniti
 
 }
 
+void UDBWeaponStateReload::InitState()
+{
+	if (!ReloadAnimFinishHandle.IsValid())
+	{
+		ReloadAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateReload::OnReloadAnimFinish);
+	}
+}
 
+void UDBWeaponStateReload::EnterWeaponState()
+{
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Reloading");
+	m_bHandled = false;
+
+	ADBCharacter* TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->PlayAnimMontage(m_ReloadAnim, 1.f, NAME_None);
+		GetWeapon()->PlayWeaponSound(m_ReloadSound);
+	}
+}
+
+void UDBWeaponStateReload::ExitWeaponState()
+{
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Reloading");
+	if (!IsHandled())
+	{
+		ADBCharacter* TCharacter = GetWeaponOwner();
+		if (TCharacter)
+		{
+			TCharacter->StopAnimMontage(m_ReloadAnim);
+		}
+	}
+}
+
+bool UDBWeaponStateReload::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (NewState == EWeaponState::EWeaponState_Unequiping || NewState == EWeaponState::EWeaponState_Inactive)
+	{
+		return true;
+	}
+	else if (IsHandled() && NewState == EWeaponState::EWeaponState_Active)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void UDBWeaponStateReload::OnReloadAnimFinish()
+{
+	m_bHandled = true;
+}
 

@@ -15,7 +15,7 @@ void UDBWeaponStateUnEquiping::InitState()
 {
 	if (!UnEquipAnimFinishHandle.IsValid())
 	{
-		GetWeapon()->OnUnEquipAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
+		UnEquipAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
 	}
 }
 
