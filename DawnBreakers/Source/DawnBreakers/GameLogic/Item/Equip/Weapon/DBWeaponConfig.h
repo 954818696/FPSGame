@@ -8,10 +8,10 @@
 UENUM(BlueprintType)
 enum class EWeaponTypeForEquipAnim : uint8
 {
-	HoldPistolAnim				= 0,
-	HoldRifleAnim				= 1,		
-	HoldShotGunAnim		= 2,		
-	HoldKnifeAnim				= 3,		
+	HoldPistolAnim				= 1,
+	HoldRifleAnim				= 2,		
+	HoldShotGunAnim			= 3,		
+	HoldKnifeAnim				= 4,		
 };
 
 

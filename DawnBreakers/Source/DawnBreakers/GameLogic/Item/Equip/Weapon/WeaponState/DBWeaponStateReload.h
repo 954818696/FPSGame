@@ -11,8 +11,10 @@
 UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateReload : public UDBWeaponStateBase
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
+public:
+
 	
 	
 	

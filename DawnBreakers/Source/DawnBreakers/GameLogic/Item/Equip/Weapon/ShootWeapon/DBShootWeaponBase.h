@@ -13,5 +13,11 @@ class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 {
 	GENERATED_UCLASS_BODY()
 	
+public:
+	virtual void OnReload();
+
+	virtual void OnSwitchMode();
+
+	virtual void OnStopFire();
 
 };

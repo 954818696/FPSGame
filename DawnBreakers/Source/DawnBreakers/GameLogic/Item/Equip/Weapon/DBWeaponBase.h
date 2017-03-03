@@ -8,7 +8,7 @@
 #include "DBWeaponBase.generated.h"
 
 
-
+DECLARE_EVENT(ADBWeaponBase, FWeaponAnimFinishEvent)
 DECLARE_EVENT(ADBWeaponBase, FEquipAnimFinishEvent)
 DECLARE_EVENT(ADBWeaponBase, FUnEquipAnimFinishEvent)
 
@@ -28,13 +28,7 @@ public:
 
 	virtual void OnUnEquip();
 
-	virtual void OnSwitchMode();
-
-	virtual void OnReload();
-
 	virtual void OnStartFire();
-
-	virtual void OnStopFire();
 
 	void PlayWeaponSound(USoundCue* SoundToPlay);
 
@@ -42,8 +36,13 @@ public:
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
 
-	FEquipAnimFinishEvent& OnEquipAnimFinish() { return EquipAnimFinishEvent; }
-	FUnEquipAnimFinishEvent& OnUnEquipAnimFinish() { return UnEquipAnimFinishEvent; }
+	FORCEINLINE FWeaponAnimFinishEvent& OnWeaponAnimFinish() { return WeaponAnimFinishEvent; }
+
+	FORCEINLINE FEquipAnimFinishEvent& OnEquipAnimFinish() { return EquipAnimFinishEvent; }
+
+	FORCEINLINE FUnEquipAnimFinishEvent& OnUnEquipAnimFinish() { return UnEquipAnimFinishEvent; }
+
+	FORCEINLINE int32 GetWeaponHoldStanceType();
 	
 protected:
 
@@ -60,6 +59,7 @@ protected:
 	int32 m_CurrentFireMode;
 
 private:
+	FWeaponAnimFinishEvent	WeaponAnimFinishEvent;
 	FEquipAnimFinishEvent		EquipAnimFinishEvent;
 	FUnEquipAnimFinishEvent UnEquipAnimFinishEvent;
 };

@@ -3,6 +3,7 @@
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
+#include "GameLogic/Animation/AnimInstance/DBCharacterAnimInstance.h"
 #include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
 #include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
 
@@ -11,7 +12,8 @@ ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective),
 	m_MaxInteractableDistance(400.f),
 	m_PendEquipWeapon(nullptr),
-	m_HoldWeapon(nullptr)
+	m_HoldWeapon(nullptr),
+	m_AnimationInstance(nullptr)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -243,6 +245,15 @@ void ADBCharacter::CreateInventory()
 		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		m_Inventory->SetItemOwner(this);
 	}
+}
+
+UDBCharacterAnimInstance* ADBCharacter::GetAnimInstance()
+{
+	if (m_AnimationInstance == NULL && GetMesh() != NULL)
+	{
+		m_AnimationInstance = Cast<UDBCharacterAnimInstance>(GetMesh()->GetAnimInstance());
+	}
+	return m_AnimationInstance;
 }
 
 void ADBCharacter::InteractQueryTick()

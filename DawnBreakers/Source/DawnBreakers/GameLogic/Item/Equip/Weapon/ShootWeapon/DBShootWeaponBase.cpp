@@ -10,3 +10,18 @@ ADBShootWeaponBase::ADBShootWeaponBase(const FObjectInitializer& ObjectInitializ
 
 }
 
+void ADBShootWeaponBase::OnReload()
+{
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Reloading);
+}
+
+void ADBShootWeaponBase::OnSwitchMode()
+{
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_SwitchMode);
+}
+
+void ADBShootWeaponBase::OnStopFire()
+{
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
+}
+

@@ -3,6 +3,12 @@
 #include "DawnBreakers.h"
 #include "DBWeaponStateReload.h"
 
+UDBWeaponStateReload::UDBWeaponStateReload(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	m_StateID = EWeaponState::EWeaponState_Reloading;
+
+}
 
 
 

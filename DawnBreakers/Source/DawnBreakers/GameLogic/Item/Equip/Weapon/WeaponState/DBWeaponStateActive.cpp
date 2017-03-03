@@ -14,7 +14,16 @@ UDBWeaponStateActive::UDBWeaponStateActive(const FObjectInitializer& ObjectIniti
 void UDBWeaponStateActive::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Active");
-
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		ADBWeaponBase* TWeapon = GetWeapon();
+		if (TAnimInstance && TWeapon)
+		{
+			TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+		}
+	}
 }
 
 void UDBWeaponStateActive::ExitWeaponState()

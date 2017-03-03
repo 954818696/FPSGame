@@ -12,6 +12,7 @@ UDBWeaponStateInactive::UDBWeaponStateInactive(const FObjectInitializer& ObjectI
 void UDBWeaponStateInactive::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Inactive");
+	m_bHandled = true;
 }
 
 void UDBWeaponStateInactive::ExitWeaponState()

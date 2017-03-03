@@ -49,8 +49,6 @@ public:
 
 	void EquipHandWeapon(class ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory);
 
-
-
 	void SwitchEquipHandWeapon(bool bNext);
 
 	void SwitchCamaraMode();
@@ -65,6 +63,8 @@ public:
 	FORCEINLINE void SetHoldWeapon(ADBWeaponBase* NewWeapon) { m_HoldWeapon = NewWeapon; }
 
 	FORCEINLINE ADBWeaponBase* GetHoldWeapon() { return m_HoldWeapon; }
+
+	class UDBCharacterAnimInstance* GetAnimInstance();
 
 private:
 	void InteractQueryTick();
@@ -112,5 +112,7 @@ private:
 
 	ECameraMode m_CurCameraMode;
 	//////////////////////////////////////
-	
+
+	class UDBCharacterAnimInstance* m_AnimationInstance;
+
 };
