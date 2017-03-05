@@ -51,11 +51,12 @@ bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState
 
 void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 {
-	m_bHandled = true;
+
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TWeapon)
 	{
+		m_bHandled = true;
 		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
 		USceneComponent* TParentComp = TOwner->GetMesh();
 		if (TParentComp)
@@ -63,6 +64,7 @@ void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
 		}
 		TOwner->SetHoldWeapon(TWeapon);
+		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 	}
 }
 

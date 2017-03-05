@@ -10,22 +10,25 @@ UDBWeaponStateEquipDirectly::UDBWeaponStateEquipDirectly(const FObjectInitialize
 	m_StateID = EWeaponState::EWeaponState_EquipingDirectly;
 }
 
+void UDBWeaponStateEquipDirectly::InitState()
+{
+	if (!EquipDirectlyAnimFinishHandle.IsValid())
+	{
+		EquipDirectlyAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
+	}
+}
+
 void UDBWeaponStateEquipDirectly::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingDirectly");
-	ADBWeaponBase* TWeapon = GetWeapon();
-	if (TWeapon)
+	m_bHandled = false;
+
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
 	{
-		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
-		USceneComponent* TParentComp = TOwner->GetMesh();
-		if (TParentComp)
-		{
-			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
-		}
-		TWeapon->PlayWeaponSound(m_EquipSound);
-		TOwner->SetHoldWeapon(TWeapon);
+		TCharacter->PlayAnimMontage(m_EquipDirectlyAnim, 1.f, NAME_None);
+		GetWeapon()->PlayWeaponSound(m_EquipDirectlySound);
 	}
-	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 
 void UDBWeaponStateEquipDirectly::ExitWeaponState()
@@ -36,5 +39,35 @@ void UDBWeaponStateEquipDirectly::ExitWeaponState()
 bool UDBWeaponStateEquipDirectly::IsHandled()
 {
 	return true;
+}
+
+bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (NewState == EWeaponState::EWeaponState_Inactive  &&
+		IsHandled())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish()
+{
+
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TWeapon)
+	{
+		m_bHandled = true;
+		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
+		USceneComponent* TParentComp = TOwner->GetMesh();
+		if (TParentComp)
+		{
+			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
+		}
+		TWeapon->PlayWeaponSound(m_EquipDirectlySound);
+		TOwner->SetHoldWeapon(TWeapon);
+		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+	}
 }
 

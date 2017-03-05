@@ -14,14 +14,26 @@ class DAWNBREAKERS_API UDBWeaponStateEquipDirectly : public UDBWeaponStateBase
 	GENERATED_UCLASS_BODY()
 	
 public:
+	virtual void InitState() override;
+
 	virtual void EnterWeaponState() override;
 
 	virtual void ExitWeaponState() override;
 
 	virtual bool IsHandled() override;
 
+	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	USoundCue* m_EquipSound;
+	UAnimMontage* m_EquipDirectlyAnim;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundCue* m_EquipDirectlySound;
+
+private:
+	void OnEquipDirectlyAnimFinish();
+
+	FDelegateHandle EquipDirectlyAnimFinishHandle;
 	
 };

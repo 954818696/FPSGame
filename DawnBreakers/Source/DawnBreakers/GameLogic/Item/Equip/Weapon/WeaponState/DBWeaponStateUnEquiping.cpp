@@ -44,7 +44,7 @@ bool UDBWeaponStateUnEquiping::CanTransferTo(EWeaponState::Type NewState)
 		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void UDBWeaponStateUnEquiping::OnUnEquipAnimFinish()

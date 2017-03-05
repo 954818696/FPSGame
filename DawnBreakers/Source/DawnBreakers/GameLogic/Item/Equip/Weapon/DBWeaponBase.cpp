@@ -23,7 +23,6 @@ void ADBWeaponBase::PostInitProperties()
 
 void ADBWeaponBase::OnEquip(bool bEquipedWeaponFromInventory)
 {
-	//  为了日后做捡起武器和身上现有武器切换的区分
 	if (bEquipedWeaponFromInventory)
 	{
 		m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_EquipingFromInventory);

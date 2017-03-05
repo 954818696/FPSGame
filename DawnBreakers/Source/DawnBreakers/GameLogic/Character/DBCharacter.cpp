@@ -211,16 +211,17 @@ void ADBCharacter::PutHandWeaponToInventory()
 {
 	if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
 	{
-		//m_PendEquipWeapon = NewWeapon;
 		GetWorldTimerManager().SetTimer(TimerHandle_PendWeaponEquip, this, &ADBCharacter::EquipPendedWeapon, 1.f, true);
 	}
 }
 
 void ADBCharacter::EquipPendedWeapon()
 {
-	//if (m_)
-	GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
-	EquipHandWeapon(m_PendEquipWeapon, true);
+	if (m_HoldWeapon == nullptr)
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
+		EquipHandWeapon(m_PendEquipWeapon, true);
+	}
 }
 
 void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
@@ -228,9 +229,11 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 	if (m_Inventory && m_Inventory->IsValidLowLevel())
 	{
 		ADBWeaponBase* SwitchWeapon = Cast<ADBWeaponBase>(m_Inventory->GetOneItemByItemSequence(m_HoldWeapon, bNext));
-		PutHandWeaponToInventory();
-		EquipPendedWeapon();
-		//EquipHandWeapon(SwitchWeapon);
+		if (SwitchWeapon)
+		{
+			PutHandWeaponToInventory();
+			m_PendEquipWeapon = SwitchWeapon;
+		}
 	}
 }
 
