@@ -10,24 +10,19 @@ UDBWeaponStateReload::UDBWeaponStateReload(const FObjectInitializer& ObjectIniti
 
 }
 
-void UDBWeaponStateReload::InitState()
-{
-	if (!ReloadAnimFinishHandle.IsValid())
-	{
-		ReloadAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateReload::OnReloadAnimFinish);
-	}
-}
-
 void UDBWeaponStateReload::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Reloading");
 	m_bHandled = false;
-
 	ADBCharacter* TCharacter = GetWeaponOwner();
+	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TCharacter)
 	{
+		TWeapon->OnWeaponAnimFinish().Clear();
+		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateReload::OnReloadAnimFinish);
+
 		TCharacter->PlayAnimMontage(m_ReloadAnim, 1.f, NAME_None);
-		GetWeapon()->PlayWeaponSound(m_ReloadSound);
+		TWeapon->PlayWeaponSound(m_ReloadSound);
 	}
 }
 

@@ -14,9 +14,9 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
-void ADBWeaponBase::PostInitProperties()
+void ADBWeaponBase::PostInitializeComponents()
 {
-	Super::PostInitProperties();
+	Super::PostInitializeComponents();
 
 	m_WeaponStateMachine->InitStateMachine();
 }

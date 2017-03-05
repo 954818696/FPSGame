@@ -12,10 +12,10 @@ UDBWeaponStateEquipDirectly::UDBWeaponStateEquipDirectly(const FObjectInitialize
 
 void UDBWeaponStateEquipDirectly::InitState()
 {
-	if (!EquipDirectlyAnimFinishHandle.IsValid())
-	{
-		EquipDirectlyAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
-	}
+	//if (!EquipDirectlyAnimFinishHandle.IsValid())
+	//{
+	//	EquipDirectlyAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
+	//}
 }
 
 void UDBWeaponStateEquipDirectly::EnterWeaponState()
@@ -24,10 +24,20 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 	m_bHandled = false;
 
 	ADBCharacter *TCharacter = GetWeaponOwner();
-	if (TCharacter)
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TCharacter && TWeapon)
 	{
+		TWeapon->OnWeaponAnimFinish().Clear();
+		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
+
+		TCharacter->SetHoldWeapon(TWeapon);
+		USceneComponent* TParentComp = TCharacter->GetMesh();
+		if (TParentComp)
+		{
+			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
+		}
 		TCharacter->PlayAnimMontage(m_EquipDirectlyAnim, 1.f, NAME_None);
-		GetWeapon()->PlayWeaponSound(m_EquipDirectlySound);
+		TWeapon->PlayWeaponSound(m_EquipDirectlySound);
 	}
 }
 
@@ -59,14 +69,6 @@ void UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish()
 	if (TWeapon)
 	{
 		m_bHandled = true;
-		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
-		USceneComponent* TParentComp = TOwner->GetMesh();
-		if (TParentComp)
-		{
-			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
-		}
-		TWeapon->PlayWeaponSound(m_EquipDirectlySound);
-		TOwner->SetHoldWeapon(TWeapon);
 		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 	}
 }

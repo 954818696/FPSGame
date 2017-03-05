@@ -10,25 +10,20 @@ UDBWeaponStateUnEquiping::UDBWeaponStateUnEquiping(const FObjectInitializer& Obj
 
 }
 
-
-void UDBWeaponStateUnEquiping::InitState()
-{
-	if (!UnEquipAnimFinishHandle.IsValid())
-	{
-		UnEquipAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
-	}
-}
-
 void UDBWeaponStateUnEquiping::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Unequiping");
 	m_bHandled = false;
 
 	ADBCharacter *TCharacter = GetWeaponOwner();
+	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TCharacter)
 	{
+		TWeapon->OnWeaponAnimFinish().Clear();
+		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
+		TWeapon->PlayWeaponSound(m_UnEquipSound);
+
 		TCharacter->PlayAnimMontage(m_UnEquipAnim, 1.f, NAME_None);
-		GetWeapon()->PlayWeaponSound(m_UnEquipSound);
 	}
 }
 

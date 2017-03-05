@@ -8,7 +8,7 @@
 #include "DBWeaponBase.generated.h"
 
 
-DECLARE_EVENT(ADBWeaponBase, FWeaponAnimFinishEvent)
+
 
 /**
  * 
@@ -18,9 +18,10 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 {
 	GENERATED_UCLASS_BODY()
 
+	DECLARE_EVENT(ADBWeaponBase, FWeaponAnimFinishEvent)
 public:
 
-	virtual void PostInitProperties() override;
+	virtual void PostInitializeComponents() override;
 
 	virtual void OnEquip(bool bEquipedWeaponFromInventory);
 
@@ -37,6 +38,8 @@ public:
 	FORCEINLINE FWeaponAnimFinishEvent& OnWeaponAnimFinish() { return WeaponAnimFinishEvent; }
 
 	FORCEINLINE int32 GetWeaponHoldStanceType();
+
+
 	
 protected:
 

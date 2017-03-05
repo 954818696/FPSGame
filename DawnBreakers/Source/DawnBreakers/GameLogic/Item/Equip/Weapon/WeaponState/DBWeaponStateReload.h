@@ -14,7 +14,6 @@ class DAWNBREAKERS_API UDBWeaponStateReload : public UDBWeaponStateBase
 	GENERATED_UCLASS_BODY()
 	
 public:
-	virtual void InitState() override;
 
 	virtual void EnterWeaponState() override;
 
@@ -32,6 +31,4 @@ protected:
 private:
 	void OnReloadAnimFinish();
 
-	FDelegateHandle ReloadAnimFinishHandle;
-	
 };

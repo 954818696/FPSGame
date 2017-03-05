@@ -14,8 +14,6 @@ class DAWNBREAKERS_API UDBWeaponStateUnEquiping : public UDBWeaponStateBase
 	GENERATED_UCLASS_BODY()
 	
 public:
-	virtual void InitState() override;
-
 	virtual void EnterWeaponState() override;
 
 	virtual void ExitWeaponState() override;
@@ -31,7 +29,5 @@ protected:
 
 private:
 	void OnUnEquipAnimFinish();
-
-	FDelegateHandle UnEquipAnimFinishHandle;
 	
 };

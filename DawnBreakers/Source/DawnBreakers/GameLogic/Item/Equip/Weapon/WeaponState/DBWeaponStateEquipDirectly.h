@@ -24,16 +24,16 @@ public:
 
 	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
 
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_EquipDirectlyAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	USoundCue* m_EquipDirectlySound;
 
-private:
-	void OnEquipDirectlyAnimFinish();
 
-	FDelegateHandle EquipDirectlyAnimFinishHandle;
+	void OnEquipDirectlyAnimFinish();
+private:
+
+	//FDelegateHandle EquipDirectlyAnimFinishHandle;
 	
 };
