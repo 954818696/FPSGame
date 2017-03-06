@@ -4,7 +4,7 @@
 #include "DBCharacter.h"
 #include "DBCharacterMovementComponent.h"
 #include "GameLogic/Animation/AnimInstance/DBCharacterAnimInstance.h"
-#include "GameLogic/Item/Equip/Weapon/DBWeaponBase.h"
+#include "GameLogic/Item/Equip/Weapon/ShootWeapon/DBShootWeaponBase.h"
 #include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
 
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
@@ -168,12 +168,12 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 	bool bCanAddToInventory = m_Inventory->AddToInventory(NewItem);
 	if (bCanAddToInventory)
 	{
-		if (NewItem->IsA(ADBWeaponBase::StaticClass()))
+		if (NewItem->IsA(ADBShootWeaponBase::StaticClass()))
 		{
 			// 手中无握持武器,直接装备
+			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
 			if (!m_HoldWeapon)
 			{
-				ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(NewItem);
 				EquipHandWeapon(NewWeapon, false);
 			}
 			// 手中有握持武器
@@ -181,19 +181,8 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 			// 2.低握持优先级，直接进入背包
 			else
 			{
-				// Temp attach directly.
-				USceneComponent* TParentComp = GetMesh();
-				if (TParentComp)
-				{
-					if (NewItem->IsNeedAttachToTarget())
-					{
-						NewItem->AttachToTarget(EItemAttachToTargetType::AttachToInventory, TParentComp);
-					}
-					else
-					{
-						NewItem->AttachToTarget(EItemAttachToTargetType::AttachToNone, TParentComp);
-					}
-				}
+				PutHandWeaponToInventory();
+				m_PendEquipWeapon = NewWeapon;
 			}
 		}
 	}

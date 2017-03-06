@@ -22,7 +22,6 @@ void UDBWeaponStateUnEquiping::EnterWeaponState()
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
 		TWeapon->PlayWeaponSound(m_UnEquipSound);
-
 		TCharacter->PlayAnimMontage(m_UnEquipAnim, 1.f, NAME_None);
 	}
 }
