@@ -27,7 +27,7 @@ protected:
 	UAnimMontage* m_EquipAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	USoundCue* m_EquipSound;
+	USoundBase* m_EquipSound;
 
 private:
 	void OnEquipAnimFinish();

@@ -12,14 +12,24 @@ UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateFiring : public UDBWeaponStateBase
 {
 	GENERATED_UCLASS_BODY()
-	
+
+public:
+	virtual void EnterWeaponState() override;
+
+	virtual void ExitWeaponState() override;
+
+	virtual bool CanTransferTo(EWeaponState::Type NewState);
+
+	virtual void RefireTimer();
+
+	virtual void Fire();
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_FiringAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	USoundCue* m_FiringSound;
+	USoundBase* m_FiringSound;
 
 	UPROPERTY(EditAnywhere,  Category = WeaponState)
 	TArray<UParticleSystemComponent*> MuzzleFlash;

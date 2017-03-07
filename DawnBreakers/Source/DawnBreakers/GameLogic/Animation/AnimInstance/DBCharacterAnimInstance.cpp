@@ -4,6 +4,14 @@
 #include "DBCharacterAnimInstance.h"
 #include "GameLogic/Character/DBCharacter.h"
 
+UDBCharacterAnimInstance::UDBCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_WeaponHoldStance(0)
+{
+
+}
+
+
 ADBCharacter* UDBCharacterAnimInstance::GetCharacter() const
 {
 	AActor* TOwner = GetOwningActor();

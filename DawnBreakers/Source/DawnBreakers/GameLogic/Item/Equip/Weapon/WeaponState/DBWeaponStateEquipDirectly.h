@@ -28,7 +28,7 @@ public:
 	UAnimMontage* m_EquipDirectlyAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	USoundCue* m_EquipDirectlySound;
+	USoundBase* m_EquipDirectlySound;
 
 
 	void OnEquipDirectlyAnimFinish();

@@ -18,6 +18,8 @@ public:
 	virtual void EnterWeaponState();
 
 	virtual void ExitWeaponState();
+
+	virtual bool CanTransferTo(EWeaponState::Type NewState);
 	
 	
 };

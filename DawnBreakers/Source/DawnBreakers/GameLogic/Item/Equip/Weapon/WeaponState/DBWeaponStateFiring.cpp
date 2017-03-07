@@ -10,3 +10,34 @@ UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectIniti
 	m_StateID = EWeaponState::EWeaponState_Firing;
 }
 
+void UDBWeaponStateFiring::EnterWeaponState()
+{
+
+}
+
+void UDBWeaponStateFiring::ExitWeaponState()
+{
+
+}
+
+bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (NewState == EWeaponState::EWeaponState_Reloading ||
+		NewState == EWeaponState::EWeaponState_Unequiping)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void UDBWeaponStateFiring::RefireTimer()
+{
+
+}
+
+void UDBWeaponStateFiring::Fire()
+{
+
+}
+

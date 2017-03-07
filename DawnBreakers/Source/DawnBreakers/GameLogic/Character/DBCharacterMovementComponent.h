@@ -18,6 +18,4 @@ public:
 
 	bool Is3DSpaceFreeMove() const;
 
-
-	
 };

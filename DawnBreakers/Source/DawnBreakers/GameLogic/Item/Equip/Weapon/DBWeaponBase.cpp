@@ -4,7 +4,8 @@
 #include "DBWeaponBase.h"
 
 ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_CurrentFireMode(0)
 {
 	m_AudioComp = ObjectInitializer.CreateDefaultSubobject<UAudioComponent>(this, TEXT("WeaponSoundComp"));
 	m_AudioComp->bAutoActivate = false;
@@ -43,7 +44,7 @@ void ADBWeaponBase::OnStartFire()
 	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Firing);
 }
 
-void ADBWeaponBase::PlayWeaponSound(USoundCue* SoundToPlay)
+void ADBWeaponBase::PlayWeaponSound(USoundBase* SoundToPlay)
 {
 	m_AudioComp->SetSound(SoundToPlay);
 	m_AudioComp->Play();

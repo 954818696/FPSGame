@@ -17,16 +17,27 @@ void UDBWeaponStateActive::EnterWeaponState()
 	ADBCharacter *TCharacter = GetWeaponOwner();
 	if (TCharacter)
 	{
-		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
-		ADBWeaponBase* TWeapon = GetWeapon();
-		if (TAnimInstance && TWeapon)
-		{
-			TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
-		}
+		//UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		//ADBWeaponBase* TWeapon = GetWeapon();
+		//if (TAnimInstance && TWeapon)
+		//{
+		//	TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+		//}
 	}
 }
 
 void UDBWeaponStateActive::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Active");
+}
+
+bool UDBWeaponStateActive::CanTransferTo(EWeaponState::Type NewState)
+{
+	if (NewState != EWeaponState::EWeaponState_EquipingDirectly ||
+		NewState != EWeaponState::EWeaponState_EquipingFromInventory)
+	{
+		return true;
+	}
+
+	return false;
 }

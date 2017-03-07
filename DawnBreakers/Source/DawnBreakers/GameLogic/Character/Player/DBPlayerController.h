@@ -5,7 +5,7 @@
 #include "GameLogic/Character/DBBasePlayerController.h"
 #include "DBPlayerController.generated.h"
 
-
+// Extend Reserve
 struct FDeferredFireInput
 {
 	bool bStartFire;

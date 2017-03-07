@@ -29,7 +29,7 @@ public:
 
 	virtual void OnStartFire();
 
-	void PlayWeaponSound(USoundCue* SoundToPlay);
+	void PlayWeaponSound(USoundBase* SoundToPlay);
 
 	FORCEINLINE int32 GetCurrentFireMode() const { return m_CurrentFireMode;}
 
@@ -39,8 +39,6 @@ public:
 
 	FORCEINLINE int32 GetWeaponHoldStanceType();
 
-
-	
 protected:
 
 	/** Weapon State Machine */
@@ -51,8 +49,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Sound")
 	UAudioComponent* m_AudioComp;
 
+	UPROPERTY(EditDefaultsOnly, Category = WeaponAnim)
 	EWeaponTypeForEquipAnim m_WeaponHoldType;
 
+	// 和tarry中firestate顺序对应
 	int32 m_CurrentFireMode;
 
 private:

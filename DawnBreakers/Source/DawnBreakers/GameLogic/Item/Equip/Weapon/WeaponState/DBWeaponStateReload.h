@@ -26,7 +26,7 @@ protected:
 	UAnimMontage* m_ReloadAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	USoundCue* m_ReloadSound;
+	USoundBase* m_ReloadSound;
 	
 private:
 	void OnReloadAnimFinish();

@@ -11,7 +11,7 @@
 UCLASS()
 class DAWNBREAKERS_API UDBCharacterAnimInstance : public UAnimInstance
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 public:
 	FORCEINLINE void SetWeaponHoldStance(int32 HoldType) {	m_WeaponHoldStance = HoldType; }
@@ -20,7 +20,6 @@ public:
 
 protected:
 	// 不用EWeaponTypeForEquipAnim,减少编译时间
-	UPROPERTY(BlueprintReadOnly, Category = UDBCharacterAnimInstance)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UDBCharacterAnimInstance)
 	int32 m_WeaponHoldStance;
-	
 };

@@ -27,6 +27,13 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TCharacter && TWeapon)
 	{
+		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		ADBWeaponBase* TWeapon = GetWeapon();
+		if (TAnimInstance && TWeapon)
+		{
+			TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+		}
+
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
 
@@ -53,7 +60,7 @@ bool UDBWeaponStateEquipDirectly::IsHandled()
 
 bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState)
 {
-	if (NewState == EWeaponState::EWeaponState_Inactive  &&
+	if (NewState == EWeaponState::EWeaponState_Active  &&
 		IsHandled())
 	{
 		return true;

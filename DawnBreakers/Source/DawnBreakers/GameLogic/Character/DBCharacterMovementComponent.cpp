@@ -13,6 +13,8 @@ UDBCharacterMovementComponent::UDBCharacterMovementComponent(const class FObject
 
 void UDBCharacterMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	if (CharacterOwner != nullptr)
 	{
 		ADBPlayerController* PC = Cast<ADBPlayerController>(CharacterOwner->Controller);
