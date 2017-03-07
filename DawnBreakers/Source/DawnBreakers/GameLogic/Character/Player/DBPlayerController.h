@@ -34,11 +34,11 @@ public:
 
 	virtual void UnPossess() override;
 
+	void ApplyDeferredFireInputs();
+
 private:
 	
 	virtual void PlayerTick(float DeltaTime) override;
-
-	void ApplyDeferredInputs();
 
 	//////////////////////////////////////
 	// Input Control.

@@ -38,33 +38,9 @@ void ADBPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 
-	if (m_ControlledCharacter != nullptr)
-	{
-		ApplyDeferredInputs();
-	}
 }
 
-void ADBPlayerController::ApplyDeferredInputs()
-{
-	if (m_ControlledCharacter == nullptr)
-	{
-		return;
-	}
 
-	for (FDeferredFireInput& Input : m_DeferredFireInputs)
-	{
-		if (Input.bStartFire)
-		{
-			m_ControlledCharacter->OnStartFire();
-		}
-		else
-		{
-			m_ControlledCharacter->OnStopFire();
-		}
-	}
-
-	m_DeferredFireInputs.Empty();
-}
 
 void ADBPlayerController::SetupInputComponent()
 {
@@ -138,6 +114,28 @@ void ADBPlayerController::OnStopFire()
 	{
 		new(m_DeferredFireInputs)FDeferredFireInput(false);
 	}
+}
+
+void ADBPlayerController::ApplyDeferredFireInputs()
+{
+	if (m_ControlledCharacter == nullptr)
+	{
+		return;
+	}
+
+	for (FDeferredFireInput& Input : m_DeferredFireInputs)
+	{
+		if (Input.bStartFire)
+		{
+			m_ControlledCharacter->OnStartFire();
+		}
+		else
+		{
+			m_ControlledCharacter->OnStopFire();
+		}
+	}
+
+	m_DeferredFireInputs.Empty();
 }
 
 void ADBPlayerController::OnStartTargeting()
