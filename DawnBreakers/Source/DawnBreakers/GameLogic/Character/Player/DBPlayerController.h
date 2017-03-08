@@ -48,6 +48,10 @@ private:
 
 	void MoveRight(float Delta);
 
+	void CustomAddPitchInput(float Delta);
+
+	void CustomAddYawInput(float Delta);
+
 	void OnStartJump();
 
 	void OnStopJump();

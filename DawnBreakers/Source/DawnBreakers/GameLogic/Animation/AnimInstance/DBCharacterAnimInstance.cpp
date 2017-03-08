@@ -11,16 +11,26 @@ UDBCharacterAnimInstance::UDBCharacterAnimInstance(const FObjectInitializer& Obj
 
 }
 
+void UDBCharacterAnimInstance::NativeInitializeAnimation()
+{
+	m_CharacterOwner = Cast<ADBCharacter>(GetOwningActor());
+}
+
+void UDBCharacterAnimInstance::NativeUpdateAnimation(float DeltaTime)
+{
+	if (m_CharacterOwner != nullptr)
+	{
+		m_CharacterOwner->GetArmRotation(m_ArmsRotation);
+		m_ViewPitch = FMath::ClampAngle(m_CharacterOwner->GetViewPitch(), -90.f, 90.f);
+	}
+}
 
 ADBCharacter* UDBCharacterAnimInstance::GetCharacter() const
 {
-	AActor* TOwner = GetOwningActor();
-	if (!TOwner)
+	if (!m_CharacterOwner)
 	{
 		return nullptr;
 	}
 
-	ADBCharacter* TDBCharacter = Cast<ADBCharacter>(TOwner);
-
-	return TDBCharacter;
+	return m_CharacterOwner;
 }

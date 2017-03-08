@@ -48,10 +48,10 @@ void ADBPlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("MoveForward", this, &ADBPlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ADBPlayerController::MoveRight);
-	InputComponent->BindAxis("Turn", this, &APlayerController::AddYawInput);
-	InputComponent->BindAxis("LookUp", this, &APlayerController::AddPitchInput);
+	InputComponent->BindAxis("Turn", this, &ADBPlayerController::CustomAddYawInput);
+	InputComponent->BindAxis("LookUp", this, &ADBPlayerController::CustomAddPitchInput);
 
-
+	
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ADBPlayerController::OnStartJump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ADBPlayerController::OnStopJump);
 	InputComponent->BindAction("CrouchToggle", IE_Released, this, &ADBPlayerController::OnCrouchToggle);
@@ -82,6 +82,22 @@ void ADBPlayerController::MoveRight(float Delta)
 	if (Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->MoveRight(Delta);
+	}
+}
+
+void ADBPlayerController::CustomAddPitchInput(float Delta)
+{
+	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->AddPitchInput(Delta);
+	}
+}
+
+void ADBPlayerController::CustomAddYawInput(float Delta)
+{
+	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->AddYawInput(Delta);
 	}
 }
 

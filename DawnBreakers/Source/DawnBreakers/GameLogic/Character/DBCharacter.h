@@ -31,6 +31,10 @@ public:
 
 	void MoveRight(float Delta);
 
+	void AddYawInput(float Delta);
+
+	void AddPitchInput(float Delta);
+
 	void OnStartJump();
 
 	void OnStopJump();
@@ -63,6 +67,10 @@ public:
 	FORCEINLINE void SetHoldWeapon(ADBWeaponBase* NewWeapon) { m_HoldWeapon = NewWeapon; }
 
 	FORCEINLINE ADBWeaponBase* GetHoldWeapon() { return m_HoldWeapon; }
+
+	FORCEINLINE float ADBCharacter::GetViewPitch() const;
+
+	FORCEINLINE void GetArmRotation(FRotator & OutRotation) const;
 
 	class UDBCharacterAnimInstance* GetAnimInstance();
 
@@ -114,6 +122,14 @@ private:
 	ECameraMode m_CurCameraMode;
 	//////////////////////////////////////
 
+	//////////////////////////////////////
+	// Animation.
 	class UDBCharacterAnimInstance* m_AnimationInstance;
 
+	FRotator m_ArmsLagRotation;
+
+	float m_PrevViewPitchRotation;
+
+	float m_PrevViewYawRotation;
+	//////////////////////////////////////
 };

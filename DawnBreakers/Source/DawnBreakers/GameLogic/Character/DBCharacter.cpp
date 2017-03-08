@@ -7,10 +7,15 @@
 #include "GameLogic/Item/Equip/Weapon/ShootWeapon/DBShootWeaponBase.h"
 #include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
 
+#define DEFAULT_FOV 90.f
+#define MAX_ARM_LAG_ROT 20.f
+
 ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDBCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
 	m_CurCameraMode(ECameraMode::E_FirstPersonPerspective),
 	m_MaxInteractableDistance(400.f),
+	m_PrevViewPitchRotation(0.f),
+	m_PrevViewYawRotation(0.f),
 	m_PendEquipWeapon(nullptr),
 	m_HoldWeapon(nullptr),
 	m_AnimationInstance(nullptr)
@@ -62,12 +67,21 @@ void ADBCharacter::BeginPlay()
 	CreateInventory();
 }
 
+
 void ADBCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
 	InteractQueryTick();
 
+	// UpperBody Rotate.
+	const float TViewPitch = Controller->GetControlRotation().Pitch;
+	const float TViewYaw = GetActorRotation().Yaw;
+	const float TNewPitchLag = FMath::ClampAngle((TViewPitch - m_PrevViewPitchRotation) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
+	const float TNewYawLag = FMath::ClampAngle((m_PrevViewYawRotation - TViewYaw) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
+	m_ArmsLagRotation = FMath::RInterpTo(m_ArmsLagRotation, FRotator(TNewPitchLag, TNewYawLag, TNewYawLag), DeltaTime, 8.f);
+	m_PrevViewPitchRotation = TViewPitch;
+	m_PrevViewYawRotation = TViewYaw;
 }
 
 void ADBCharacter::MoveForward(float Delta)
@@ -91,6 +105,16 @@ void ADBCharacter::MoveRight(float Delta)
 
 		AddMovementInput(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y), Delta);
 	}
+}
+
+void ADBCharacter::AddYawInput(float Delta)
+{
+	Super::AddControllerYawInput(Delta * m_CameraComp->FieldOfView / DEFAULT_FOV);
+}
+
+void ADBCharacter::AddPitchInput(float Delta)
+{
+	Super::AddControllerPitchInput(Delta * m_CameraComp->FieldOfView / DEFAULT_FOV);
 }
 
 void ADBCharacter::OnStartJump()
@@ -240,6 +264,21 @@ void ADBCharacter::CreateInventory()
 		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		m_Inventory->SetItemOwner(this);
 	}
+}
+
+float ADBCharacter::GetViewPitch() const
+{
+	if (Controller)
+	{
+		return Controller->GetControlRotation().Pitch;
+	}
+
+	return 0;
+}
+
+void ADBCharacter::GetArmRotation(FRotator & OutRotation) const
+{
+	OutRotation = m_ArmsLagRotation;
 }
 
 UDBCharacterAnimInstance* ADBCharacter::GetAnimInstance()
