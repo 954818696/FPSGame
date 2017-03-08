@@ -14,33 +14,43 @@ UDBWeaponStateEquipFromInventory::UDBWeaponStateEquipFromInventory(const FObject
 
 void UDBWeaponStateEquipFromInventory::InitState()
 {
-	if (!EquipAnimFinishHandle.IsValid())
-	{
+	//if (!EquipAnimFinishHandle.IsValid())
+	//{
 		//EquipAnimFinishHandle = GetWeapon()->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
-	}
+	//}
 }
 
 void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingFromInventory");
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingFromInventory %s", *GetWeapon()->GetName());
 	m_bHandled = false;
 
 	ADBCharacter *TCharacter = GetWeaponOwner();
-	if (TCharacter)
+	ADBWeaponBase* TWeapon = GetWeapon();
+	if (TCharacter && TWeapon)
 	{
+		TCharacter->SetHoldWeapon(TWeapon);
+		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+
+		TWeapon->OnWeaponAnimFinish().Clear();
+		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
+		TWeapon->OnWeaponAnimPlayingOnePoint().Clear();
+		TWeapon->OnWeaponAnimPlayingOnePoint().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnAttachWeaponToHand);
+
 		TCharacter->PlayAnimMontage(m_EquipAnim, 1.f, NAME_None);
-		GetWeapon()->PlayWeaponSound(m_EquipSound);
+		TWeapon->PlayWeaponSound(m_EquipSound);
 	}
 }
 
 void UDBWeaponStateEquipFromInventory::ExitWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingFromInventory");
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingFromInventory %s", *GetWeapon()->GetName());
 }
 
 bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState)
 {
-	if (NewState == EWeaponState::EWeaponState_Inactive  &&
+	if (NewState == EWeaponState::EWeaponState_Active  &&
 		IsHandled())
 	{
 		return true;
@@ -51,20 +61,21 @@ bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState
 
 void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 {
-
+	m_bHandled = true;
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+}
+
+void UDBWeaponStateEquipFromInventory::OnAttachWeaponToHand()
+{
+	ADBCharacter *TCharacter = GetWeaponOwner();
 	ADBWeaponBase* TWeapon = GetWeapon();
-	if (TWeapon)
+	if (TCharacter && TWeapon)
 	{
-		m_bHandled = true;
-		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
-		USceneComponent* TParentComp = TOwner->GetMesh();
+		USceneComponent* TParentComp = TCharacter->GetMesh();
 		if (TParentComp)
 		{
 			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
 		}
-		TOwner->SetHoldWeapon(TWeapon);
-		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 	}
 }
 

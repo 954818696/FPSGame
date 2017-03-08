@@ -32,5 +32,7 @@ protected:
 private:
 	void OnEquipAnimFinish();
 
-	FDelegateHandle EquipAnimFinishHandle;
+	void OnAttachWeaponToHand();
+
+	//FDelegateHandle EquipAnimFinishHandle;
 };

@@ -182,6 +182,7 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 			else
 			{
 				PutHandWeaponToInventory();
+				m_bPendEquipFromInventory = false;
 				m_PendEquipWeapon = NewWeapon;
 			}
 		}
@@ -200,6 +201,7 @@ void ADBCharacter::PutHandWeaponToInventory()
 {
 	if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
 	{
+		m_HoldWeapon->OnUnEquip();
 		GetWorldTimerManager().SetTimer(TimerHandle_PendWeaponEquip, this, &ADBCharacter::EquipPendedWeapon, 1.f, true);
 	}
 }
@@ -209,7 +211,7 @@ void ADBCharacter::EquipPendedWeapon()
 	if (m_HoldWeapon == nullptr)
 	{
 		GetWorldTimerManager().ClearTimer(TimerHandle_PendWeaponEquip);
-		EquipHandWeapon(m_PendEquipWeapon, true);
+		EquipHandWeapon(m_PendEquipWeapon, m_bPendEquipFromInventory);
 	}
 }
 
@@ -221,6 +223,7 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 		if (SwitchWeapon)
 		{
 			PutHandWeaponToInventory();
+			m_bPendEquipFromInventory = true;
 			m_PendEquipWeapon = SwitchWeapon;
 		}
 	}

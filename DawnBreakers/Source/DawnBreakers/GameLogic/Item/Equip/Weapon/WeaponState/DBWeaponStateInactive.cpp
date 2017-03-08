@@ -11,13 +11,13 @@ UDBWeaponStateInactive::UDBWeaponStateInactive(const FObjectInitializer& ObjectI
 
 void UDBWeaponStateInactive::EnterWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Inactive");
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Inactive %s", *GetWeapon()->GetName());
 	m_bHandled = true;
 }
 
 void UDBWeaponStateInactive::ExitWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Inactive");
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Inactive %s", *GetWeapon()->GetName());
 }
 
 bool UDBWeaponStateInactive::CanTransferTo(EWeaponState::Type NewState)

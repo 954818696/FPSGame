@@ -19,6 +19,8 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 	GENERATED_UCLASS_BODY()
 
 	DECLARE_EVENT(ADBWeaponBase, FWeaponAnimFinishEvent)
+	DECLARE_EVENT(ADBWeaponBase, FWeaponAnimPlayingOnePointEvent)
+
 public:
 
 	virtual void PostInitializeComponents() override;
@@ -35,9 +37,11 @@ public:
 
 	FORCEINLINE bool IsInState(EWeaponState::Type WeaponState) const;
 
+	FORCEINLINE int32 GetWeaponHoldStanceType();
+
 	FORCEINLINE FWeaponAnimFinishEvent& OnWeaponAnimFinish() { return WeaponAnimFinishEvent; }
 
-	FORCEINLINE int32 GetWeaponHoldStanceType();
+	FORCEINLINE FWeaponAnimPlayingOnePointEvent& OnWeaponAnimPlayingOnePoint() { return WeaponAnimPlayingOnePointEvent; }
 
 protected:
 
@@ -57,4 +61,5 @@ protected:
 
 private:
 	FWeaponAnimFinishEvent	WeaponAnimFinishEvent;
+	FWeaponAnimPlayingOnePointEvent WeaponAnimPlayingOnePointEvent;
 };

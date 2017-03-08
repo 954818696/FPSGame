@@ -95,6 +95,7 @@ private:
 	ADBWeaponBase* m_HoldWeapon;
 
 	ADBWeaponBase* m_PendEquipWeapon;
+	bool m_bPendEquipFromInventory;
 
 	AActor* m_FocusedInteractItem;
 

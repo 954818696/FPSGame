@@ -20,7 +20,7 @@ void UDBWeaponStateEquipDirectly::InitState()
 
 void UDBWeaponStateEquipDirectly::EnterWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingDirectly");
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_EquipingDirectly %s", *GetWeapon()->GetName());
 	m_bHandled = false;
 
 	ADBCharacter *TCharacter = GetWeaponOwner();
@@ -28,11 +28,7 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 	if (TCharacter && TWeapon)
 	{
 		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
-		ADBWeaponBase* TWeapon = GetWeapon();
-		if (TAnimInstance && TWeapon)
-		{
-			TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
-		}
+		TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
 
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
@@ -50,7 +46,7 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 
 void UDBWeaponStateEquipDirectly::ExitWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingDirectly");
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingDirectly %s", *GetWeapon()->GetName());
 }
 
 bool UDBWeaponStateEquipDirectly::IsHandled()
@@ -71,12 +67,7 @@ bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState)
 
 void UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish()
 {
-
-	ADBWeaponBase* TWeapon = GetWeapon();
-	if (TWeapon)
-	{
-		m_bHandled = true;
-		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
-	}
+	m_bHandled = true;
+	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 

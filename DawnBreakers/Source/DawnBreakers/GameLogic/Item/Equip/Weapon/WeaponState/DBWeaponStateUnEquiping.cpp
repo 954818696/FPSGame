@@ -12,15 +12,21 @@ UDBWeaponStateUnEquiping::UDBWeaponStateUnEquiping(const FObjectInitializer& Obj
 
 void UDBWeaponStateUnEquiping::EnterWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Unequiping");
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Unequiping %s", *GetWeapon()->GetName());
 	m_bHandled = false;
 
 	ADBCharacter *TCharacter = GetWeaponOwner();
 	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TCharacter)
 	{
+		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		TAnimInstance->SetWeaponHoldStance(0);
+
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateUnEquiping::OnUnEquipAnimFinish);
+		TWeapon->OnWeaponAnimPlayingOnePoint().Clear();
+		TWeapon->OnWeaponAnimPlayingOnePoint().AddUObject(this, &UDBWeaponStateUnEquiping::OnAttachWeaponToInventory);
+
 		TWeapon->PlayWeaponSound(m_UnEquipSound);
 		TCharacter->PlayAnimMontage(m_UnEquipAnim, 1.f, NAME_None);
 	}
@@ -28,12 +34,12 @@ void UDBWeaponStateUnEquiping::EnterWeaponState()
 
 void UDBWeaponStateUnEquiping::ExitWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Unequiping");
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Unequiping %s", *GetWeapon()->GetName());
 }
 
 bool UDBWeaponStateUnEquiping::CanTransferTo(EWeaponState::Type NewState)
 {
-	if (NewState == EWeaponState::EWeaponState_Active && IsHandled())
+	if (NewState == EWeaponState::EWeaponState_Inactive && IsHandled())
 	{
 		return true;
 	}
@@ -45,6 +51,15 @@ void UDBWeaponStateUnEquiping::OnUnEquipAnimFinish()
 {
 	m_bHandled = true;
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Inactive);
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->SetHoldWeapon(nullptr);
+	}
+}
+
+void UDBWeaponStateUnEquiping::OnAttachWeaponToInventory()
+{
 	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TWeapon)
 	{
@@ -54,6 +69,5 @@ void UDBWeaponStateUnEquiping::OnUnEquipAnimFinish()
 		{
 			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToInventory, TParentComp);
 		}
-		TOwner->SetHoldWeapon(nullptr);
 	}
 }

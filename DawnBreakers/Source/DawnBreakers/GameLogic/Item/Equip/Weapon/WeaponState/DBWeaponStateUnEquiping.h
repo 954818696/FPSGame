@@ -20,7 +20,6 @@ public:
 
 	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
 
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_UnEquipAnim;
 
@@ -29,5 +28,5 @@ protected:
 
 private:
 	void OnUnEquipAnimFinish();
-	
+	void OnAttachWeaponToInventory();
 };

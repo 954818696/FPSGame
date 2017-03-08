@@ -27,7 +27,7 @@ public:
 
 	void Tick(float DeltaTime);
 	
-protected:
+public:
 
 	UPROPERTY(Instanced, EditDefaultsOnly, NoClear, Category = WeaponState)
 	class UDBWeaponStateActive* m_WeaponStateActive;
