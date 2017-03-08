@@ -24,7 +24,6 @@ public:
 
 	virtual void Fire();
 	
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_FiringAnim;
 
