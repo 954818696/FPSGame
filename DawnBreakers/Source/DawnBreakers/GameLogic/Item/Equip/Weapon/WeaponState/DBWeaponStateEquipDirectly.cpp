@@ -29,11 +29,11 @@ void UDBWeaponStateEquipDirectly::EnterWeaponState()
 	{
 		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
 		TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+		TCharacter->SetHoldWeapon(TWeapon);
 
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish);
 
-		TCharacter->SetHoldWeapon(TWeapon);
 		USceneComponent* TParentComp = TCharacter->GetMesh();
 		if (TParentComp)
 		{

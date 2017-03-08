@@ -22,7 +22,11 @@ void UAnimNotifyWeaponAnimFinish::Notify(USkeletalMeshComponent * MeshComp, UAni
 			ADBCharacter* TDBCharacter = TDBCharacterAnimInstance->GetCharacter();
 			if (TDBCharacter)
 			{
-				TDBCharacter->GetHoldWeapon()->OnWeaponAnimFinish().Broadcast();
+				ADBWeaponBase* TWeapon = TDBCharacter->GetHoldWeapon();
+				if (TWeapon)
+				{
+					TWeapon->OnWeaponAnimFinish().Broadcast();
+				}
 			}
 		}
 	}

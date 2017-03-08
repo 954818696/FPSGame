@@ -30,8 +30,7 @@ void UDBWeaponStateEquipFromInventory::EnterWeaponState()
 	if (TCharacter && TWeapon)
 	{
 		TCharacter->SetHoldWeapon(TWeapon);
-		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
-		TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
+
 
 		TWeapon->OnWeaponAnimFinish().Clear();
 		TWeapon->OnWeaponAnimFinish().AddUObject(this, &UDBWeaponStateEquipFromInventory::OnEquipAnimFinish);
@@ -76,6 +75,8 @@ void UDBWeaponStateEquipFromInventory::OnAttachWeaponToHand()
 		{
 			TWeapon->AttachToTarget(EItemAttachToTargetType::AttachToCharacter, TParentComp);
 		}
+		UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
+		TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
 	}
 }
 

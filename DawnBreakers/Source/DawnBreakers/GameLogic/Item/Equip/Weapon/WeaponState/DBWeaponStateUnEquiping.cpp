@@ -35,6 +35,11 @@ void UDBWeaponStateUnEquiping::EnterWeaponState()
 void UDBWeaponStateUnEquiping::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Unequiping %s", *GetWeapon()->GetName());
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->SetHoldWeapon(nullptr);
+	}
 }
 
 bool UDBWeaponStateUnEquiping::CanTransferTo(EWeaponState::Type NewState)
@@ -51,11 +56,7 @@ void UDBWeaponStateUnEquiping::OnUnEquipAnimFinish()
 {
 	m_bHandled = true;
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Inactive);
-	ADBCharacter *TCharacter = GetWeaponOwner();
-	if (TCharacter)
-	{
-		TCharacter->SetHoldWeapon(nullptr);
-	}
+
 }
 
 void UDBWeaponStateUnEquiping::OnAttachWeaponToInventory()
