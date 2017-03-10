@@ -8,7 +8,7 @@
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	//PlayerCameraManagerClass = ADPlayerCameraManager::StaticClass();
+	PlayerCameraManagerClass = ADBPlayerCameraManager::StaticClass();
 }
 
 void ADBPlayerController::SetPawn(APawn* InPawn)

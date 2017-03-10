@@ -152,7 +152,10 @@ void ADBCharacter::OnStopFire()
 
 void ADBCharacter::OnStartTargeting()
 {
-	SetTargeting(true);
+	if (m_HoldWeapon)
+	{
+		SetTargeting(true);
+	}
 }
 
 void ADBCharacter::OnStopTargeting()
@@ -246,6 +249,7 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 		ADBWeaponBase* SwitchWeapon = Cast<ADBWeaponBase>(m_Inventory->GetOneItemByItemSequence(m_HoldWeapon, bNext));
 		if (SwitchWeapon)
 		{
+			m_IsTargeting = false;
 			PutHandWeaponToInventory();
 			m_bPendEquipFromInventory = true;
 			m_PendEquipWeapon = SwitchWeapon;
@@ -352,7 +356,7 @@ AActor* ADBCharacter::QueryItemByRay()
 
 void ADBCharacter::SetTargeting(bool bNewTargeting)
 {
-
+	m_IsTargeting = bNewTargeting;
 }
 
 void ADBCharacter::SetFPSCamera()
@@ -373,6 +377,26 @@ void ADBCharacter::SwitchCamaraMode()
 	else 
 	{
 		SetFPSCamera();
+	}
+}
+
+void ADBCharacter::SetCameraAim(float Delta, bool bAim)
+{
+	if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective)
+	{
+		if (bAim)
+		{
+			//tX = mAimCameraPos.GetLocation().X;
+			//tY = mAimCameraPos.GetLocation().Y;
+			//tZ = mAimCameraPos.GetLocation().Z;
+			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, m_HoldWeapon->GetMeshComp()->GetSocketLocation(FName(TEXT("IronSight"))), Delta, 10.f);
+
+		}
+		else
+		{
+			// 4 , 5, -7  rifle.
+			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, FVector(4.f, 5.f, -7.f), Delta, 10.f);
+		}
 	}
 }
 

@@ -56,6 +56,10 @@ public:
 	void SwitchEquipHandWeapon(bool bNext);
 
 	void SwitchCamaraMode();
+
+	void SetCameraAim(float Delta, bool bAim);
+
+	FORCEINLINE bool IsTargeting() const { return m_IsTargeting; }
 	//////////////////////////////////////
 
 	//////////////////////////////////////
@@ -111,7 +115,11 @@ private:
 
 	//////////////////////////////////////
 	// Camera.
+	UPROPERTY(EditAnywhere, Category = "DBCamera")
 	UCameraComponent * m_CameraComp;
+	UPROPERTY(EditAnywhere, Category = "DBCamera")
+		FVector TestPos;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "DBCamera")
 	USpringArmComponent * m_CameraBoomComp;
@@ -120,6 +128,8 @@ private:
 	FTransform m_FPSCameraPos;
 
 	ECameraMode m_CurCameraMode;
+
+	bool m_IsTargeting;
 	//////////////////////////////////////
 
 	//////////////////////////////////////

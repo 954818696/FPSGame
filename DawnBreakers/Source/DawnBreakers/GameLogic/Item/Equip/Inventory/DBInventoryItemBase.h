@@ -39,6 +39,8 @@ public:
 
 	void ConfigAttachToTargetSceneComponent(USceneComponent* AttachToTargetSceneComponent);
 
+	FORCEINLINE USkeletalMeshComponent* GetMeshComp() { return m_SkeletalMeshComp;  }
+
 protected:
 	UPROPERTY(EditAnywhere, Category = ADBInventoryItemBase)
 	USkeletalMeshComponent* m_SkeletalMeshComp;
