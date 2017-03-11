@@ -7,7 +7,8 @@
 ADBShootWeaponBase::ADBShootWeaponBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
+	m_AimCameraComp = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("AimCamera"));
+	m_AimCameraComp->bUsePawnControlRotation = true;
 }
 
 void ADBShootWeaponBase::OnReload()

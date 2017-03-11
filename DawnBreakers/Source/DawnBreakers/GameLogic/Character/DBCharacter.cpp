@@ -152,15 +152,18 @@ void ADBCharacter::OnStopFire()
 
 void ADBCharacter::OnStartTargeting()
 {
-	if (m_HoldWeapon)
+	if (m_HoldWeapon->IsA(ADBShootWeaponBase::StaticClass()))
 	{
 		SetTargeting(true);
+		//ADBShootWeaponBase* t = Cast<ADBShootWeaponBase>(m_HoldWeapon);
+		//ADBPlayerController* tt = Cast<ADBPlayerController>(GetController();
+		//tt->SetViewTargetWithBlend(m_CameraComp, t->m_AimCameraComp, 2.f, VTBlend_EaseIn);
 	}
 }
 
 void ADBCharacter::OnStopTargeting()
 {
-	SetTargeting(false);
+//	SetTargeting(false);
 }
 
 void ADBCharacter::InteractWithItem()
@@ -359,13 +362,6 @@ void ADBCharacter::SetTargeting(bool bNewTargeting)
 	m_IsTargeting = bNewTargeting;
 }
 
-void ADBCharacter::SetFPSCamera()
-{
-	m_CameraComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("head")));
-	m_CameraComp->RelativeLocation = m_FPSCameraPos.GetLocation();
-	m_CurCameraMode = ECameraMode::E_FirstPersonPerspective;
-}
-
 void ADBCharacter::SwitchCamaraMode()
 {
 	if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective)
@@ -380,21 +376,29 @@ void ADBCharacter::SwitchCamaraMode()
 	}
 }
 
+void ADBCharacter::SetFPSCamera()
+{
+	m_CameraComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName(TEXT("head")));
+	m_CameraComp->RelativeLocation = FVector(0, 10.f, 0);
+	m_CurCameraMode = ECameraMode::E_FirstPersonPerspective;
+}
+
 void ADBCharacter::SetCameraAim(float Delta, bool bAim)
 {
-	if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective)
+	if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective && m_HoldWeapon)
 	{
 		if (bAim)
 		{
-			//tX = mAimCameraPos.GetLocation().X;
-			//tY = mAimCameraPos.GetLocation().Y;
-			//tZ = mAimCameraPos.GetLocation().Z;
-			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, m_HoldWeapon->GetMeshComp()->GetSocketLocation(FName(TEXT("IronSight"))), Delta, 10.f);
+			FVector SockLoc = m_HoldWeapon->GetMeshComp()->GetSocketTransform(FName(TEXT("IronSight")), RTS_Component).GetTranslation();
 
+
+			const FVector Test = m_HoldWeapon->GetMeshComp()->GetRelativeTransform().InverseTransformPosition(SockLoc);
+
+			//const FVector Test = GetTransform().InverseTransformPosition(m_HoldWeapon->GetMeshComp()->GetSocketLocation(FName(TEXT("IronSight"))));
+			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, Test, Delta, 10.f);
 		}
 		else
 		{
-			// 4 , 5, -7  rifle.
 			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, FVector(4.f, 5.f, -7.f), Delta, 10.f);
 		}
 	}
