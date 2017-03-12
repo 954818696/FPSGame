@@ -14,17 +14,11 @@ UDBWeaponStateActive::UDBWeaponStateActive(const FObjectInitializer& ObjectIniti
 void UDBWeaponStateActive::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Active %s", *GetWeapon()->GetName());
-	// Animation for weapon active.
-	//ADBCharacter *TCharacter = GetWeaponOwner();
-	//if (TCharacter)
-	//{
-		//UDBCharacterAnimInstance* TAnimInstance = TCharacter->GetAnimInstance();
-		//ADBWeaponBase* TWeapon = GetWeapon();
-		//if (TAnimInstance && TWeapon)
-		//{
-		//	TAnimInstance->SetWeaponHoldStance(TWeapon->GetWeaponHoldStanceType());
-		//}
-	//}
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->UpdateIronSightLoc(GetWeapon());
+	}
 }
 
 void UDBWeaponStateActive::ExitWeaponState()

@@ -24,7 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-
 	//////////////////////////////////////
 	// Motion and Control
 	void MoveForward(float Delta);
@@ -55,6 +54,12 @@ public:
 
 	void SwitchEquipHandWeapon(bool bNext);
 
+	//////////////////////////////////////
+	// Camera.
+	//void CalcCamera(float DeltaTime, FMinimalViewInfo & OutResult) override;
+
+	void UpdateIronSightLoc(ADBWeaponBase* NewShootWeapon);
+
 	void SwitchCamaraMode();
 
 	void SetCameraAim(float Delta, bool bAim);
@@ -82,8 +87,6 @@ private:
 	void InteractQueryTick();
 
 	AActor* QueryItemByRay();
-
-	void SetTargeting(bool bNewTargeting);
 
 	void SetFPSCamera();
 
@@ -125,6 +128,8 @@ private:
 	USpringArmComponent * m_CameraBoomComp;
 
 	ECameraMode m_CurCameraMode;
+
+	FVector m_IronSightLoc;
 
 	bool m_IsTargeting;
 	//////////////////////////////////////

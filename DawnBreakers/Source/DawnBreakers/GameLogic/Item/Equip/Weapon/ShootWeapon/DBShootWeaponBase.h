@@ -20,7 +20,5 @@ public:
 
 	virtual void OnStopFire();
 
-	UPROPERTY(EditAnywhere, Category = "WeaponCamera")
-	UCameraComponent * m_AimCameraComp;
 
 };
