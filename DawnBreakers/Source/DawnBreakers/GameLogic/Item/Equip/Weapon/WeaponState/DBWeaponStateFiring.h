@@ -32,5 +32,4 @@ public:
 
 	UPROPERTY(EditAnywhere,  Category = WeaponState)
 	TArray<UParticleSystemComponent*> MuzzleFlash;
-	
 };
