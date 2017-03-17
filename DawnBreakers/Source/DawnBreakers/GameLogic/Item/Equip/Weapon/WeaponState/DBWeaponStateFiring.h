@@ -34,5 +34,4 @@ public:
 
 	UPROPERTY(EditAnywhere,  Category = WeaponState)
 	TArray<UParticleSystemComponent*> m_FiringEffects;
-	
 };
