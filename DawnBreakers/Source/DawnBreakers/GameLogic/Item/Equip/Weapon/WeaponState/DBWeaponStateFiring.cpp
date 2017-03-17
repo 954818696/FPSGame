@@ -12,12 +12,12 @@ UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectIniti
 
 void UDBWeaponStateFiring::EnterWeaponState()
 {
-
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
 }
 
 void UDBWeaponStateFiring::ExitWeaponState()
 {
-
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
 }
 
 bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
@@ -38,6 +38,14 @@ void UDBWeaponStateFiring::RefireTimer()
 
 void UDBWeaponStateFiring::Fire()
 {
+	// Consume ammo.
 
+	// Effect.
+	PlayFiringEffect();
+}
+
+void UDBWeaponStateFiring::PlayFiringEffect()
+{
+	
 }
 

@@ -18,11 +18,13 @@ public:
 
 	virtual void ExitWeaponState() override;
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState);
+	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
 
 	virtual void RefireTimer();
 
-	virtual void Fire();
+	void Fire();
+
+	virtual void PlayFiringEffect();
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_FiringAnim;
