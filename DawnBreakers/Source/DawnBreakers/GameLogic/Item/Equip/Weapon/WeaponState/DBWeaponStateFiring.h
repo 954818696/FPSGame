@@ -31,6 +31,6 @@ public:
 	USoundBase* m_FiringSound;
 
 	UPROPERTY(EditAnywhere,  Category = WeaponState)
-	TArray<UParticleSystemComponent*> MuzzleFlash;
+	TArray<UParticleSystemComponent*> m_FiringEffects;
 	
 };

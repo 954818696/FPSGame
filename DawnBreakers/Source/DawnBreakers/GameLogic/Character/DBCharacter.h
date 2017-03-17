@@ -120,9 +120,6 @@ private:
 	// Camera.
 	UPROPERTY(EditAnywhere, Category = "DBCamera")
 	UCameraComponent * m_CameraComp;
-	
-	UPROPERTY(EditAnywhere, Category = "DBCamera")
-	FVector TestPos;
 
 	UPROPERTY(EditDefaultsOnly, Category = "DBCamera")
 	USpringArmComponent * m_CameraBoomComp;
