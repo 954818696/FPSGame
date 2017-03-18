@@ -8,6 +8,15 @@ UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectIniti
 	: Super(ObjectInitializer)
 {
 	m_StateID = EWeaponState::EWeaponState_Firing;
+
+	m_FireShotsPersecond = 1.f;
+}
+
+void UDBWeaponStateFiring::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	m_TimeBetweenShots = 60.f / m_FireShotsPersecond;
 }
 
 void UDBWeaponStateFiring::EnterWeaponState()
@@ -18,6 +27,7 @@ void UDBWeaponStateFiring::EnterWeaponState()
 void UDBWeaponStateFiring::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
+	GetWeapon()->GetWorldTimerManager().ClearTimer(TimerHandle_RefireTimer);
 }
 
 bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
@@ -38,10 +48,25 @@ void UDBWeaponStateFiring::RefireTimer()
 
 void UDBWeaponStateFiring::Fire()
 {
+#ifdef DEBUG_FIRE
+	FVector CamLoc;
+	FRotator CamRot;
+	GetWeaponOwner()->GetController()->GetPlayerViewPoint(CamLoc, CamRot);
+	//Controller->GetPlayerViewPoint(CamLoc, CamRot);
+	const FVector TraceStart = CamLoc;
+	const FVector Direction = CamRot.Vector();
+	const FVector TraceEnd = TraceStart + (Direction * 10000);
+	FHitResult Hit(ForceInit);
+	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, GetWeaponOwner());
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f);
+	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
+#endif
+
 	// Consume ammo.
 
 	// Effect.
-	PlayFiringEffect();
+	//PlayFiringEffect();
 }
 
 void UDBWeaponStateFiring::PlayFiringEffect()
