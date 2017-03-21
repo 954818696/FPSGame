@@ -44,6 +44,11 @@ void ADBWeaponBase::OnStartFire()
 	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Firing);
 }
 
+void ADBWeaponBase::OnStopFire()
+{
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
+}
+
 void ADBWeaponBase::PlayWeaponSound(USoundBase* SoundToPlay)
 {
 	m_AudioComp->SetSound(SoundToPlay);

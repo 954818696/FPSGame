@@ -29,7 +29,7 @@ public:
 	virtual void PlayFiringEffect();
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	float m_FireShotsPersecond;
+	float m_FireShotsPerMinute;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_FiringAnim;

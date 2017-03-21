@@ -31,6 +31,8 @@ public:
 
 	virtual void OnStartFire();
 
+	virtual void OnStopFire();
+
 	void PlayWeaponSound(USoundBase* SoundToPlay);
 
 	FORCEINLINE int32 GetCurrentFireMode() const { return m_CurrentFireMode;}

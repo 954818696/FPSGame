@@ -11,9 +11,11 @@
 UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateFireInst : public UDBWeaponStateFiring
 {
-	GENERATED_BODY()
-	
-	
-	
+	GENERATED_UCLASS_BODY()
+
+public:
+	virtual void EnterWeaponState() override;
+
+	virtual void RefireTimer() override;
 	
 };

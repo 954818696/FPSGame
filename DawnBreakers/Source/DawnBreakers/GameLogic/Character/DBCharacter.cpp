@@ -137,8 +137,10 @@ void ADBCharacter::OnStartFire()
 
 void ADBCharacter::OnStopFire()
 {
-	DAWNBREAKERS_LOG_INFO("ADBCharacter::OnStopFire");
-
+	if (m_HoldWeapon)
+	{
+		m_HoldWeapon->OnStopFire();
+	}
 }
 
 void ADBCharacter::OnStartTargeting()

@@ -9,14 +9,14 @@ UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectIniti
 {
 	m_StateID = EWeaponState::EWeaponState_Firing;
 
-	m_FireShotsPersecond = 1.f;
+	m_FireShotsPerMinute = 1.f;
 }
 
 void UDBWeaponStateFiring::PostInitProperties()
 {
 	Super::PostInitProperties();
 
-	m_TimeBetweenShots = 60.f / m_FireShotsPersecond;
+	m_TimeBetweenShots = 60.f / m_FireShotsPerMinute;
 }
 
 void UDBWeaponStateFiring::EnterWeaponState()
