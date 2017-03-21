@@ -129,19 +129,10 @@ void ADBCharacter::OnStopJump()
 
 void ADBCharacter::OnStartFire()
 {
-//#ifdef DEBUG_FIRE
-//	FVector CamLoc;
-//	FRotator CamRot;
-//	Controller->GetPlayerViewPoint(CamLoc, CamRot);
-//	const FVector TraceStart = CamLoc;
-//	const FVector Direction = CamRot.Vector();
-//	const FVector TraceEnd = TraceStart + (Direction * 10000);
-//	FHitResult Hit(ForceInit);
-//	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, this);
-//	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-//	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f);
-//	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
-//#endif
+	if (m_HoldWeapon)
+	{
+		m_HoldWeapon->OnStartFire();
+	}
 }
 
 void ADBCharacter::OnStopFire()

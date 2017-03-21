@@ -33,7 +33,8 @@ void UDBWeaponStateFiring::ExitWeaponState()
 bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
 {
 	if (NewState == EWeaponState::EWeaponState_Reloading ||
-		NewState == EWeaponState::EWeaponState_Unequiping)
+		NewState == EWeaponState::EWeaponState_Unequiping ||
+		NewState == EWeaponState::EWeaponState_Active)
 	{
 		return true;
 	}
@@ -58,9 +59,10 @@ void UDBWeaponStateFiring::Fire()
 	const FVector TraceEnd = TraceStart + (Direction * 10000);
 	FHitResult Hit(ForceInit);
 	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, GetWeaponOwner());
-	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f);
-	DrawDebugPoint(GetWorld(), Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
+	UWorld* TCurrentWorld = GetWeaponOwner()->GetWorld();
+	TCurrentWorld->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
+	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
+	DrawDebugPoint(TCurrentWorld, Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
 #endif
 
 	// Consume ammo.
