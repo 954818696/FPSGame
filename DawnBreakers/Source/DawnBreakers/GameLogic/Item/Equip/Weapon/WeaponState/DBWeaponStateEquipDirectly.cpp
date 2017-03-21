@@ -51,7 +51,7 @@ void UDBWeaponStateEquipDirectly::ExitWeaponState()
 
 bool UDBWeaponStateEquipDirectly::IsHandled()
 {
-	return true;
+	return m_bHandled;
 }
 
 bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState)

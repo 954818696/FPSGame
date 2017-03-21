@@ -27,6 +27,8 @@ public:
 	virtual void Fire();
 
 	virtual void PlayFiringEffect();
+
+	virtual void StopFiringEffect();
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireShotsPerMinute;
@@ -41,6 +43,8 @@ public:
 	TArray<UParticleSystemComponent*> m_FiringEffects;
 
 protected:
+	bool m_bIsPlayingAnim;
+
 	float m_TimeBetweenShots;
 
 	FTimerHandle TimerHandle_RefireTimer;

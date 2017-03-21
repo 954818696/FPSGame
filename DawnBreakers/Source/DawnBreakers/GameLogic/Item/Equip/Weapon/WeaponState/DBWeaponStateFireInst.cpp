@@ -18,6 +18,6 @@ void UDBWeaponStateFireInst::EnterWeaponState()
 
 void UDBWeaponStateFireInst::RefireTimer()
 {
-	DAWNBREAKERS_LOG_INFO("***************UDBWeaponStateFireInst::RefireTimer");
+	//DAWNBREAKERS_LOG_INFO("***************UDBWeaponStateFireInst::RefireTimer");
 	Fire();
 }

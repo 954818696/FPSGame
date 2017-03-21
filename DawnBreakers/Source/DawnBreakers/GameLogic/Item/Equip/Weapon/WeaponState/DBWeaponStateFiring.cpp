@@ -10,6 +10,7 @@ UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectIniti
 	m_StateID = EWeaponState::EWeaponState_Firing;
 
 	m_FireShotsPerMinute = 1.f;
+	m_bIsPlayingAnim = false;
 }
 
 void UDBWeaponStateFiring::PostInitProperties()
@@ -28,6 +29,7 @@ void UDBWeaponStateFiring::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
 	GetWeapon()->GetWorldTimerManager().ClearTimer(TimerHandle_RefireTimer);
+	StopFiringEffect();
 }
 
 bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
@@ -68,11 +70,25 @@ void UDBWeaponStateFiring::Fire()
 	// Consume ammo.
 
 	// Effect.
-	//PlayFiringEffect();
+	PlayFiringEffect();
 }
 
 void UDBWeaponStateFiring::PlayFiringEffect()
 {
-	
+	if (!m_bIsPlayingAnim)
+	{
+		DAWNBREAKERS_LOG_INFO("______________________UDBWeaponStateFiring::PlayFiringEffect");
+		GetWeaponOwner()->PlayAnimMontage(m_FiringAnim, 1.f, NAME_None);
+		m_bIsPlayingAnim = true;
+	}
+}
+
+void UDBWeaponStateFiring::StopFiringEffect()
+{
+	if (m_bIsPlayingAnim)
+	{
+		GetWeaponOwner()->StopAnimMontage(m_FiringAnim);
+		m_bIsPlayingAnim = false;
+	}
 }
 
