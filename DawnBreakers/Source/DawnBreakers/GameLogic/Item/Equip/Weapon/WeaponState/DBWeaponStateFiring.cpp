@@ -81,6 +81,8 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 		GetWeaponOwner()->PlayAnimMontage(m_FiringAnim, 1.f, NAME_None);
 		m_bIsPlayingAnim = true;
 	}
+
+	GetWeapon()->PlayWeaponSound(m_FiringSound);
 }
 
 void UDBWeaponStateFiring::StopFiringEffect()
