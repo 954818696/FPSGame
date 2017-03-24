@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS(Abstract, Placeable)
+UCLASS(Blueprintable, Abstract, NotPlaceable)
 class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 {
 	GENERATED_UCLASS_BODY()
@@ -19,6 +19,5 @@ public:
 	virtual void OnSwitchMode();
 
 	virtual void OnStopFire();
-
 
 };

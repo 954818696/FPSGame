@@ -20,6 +20,7 @@ public class DawnBreakersEditorTarget : TargetRules
 		ref List<string> OutExtraModuleNames
 		)
 	{
-		OutExtraModuleNames.Add("DawnBreakers");
+		//OutExtraModuleNames.Add("DawnBreakers");
+		OutExtraModuleNames.AddRange( new string[] { "DawnBreakersEditorExtend"} );
 	}
 }

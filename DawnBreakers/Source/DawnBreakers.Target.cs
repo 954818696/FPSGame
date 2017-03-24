@@ -21,5 +21,10 @@ public class DawnBreakersTarget : TargetRules
 		)
 	{
 		OutExtraModuleNames.Add("DawnBreakers");
+		
+		if (UEBuildConfiguration.bBuildEditor)
+        {
+            OutExtraModuleNames.Add("DawnBreakersEditorExtend");
+        }
 	}
 }

@@ -77,11 +77,14 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 {
 	if (!m_bIsPlayingAnim)
 	{
-		DAWNBREAKERS_LOG_INFO("______________________UDBWeaponStateFiring::PlayFiringEffect");
 		GetWeaponOwner()->PlayAnimMontage(m_FiringAnim, 1.f, NAME_None);
 		m_bIsPlayingAnim = true;
 	}
 
+	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
+	{
+		m_FiringEffects[i]->ActivateSystem();
+	}
 	GetWeapon()->PlayWeaponSound(m_FiringSound);
 }
 
@@ -91,6 +94,10 @@ void UDBWeaponStateFiring::StopFiringEffect()
 	{
 		GetWeaponOwner()->StopAnimMontage(m_FiringAnim);
 		m_bIsPlayingAnim = false;
+	}
+	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
+	{
+		m_FiringEffects[i]->DeactivateSystem();
 	}
 }
 
