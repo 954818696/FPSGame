@@ -38,7 +38,8 @@ namespace UnrealBuildTool.Rules
                         "Engine",
                         "PropertyEditor",
                         "Slate",
-                        "SlateCore"
+                        "SlateCore",
+                        "InputCore"
                     }
 				);
 
