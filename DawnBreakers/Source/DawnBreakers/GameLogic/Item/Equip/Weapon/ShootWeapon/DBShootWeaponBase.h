@@ -19,5 +19,4 @@ public:
 	virtual void OnSwitchMode();
 
 	virtual void OnStopFire();
-
 };

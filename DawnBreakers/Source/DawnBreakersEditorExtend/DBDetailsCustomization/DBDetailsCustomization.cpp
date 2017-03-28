@@ -65,12 +65,12 @@ struct FFireShotEffectItem : public TSharedFromThis<FFireShotEffectItem>
 		if (Obj.IsValid())
 		{
 			UParticleSystemComponent* NewValue = NewSelection->PSC.Get();
-			UDBWeaponStateFiring* FireState = Cast<UDBWeaponStateFiring>(Obj.Get());
-			if (FireState != NULL)
+			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(Obj.Get());
+			if (NewWeapon != NULL)
 			{
-				if (FireState->m_FiringEffects.IsValidIndex(Index))
+				if (NewWeapon->FireShotEffect.IsValidIndex(Index))
 				{
-					FireState->m_FiringEffects[Index] = NewValue;
+					NewWeapon->FireShotEffect[Index] = NewValue;
 					TextBlock->SetText(NewSelection->DisplayName.ToString());
 				}
 			}
@@ -82,10 +82,10 @@ struct FFireShotEffectItem : public TSharedFromThis<FFireShotEffectItem>
 		FString CurrentText;
 		{
 			UParticleSystemComponent* CurrentValue = NULL;
-			UDBWeaponStateFiring* FireState = Cast<UDBWeaponStateFiring>(Obj.Get());
-			if (FireState != NULL)
+			ADBWeaponBase* NewWeapon = Cast<ADBWeaponBase>(Obj.Get());
+			if (NewWeapon != NULL)
 			{
-				CurrentValue = FireState->m_FiringEffects[Index];
+				CurrentValue = NewWeapon->FireShotEffect[Index];
 			}
 
 			for (int32 i = 0; i < Choices.Num(); i++)
@@ -107,7 +107,7 @@ struct FFireShotEffectItem : public TSharedFromThis<FFireShotEffectItem>
 				.Text(FText::FromString(CurrentText))
 			];
 	}
-
+	
 	int32 Index;
 	TWeakObjectPtr<UObject> Obj;
 	const TArray<TSharedPtr<FFireShotParticleCompChoice>>& Choices;
@@ -133,7 +133,7 @@ public:
 			FireShotEffectEntries[ChildIndex] = NewEntry;
 
 			TSharedRef<IPropertyHandle> ElementHandle = MyArrayProperty->GetElement(ChildIndex);
-			ChildrenBuilder.AddChildContent(FText::FromString(TEXT("MuzzleFlash")))
+			ChildrenBuilder.AddChildContent(FText::FromString(TEXT("m_FireShotEffects")))
 				.NameContent()
 				[
 					ElementHandle->CreatePropertyNameWidget()
@@ -157,11 +157,17 @@ void FDBDetailsCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailLayou
 	DetailLayout.GetObjectsBeingCustomized(Objects);
 	if (Objects.Num() == 1 && Objects[0].IsValid())
 	{
-		IDetailCategoryBuilder& WeaponCategory = DetailLayout.EditCategory("WeaponState");
-		TSharedRef<IPropertyHandle> MuzzleFlash = DetailLayout.GetProperty(TEXT("m_FiringEffects"));
+		IDetailCategoryBuilder& WeaponCategory = DetailLayout.EditCategory("Weapon");
+		TSharedRef<IPropertyHandle> WeaponFireEffect = DetailLayout.GetProperty(TEXT("FireShotEffect"));
 
 		uint32 NumChildren = 0;
-		MuzzleFlash->GetNumChildren(NumChildren);
+		WeaponFireEffect->GetNumChildren(NumChildren);
+
+		if (WeaponFireEffect->IsValidHandle() == false)
+		{
+			return;
+		}
+
 		TArray<TSharedPtr<FFireShotParticleCompChoice>> Choices;
 		Choices.Add(MakeShareable(new FFireShotParticleCompChoice(NULL, NAME_None)));
 		{
@@ -202,7 +208,7 @@ void FDBDetailsCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailLayou
 			}
 		}
 
-		//WeaponCategory.AddCustomBuilder(MakeShareable(new FFireShotEffectArrayBuilder(Objects[0], MuzzleFlash, Choices, true)), false);
+		WeaponCategory.AddCustomBuilder(MakeShareable(new FFireShotEffectArrayBuilder(Objects[0], WeaponFireEffect, Choices, true)), false);
 	}
 }
 

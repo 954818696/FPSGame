@@ -39,8 +39,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	USoundBase* m_FiringSound;
 
-	UPROPERTY(EditDefaultsOnly,  Category = WeaponState)
-	TArray<UParticleSystemComponent*> m_FiringEffects;
+	UPROPERTY(BlueprintReadWrite ,EditDefaultsOnly,  Category = WeaponState)
+	TArray<int32> m_FiringEffects;
 
 protected:
 	bool m_bIsPlayingAnim;

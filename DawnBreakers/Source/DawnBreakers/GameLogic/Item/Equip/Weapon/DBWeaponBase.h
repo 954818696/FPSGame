@@ -29,6 +29,7 @@ public:
 
 	virtual void OnUnEquip();
 
+	// 近战，投掷武器使用激发也是走此
 	virtual void OnStartFire();
 
 	virtual void OnStopFire();
@@ -45,18 +46,26 @@ public:
 
 	FORCEINLINE FWeaponAnimPlayingOnePointEvent& OnWeaponAnimPlayingOnePoint() { return WeaponAnimPlayingOnePointEvent; }
 
-protected:
+	FORCEINLINE void PlayFireShotEffectByIndex(int32 EffectIndex);
 
+	FORCEINLINE void StopFireShotEffectByIndex(int32 EffectIndex);
+
+	/*武器激发特效，不仅仅局限于枪械。近战，投掷均可*/
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	TArray<UParticleSystemComponent*> FireShotEffect;
+
+protected:
 	/** Weapon State Machine */
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	/* Plays the idle, wandering or hunting sound */
-	UPROPERTY(VisibleAnywhere, Category = "Sound")
+	UPROPERTY(VisibleAnywhere, Category = Sound)
 	UAudioComponent* m_AudioComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponAnim)
 	EWeaponTypeForEquipAnim m_WeaponHoldType;
+
 
 	// 和tarry中firestate顺序对应
 	int32 m_CurrentFireMode;

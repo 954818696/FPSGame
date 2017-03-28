@@ -14,7 +14,7 @@ void FDawnBreakersEditorExtend::StartupModule()
 {
 	UE_LOG(DawnBreakersEditorExtend, Warning, TEXT("DawnBreakersEditorExtend  Start...."));
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	PropertyModule.RegisterCustomClassLayout("DBShootWeaponBase", FOnGetDetailCustomizationInstance::CreateStatic(&FDBDetailsCustomization::MakeInstance));
+	PropertyModule.RegisterCustomClassLayout("DBWeaponBase", FOnGetDetailCustomizationInstance::CreateStatic(&FDBDetailsCustomization::MakeInstance));
 }
 
 void FDawnBreakersEditorExtend::ShutdownModule()

@@ -11,7 +11,6 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	m_AudioComp->bAutoActivate = false;
 	m_AudioComp->bAutoDestroy = false;
 	m_AudioComp->SetupAttachment(RootComponent);
-
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
@@ -68,4 +67,15 @@ bool ADBWeaponBase::IsInState(EWeaponState::Type WeaponState) const
 int32 ADBWeaponBase::GetWeaponHoldStanceType()
 {
 	return (int32)m_WeaponHoldType;
+}
+
+// 不做校验了，靠人，每帧检查恶心人
+FORCEINLINE void ADBWeaponBase::PlayFireShotEffectByIndex(int32 EffectIndex)
+{
+	FireShotEffect[EffectIndex]->ActivateSystem();
+}
+
+FORCEINLINE void ADBWeaponBase::StopFireShotEffectByIndex(int32 EffectIndex)
+{
+	FireShotEffect[EffectIndex]->DeactivateSystem();
 }

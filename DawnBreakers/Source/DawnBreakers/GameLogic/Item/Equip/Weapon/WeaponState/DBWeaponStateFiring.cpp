@@ -83,7 +83,7 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 
 	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
 	{
-		m_FiringEffects[i]->ActivateSystem();
+		GetWeapon()->PlayFireShotEffectByIndex(m_FiringEffects[i]);
 	}
 	GetWeapon()->PlayWeaponSound(m_FiringSound);
 }
@@ -97,7 +97,7 @@ void UDBWeaponStateFiring::StopFiringEffect()
 	}
 	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
 	{
-		m_FiringEffects[i]->DeactivateSystem();
+		GetWeapon()->StopFireShotEffectByIndex(m_FiringEffects[i]);
 	}
 }
 
