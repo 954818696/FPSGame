@@ -22,6 +22,7 @@ class DAWNBREAKERS_API ADBWeaponBase : public ADBInventoryItemBase
 	DECLARE_EVENT(ADBWeaponBase, FWeaponAnimPlayingOnePointEvent)
 
 public:
+	virtual void BeginPlay() override;
 
 	virtual void PostInitializeComponents() override;
 
@@ -49,6 +50,8 @@ public:
 	FORCEINLINE void PlayFireShotEffectByIndex(int32 EffectIndex);
 
 	FORCEINLINE void StopFireShotEffectByIndex(int32 EffectIndex);
+
+	static void SetInstanceOnFireEffectArray(AActor* Weapon, TArray<UParticleSystemComponent*>& OnFireEffectArray);
 
 	/*武器激发特效，不仅仅局限于枪械。近战，投掷均可*/
 	UPROPERTY(EditAnywhere, Category = Weapon)

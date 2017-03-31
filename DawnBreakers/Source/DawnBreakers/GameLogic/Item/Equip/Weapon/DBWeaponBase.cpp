@@ -14,6 +14,33 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
+void ADBWeaponBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SetInstanceOnFireEffectArray(this, FireShotEffect);
+
+	for (int32 i = 0; i < FireShotEffect.Num(); i++)
+	{
+		if (FireShotEffect[i] != NULL)
+		{
+			if (RootComponent == NULL && FireShotEffect[i]->IsRegistered())
+			{
+				FireShotEffect[i]->DeactivateSystem();
+				FireShotEffect[i]->KillParticlesForced();
+				FireShotEffect[i]->UnregisterComponent(); // SCS components were registered without our permission
+				FireShotEffect[i]->bWasActive = false;
+			}
+			FireShotEffect[i]->bAutoActivate = false;
+			FireShotEffect[i]->SecondsBeforeInactive = 0.0f;
+			FireShotEffect[i]->SetOnlyOwnerSee(false); // we handle this in AUTPlayerController::UpdateHiddenComponents() instead
+			FireShotEffect[i]->bUseAttachParentBound = true;
+		}
+	}
+
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Inactive);
+}
+
 void ADBWeaponBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -78,4 +105,28 @@ FORCEINLINE void ADBWeaponBase::PlayFireShotEffectByIndex(int32 EffectIndex)
 FORCEINLINE void ADBWeaponBase::StopFireShotEffectByIndex(int32 EffectIndex)
 {
 	FireShotEffect[EffectIndex]->DeactivateSystem();
+}
+
+void ADBWeaponBase::SetInstanceOnFireEffectArray(AActor* Weapon, TArray<UParticleSystemComponent*>& OnFireEffectArray)
+{
+	TArray<const UBlueprintGeneratedClass*> ParentBPClassStack;
+	UBlueprintGeneratedClass::GetGeneratedClassesHierarchy(Weapon->GetClass(), ParentBPClassStack);
+	for (int32 i = ParentBPClassStack.Num() - 1; i >= 0; i--)
+	{
+		const UBlueprintGeneratedClass* CurrentBPGClass = ParentBPClassStack[i];
+		if (CurrentBPGClass->SimpleConstructionScript)
+		{
+			TArray<USCS_Node*> ConstructionNodes = CurrentBPGClass->SimpleConstructionScript->GetAllNodes();
+			for (int32 j = 0; j < ConstructionNodes.Num(); j++)
+			{
+				for (int32 k = 0; k < OnFireEffectArray.Num(); k++)
+				{
+					if (Cast<UParticleSystemComponent>(ConstructionNodes[j]->ComponentTemplate) == OnFireEffectArray[k])
+					{
+						OnFireEffectArray[k] = Cast<UParticleSystemComponent>((UObject*)FindObjectWithOuter(Weapon, ConstructionNodes[j]->ComponentTemplate->GetClass(), ConstructionNodes[j]->GetVariableName()));
+					}
+				}
+			}
+		}
+	}
 }

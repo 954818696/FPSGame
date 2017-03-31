@@ -12,7 +12,8 @@
 #include "DBWeaponStateReload.h"
 
 UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_CurrentWeaponState(nullptr)
 {
 	m_WeaponStateActive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateActive>(this, TEXT("WeaponStateActive"), false);
 	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WeaponStateInactive"), false);
@@ -29,7 +30,7 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	//}
 	m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, TEXT("WeaponStateFiring"), false));
 
-	m_CurrentWeaponState = m_WeaponStateInactive;
+	//m_CurrentWeaponState = m_WeaponStateInactive;
 }
 
 void UDBWeaponStateMachine::InitStateMachine()
@@ -92,6 +93,14 @@ void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponState)
 			{
 				m_CurrentWeaponState->EnterWeaponState();
 			}
+		}
+	}
+	else if (m_CurrentWeaponState == nullptr)
+	{
+		bool bSuccess = SetCurrentState(WeaponState);
+		if (bSuccess)
+		{
+			m_CurrentWeaponState->EnterWeaponState();
 		}
 	}
 }
