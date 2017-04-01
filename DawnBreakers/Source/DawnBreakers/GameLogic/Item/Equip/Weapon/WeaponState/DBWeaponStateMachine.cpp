@@ -50,7 +50,7 @@ bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 		case EWeaponState::EWeaponState_Inactive:
 			m_CurrentWeaponState = m_WeaponStateInactive;
 			break;
-		case EWeaponState::EWeaponState_Firing:
+		case EWeaponState::EWeaponState_Attack:
 		{
 			uint8 FireMode = GetOuterADBWeaponBase()->GetCurrentFireMode();
 			m_CurrentWeaponState = m_WeaponStateFiring[FireMode];

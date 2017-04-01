@@ -7,7 +7,7 @@
 UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	m_StateID = EWeaponState::EWeaponState_Firing;
+	m_StateID = EWeaponState::EWeaponState_Attack;
 
 	m_FireShotsPerMinute = 1.f;
 	m_bIsPlayingAnim = false;
@@ -22,12 +22,12 @@ void UDBWeaponStateFiring::PostInitProperties()
 
 void UDBWeaponStateFiring::EnterWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
+	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Attack %s", *GetWeapon()->GetName());
 }
 
 void UDBWeaponStateFiring::ExitWeaponState()
 {
-	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Firing %s", *GetWeapon()->GetName());
+	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Attack %s", *GetWeapon()->GetName());
 	GetWeapon()->GetWorldTimerManager().ClearTimer(TimerHandle_RefireTimer);
 	StopFiringEffect();
 }
@@ -69,6 +69,7 @@ void UDBWeaponStateFiring::Fire()
 
 	// Consume ammo.
 
+
 	// Effect.
 	PlayFiringEffect();
 }
@@ -86,6 +87,11 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 		GetWeapon()->PlayFireShotEffectByIndex(m_FiringEffects[i]);
 	}
 	GetWeapon()->PlayWeaponSound(m_FiringSound);
+
+	if (m_FiringCameraShake != nullptr)
+	{
+		GetWeaponOwner()->PlayCameraShake(m_FiringCameraShake, 1);
+	}
 }
 
 void UDBWeaponStateFiring::StopFiringEffect()

@@ -6,6 +6,7 @@
 #include "GameLogic/Animation/AnimInstance/DBCharacterAnimInstance.h"
 #include "GameLogic/Item/Equip/Weapon/ShootWeapon/DBShootWeaponBase.h"
 #include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
+#include "Player/DBPlayerController.h"
 
 #define DEFAULT_FOV 90.f
 #define MAX_ARM_LAG_ROT 20.f
@@ -256,6 +257,18 @@ void ADBCharacter::UpdateIronSightLoc(ADBWeaponBase* NewShootWeapon)
 	ADBShootWeaponBase* TNewShootWeapon = Cast<ADBShootWeaponBase>(NewShootWeapon);
 	const FVector SockLoc = TNewShootWeapon->GetMeshComp()->GetSocketTransform(FName(TEXT("IronSight")), RTS_Component).GetTranslation();
 	m_IronSightLoc = NewShootWeapon->GetMeshComp()->GetRelativeTransform().InverseTransformPosition(SockLoc);
+}
+
+FORCEINLINE void ADBCharacter::PlayCameraShake(TSubclassOf<class UCameraShake> Shake, float Scale /*= 1.f*/, ECameraAnimPlaySpace::Type PlaySpace /*= ECameraAnimPlaySpace::CameraLocal*/, FRotator UserPlaySpaceRot /*= FRotator::ZeroRotator*/)
+{
+	if (Shake != nullptr)
+	{
+		ADBPlayerController* DBPlayerController = Cast<ADBPlayerController>(GetController());
+		if (DBPlayerController)
+		{
+			DBPlayerController->ClientPlayCameraShake(Shake, Scale, PlaySpace, UserPlaySpaceRot);
+		}
+	}
 }
 
 void ADBCharacter::CreateInventory()

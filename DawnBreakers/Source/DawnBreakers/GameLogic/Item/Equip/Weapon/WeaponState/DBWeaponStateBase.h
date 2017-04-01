@@ -12,7 +12,7 @@ namespace EWeaponState
 		EWeaponState_Invalid = -1,
 		EWeaponState_Active = 0,												// 已经装备在手上
 		EWeaponState_Inactive = 1,												// 没在手上
-		EWeaponState_Firing = 2,												// 开火
+		EWeaponState_Attack = 2,												// 开火
 		EWeaponState_EquipingDirectly = 3,								// 直接捡起来装备
 		EWeaponState_EquipingFromInventory = 4,					// 把背包里的取出装备到手上
 		EWeaponState_Unequiping = 5,										// 从手上移到背包

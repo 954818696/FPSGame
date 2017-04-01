@@ -67,7 +67,7 @@ void ADBWeaponBase::OnUnEquip()
 
 void ADBWeaponBase::OnStartFire()
 {
-	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Firing);
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Attack);
 }
 
 void ADBWeaponBase::OnStopFire()

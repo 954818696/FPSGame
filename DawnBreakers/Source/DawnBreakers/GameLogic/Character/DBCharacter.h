@@ -65,6 +65,8 @@ public:
 	void SetCameraAim(float Delta, bool bAim);
 
 	FORCEINLINE bool IsTargeting() const { return m_IsTargeting; }
+
+	FORCEINLINE void PlayCameraShake(TSubclassOf<class UCameraShake> Shake, float Scale = 1.f, ECameraAnimPlaySpace::Type PlaySpace = ECameraAnimPlaySpace::CameraLocal, FRotator UserPlaySpaceRot = FRotator::ZeroRotator);
 	//////////////////////////////////////
 
 	//////////////////////////////////////
