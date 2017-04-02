@@ -11,12 +11,12 @@ ADBInventoryItemBase::ADBInventoryItemBase(const FObjectInitializer& ObjectIniti
 
 	m_SkeletalMeshComp = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("SkeletalMesh"));
 	RootComponent = m_SkeletalMeshComp;
-	//m_SkeletalMeshComp->SetCollisionObjectType(ECC_WorldDynamic);
-	//m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
+
 	m_SkeletalMeshComp->SetCollisionProfileName(FName(TEXT("PhysicsActor")));
 	m_SkeletalMeshComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-	m_SkeletalMeshComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	m_SkeletalMeshComp->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
+	m_SkeletalMeshComp->SetCollisionResponseToChannel(COLLISION_INTERACTABLE, ECR_Block);
+	m_SkeletalMeshComp->SetCollisionResponseToChannel(COLLISION_WEAPON_PROJ, ECR_Block);
+	m_SkeletalMeshComp->SetCollisionResponseToChannel(COLLISION_WEAPON_INST, ECR_Block);
 	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	m_SkeletalMeshComp->SetSimulatePhysics(true);
 	m_SkeletalMeshComp->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;

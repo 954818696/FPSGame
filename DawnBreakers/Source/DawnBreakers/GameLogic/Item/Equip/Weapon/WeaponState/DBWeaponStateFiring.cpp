@@ -65,6 +65,8 @@ void UDBWeaponStateFiring::Fire()
 	TCurrentWorld->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
 	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
 	DrawDebugPoint(TCurrentWorld, Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
+
+	//FireShot(damage, loc, Rot)
 #endif
 
 	// Consume ammo.
