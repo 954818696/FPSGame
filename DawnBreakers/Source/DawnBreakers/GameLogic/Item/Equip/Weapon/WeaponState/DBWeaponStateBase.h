@@ -40,7 +40,7 @@ public:
 
 	virtual bool IsHandled() { return m_bHandled; }
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState) { return true; }
+	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State) { return true; }
 
 	virtual void Tick(float DeltaTime) {}
 
@@ -51,6 +51,7 @@ public:
 	ADBCharacter* GetWeaponOwner();
 
 protected:
+
 	EWeaponState::Type m_StateID;
 
 	bool m_bHandled;

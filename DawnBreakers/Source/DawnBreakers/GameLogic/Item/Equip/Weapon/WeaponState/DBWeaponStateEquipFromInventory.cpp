@@ -47,7 +47,7 @@ void UDBWeaponStateEquipFromInventory::ExitWeaponState()
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_EquipingFromInventory %s", *GetWeapon()->GetName());
 }
 
-bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState)
+bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State)
 {
 	if (NewState == EWeaponState::EWeaponState_Active  &&
 		IsHandled())

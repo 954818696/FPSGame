@@ -19,4 +19,10 @@ public:
 	virtual void OnSwitchMode();
 
 	virtual void OnStopFire();
+
+	FORCEINLINE int32 GetAmmoClipSize() { return m_AmmoClipSize; }
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
+	int32 m_AmmoClipSize;
 };

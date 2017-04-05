@@ -19,11 +19,13 @@ class DAWNBREAKERS_API UDBWeaponStateMachine : public UObject
 public:
 	void InitStateMachine();
 
-	bool SetCurrentState(EWeaponState::Type WeaponState);
+	UDBWeaponStateBase* GetState(EWeaponState::Type WeaponStateType);
 
-	void GotoState(EWeaponState::Type WeaponState);
+	void GotoState(EWeaponState::Type WeaponStateType);
 
-	bool IsInState(EWeaponState::Type WeaponState);
+	void SetStateDirectly(EWeaponState::Type WeaponStateType);
+
+	bool IsInState(EWeaponState::Type WeaponStateType);
 
 	FORCEINLINE class UDBWeaponStateBase* GetPrevState() const;
 

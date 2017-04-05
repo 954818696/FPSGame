@@ -28,17 +28,17 @@ void ADBWeaponBase::BeginPlay()
 			{
 				FireShotEffect[i]->DeactivateSystem();
 				FireShotEffect[i]->KillParticlesForced();
-				FireShotEffect[i]->UnregisterComponent(); // SCS components were registered without our permission
+				FireShotEffect[i]->UnregisterComponent();
 				FireShotEffect[i]->bWasActive = false;
 			}
 			FireShotEffect[i]->bAutoActivate = false;
 			FireShotEffect[i]->SecondsBeforeInactive = 0.0f;
-			FireShotEffect[i]->SetOnlyOwnerSee(false); // we handle this in AUTPlayerController::UpdateHiddenComponents() instead
+			FireShotEffect[i]->SetOnlyOwnerSee(false);
 			FireShotEffect[i]->bUseAttachParentBound = true;
 		}
 	}
 
-	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Inactive);
+	m_WeaponStateMachine->SetStateDirectly(EWeaponState::EWeaponState_Inactive);
 }
 
 void ADBWeaponBase::PostInitializeComponents()

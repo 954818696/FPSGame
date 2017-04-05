@@ -78,3 +78,38 @@ ADBInventoryItemBase* ADBInventoryBase::GetOneItemByItemSequence(const ADBInvent
 	return ReturnItem;
 }
 
+bool ADBInventoryBase::IsHaveAmmo(EAmmoType AmmoType) const
+{
+	for (int32 i = 0; i < m_Ammo.Num(); ++i)
+	{
+		if (m_Ammo[i].m_AmmoType == AmmoType)
+		{
+			return m_Ammo[i].m_CurrentAmount > 0;
+		}
+	}
+
+	return false;
+}
+
+bool ADBInventoryBase::CostAmmo(EAmmoType AmmoType, int32 CostAmount)
+{
+	bool Result = false;
+	for (int32 i = 0; i < m_Ammo.Num(); ++i)
+	{
+		if (m_Ammo[i].m_AmmoType == AmmoType)
+		{
+			if (m_Ammo[i].m_CurrentAmount > 0)
+			{
+				Result = true;
+				--m_Ammo[i].m_CurrentAmount;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+	return Result;
+}
+

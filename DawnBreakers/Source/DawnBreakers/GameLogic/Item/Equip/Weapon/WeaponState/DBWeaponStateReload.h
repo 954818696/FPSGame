@@ -19,7 +19,7 @@ public:
 
 	virtual void ExitWeaponState() override;
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState);
+	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)

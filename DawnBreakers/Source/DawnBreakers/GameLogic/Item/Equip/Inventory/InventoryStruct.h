@@ -70,8 +70,8 @@ struct FAmmoSlot
 	UPROPERTY(EditDefaultsOnly, Category = FAmmoSlot)
 	int32 m_MaxAmount;
 
+	UPROPERTY(EditDefaultsOnly, Category = FAmmoSlot)
 	int32 m_CurrentAmount;
-
 };
 
 

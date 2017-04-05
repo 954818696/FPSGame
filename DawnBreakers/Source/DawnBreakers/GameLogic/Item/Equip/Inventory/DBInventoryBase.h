@@ -26,6 +26,10 @@ public:
 
 	bool AddAmmo() { return true; }
 
+	bool IsHaveAmmo(EAmmoType AmmoType) const;
+
+	bool CostAmmo(EAmmoType AmmoType, int32 CostAmount);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
 	FInventory m_Inventory;

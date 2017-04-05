@@ -4,6 +4,7 @@
 
 #include "DBWeaponStateBase.h"
 #include "GameLogic/Item/Equip/Weapon/Effects/WeaponImpactEffect.h"
+#include "GameLogic/Item/Equip/Inventory/ItemType.h"
 #include "DBWeaponStateFiring.generated.h"
 
 /**
@@ -21,7 +22,7 @@ public:
 
 	virtual void ExitWeaponState() override;
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
+	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State) override;
 
 	virtual void Fire();
 
@@ -31,6 +32,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	bool m_bAutomaticMode;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	EAmmoType m_CostAmmoType;
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	TSubclassOf<class UDamageType> m_DamageType;
@@ -49,6 +53,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	USoundBase* m_FiringSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	USoundBase* m_RunOutOfAmmoSound;
 
 	UPROPERTY(BlueprintReadWrite ,EditDefaultsOnly,  Category = Effect)
 	TArray<int32> m_FiringEffects;

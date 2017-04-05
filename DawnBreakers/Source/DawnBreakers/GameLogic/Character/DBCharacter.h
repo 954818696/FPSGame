@@ -75,6 +75,8 @@ public:
 	// Born Default Data Initializing.
 	void CreateInventory();
 
+	FORCEINLINE class ADBInventoryBase* GetInventory() { return m_Inventory;  }
+
 	//////////////////////////////////////
 
 	FORCEINLINE void SetHoldWeapon(ADBWeaponBase* NewWeapon) { m_HoldWeapon = NewWeapon; }
@@ -103,7 +105,7 @@ protected:
 	class UDBCharacterMovementComponent* m_CharacterMovement;
 
 	UPROPERTY(EditDefaultsOnly , Category = ADBCharacter)
-	TSubclassOf<class ADBInventoryBase> m_InventoryClass;
+	TSubclassOf<ADBInventoryBase> m_InventoryClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = ADBCharacter)
 	float m_MaxInteractableDistance;

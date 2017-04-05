@@ -39,7 +39,7 @@ void UDBWeaponStateReload::ExitWeaponState()
 	}
 }
 
-bool UDBWeaponStateReload::CanTransferTo(EWeaponState::Type NewState)
+bool UDBWeaponStateReload::CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State)
 {
 	if (NewState == EWeaponState::EWeaponState_Unequiping || NewState == EWeaponState::EWeaponState_Inactive)
 	{

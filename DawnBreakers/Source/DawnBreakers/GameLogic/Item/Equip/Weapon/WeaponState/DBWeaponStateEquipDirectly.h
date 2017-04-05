@@ -22,7 +22,7 @@ public:
 
 	virtual bool IsHandled() override;
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
+	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_EquipDirectlyAnim;

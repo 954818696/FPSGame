@@ -19,6 +19,6 @@ public:
 
 	virtual void ExitWeaponState();
 
-	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
+	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State) override;
 	
 };

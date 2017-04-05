@@ -20,7 +20,7 @@ void UDBWeaponStateInactive::ExitWeaponState()
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Inactive %s", *GetWeapon()->GetName());
 }
 
-bool UDBWeaponStateInactive::CanTransferTo(EWeaponState::Type NewState)
+bool UDBWeaponStateInactive::CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State)
 {
 	if (NewState == EWeaponState::EWeaponState_EquipingDirectly ||
 		NewState == EWeaponState::EWeaponState_EquipingFromInventory)

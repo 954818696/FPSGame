@@ -25,6 +25,8 @@ void UDBWeaponStateFiring::PostInitProperties()
 void UDBWeaponStateFiring::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Attack %s", *GetWeapon()->GetName());
+
+
 }
 
 void UDBWeaponStateFiring::ExitWeaponState()
@@ -34,7 +36,7 @@ void UDBWeaponStateFiring::ExitWeaponState()
 	StopFiringEffect();
 }
 
-bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
+bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State)
 {
 	if (NewState == EWeaponState::EWeaponState_Reloading ||
 		NewState == EWeaponState::EWeaponState_Unequiping ||
@@ -48,9 +50,14 @@ bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
 
 void UDBWeaponStateFiring::Fire()
 {
-
 	// Effect.
 	PlayFiringEffect();
+	bool CanContinueFire = GetWeaponOwner()->GetInventory()->CostAmmo(m_CostAmmoType, 1);
+	if (CanContinueFire == false)
+	{
+		GetWeapon()->PlayWeaponSound(m_RunOutOfAmmoSound);
+		GetWeapon()->OnStopFire();
+	}
 }
 
 void UDBWeaponStateFiring::PlayFiringEffect()

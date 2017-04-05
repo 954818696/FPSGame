@@ -32,76 +32,68 @@ void UDBWeaponStateMachine::InitStateMachine()
 	m_WeaponStateEquipFromInventory->InitState();
 }
 
-bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
+UDBWeaponStateBase* UDBWeaponStateMachine::GetState(EWeaponState::Type WeaponState)
 {
-	bool bResult = true;
-	UDBWeaponStateBase* TWeaponState = m_CurrentWeaponState;
+	UDBWeaponStateBase* TWeaponState = nullptr;
 	switch (WeaponState)
 	{
 		case EWeaponState::EWeaponState_Active:
-			m_CurrentWeaponState = m_WeaponStateActive;
+			TWeaponState = m_WeaponStateActive;
 			break;
 		case EWeaponState::EWeaponState_Inactive:
-			m_CurrentWeaponState = m_WeaponStateInactive;
+			TWeaponState = m_WeaponStateInactive;
 			break;
 		case EWeaponState::EWeaponState_Attack:
 		{
 			uint8 FireMode = GetOuterADBWeaponBase()->GetCurrentFireMode();
-			m_CurrentWeaponState = m_WeaponStateFiring[FireMode];
+			TWeaponState = m_WeaponStateFiring[FireMode];
 			break;
 		}
 		case EWeaponState:: EWeaponState_EquipingDirectly:
-			m_CurrentWeaponState = m_WeaponStateEquipDirectly;
+			TWeaponState = m_WeaponStateEquipDirectly;
 			break;
 		case EWeaponState::EWeaponState_EquipingFromInventory:
-			m_CurrentWeaponState = m_WeaponStateEquipFromInventory;
+			TWeaponState = m_WeaponStateEquipFromInventory;
 			break;
 		case EWeaponState::EWeaponState_Unequiping:
-			m_CurrentWeaponState = m_WeaponStateUnequiping;
+			TWeaponState = m_WeaponStateUnequiping;
 			break;
 		case EWeaponState::EWeaponState_SwitchMode:
-			m_CurrentWeaponState = m_WeaponStateSwitchMode;
+			TWeaponState = m_WeaponStateSwitchMode;
 			break;
 		case EWeaponState::EWeaponState_Reloading:
-			m_CurrentWeaponState = m_WeaponStateReloading;
+			TWeaponState = m_WeaponStateReloading;
 			break;
 		default:
 		{
-			bResult = false;
 			DAWNBREAKERS_LOG_ERROR("UDBWeaponStateMachine::SetCurrentState Invalid State id = %d", (int32)WeaponState);
 		}
 	}
 
-	if (bResult)
-	{
-		m_PrevWeaponState = TWeaponState;
-	}
-
-	return bResult;
+	return TWeaponState;
 }
 
-void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponState)
+void UDBWeaponStateMachine::GotoState(EWeaponState::Type WeaponStateType)
 {
-	if (m_CurrentWeaponState && m_CurrentWeaponState->GetStateID() != WeaponState)
+	if (m_CurrentWeaponState && m_CurrentWeaponState->GetStateID() != WeaponStateType)
 	{
-		if (m_CurrentWeaponState->CanTransferTo(WeaponState))
+		UDBWeaponStateBase* TWeaponState = GetState(WeaponStateType);
+		if (TWeaponState)
 		{
-			m_CurrentWeaponState->ExitWeaponState();
-			bool bSuccess = SetCurrentState(WeaponState);
-			if (bSuccess)
+			if (m_CurrentWeaponState->CanTransferTo(WeaponStateType, TWeaponState))
 			{
+				m_PrevWeaponState = m_CurrentWeaponState;
+				m_CurrentWeaponState->ExitWeaponState();
+				m_CurrentWeaponState = TWeaponState;
 				m_CurrentWeaponState->EnterWeaponState();
 			}
 		}
 	}
-	else if (m_CurrentWeaponState == nullptr)
-	{
-		bool bSuccess = SetCurrentState(WeaponState);
-		if (bSuccess)
-		{
-			m_CurrentWeaponState->EnterWeaponState();
-		}
-	}
+}
+
+void UDBWeaponStateMachine::SetStateDirectly(EWeaponState::Type WeaponStateType)
+{
+	m_CurrentWeaponState = GetState(WeaponStateType);
 }
 
 bool UDBWeaponStateMachine::IsInState(EWeaponState::Type WeaponState)

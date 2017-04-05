@@ -54,7 +54,7 @@ bool UDBWeaponStateEquipDirectly::IsHandled()
 	return m_bHandled;
 }
 
-bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState)
+bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State)
 {
 	if (NewState == EWeaponState::EWeaponState_Active  &&
 		IsHandled())

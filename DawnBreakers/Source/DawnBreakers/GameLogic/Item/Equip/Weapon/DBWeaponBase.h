@@ -56,14 +56,14 @@ public:
 
 protected:
 	/** Weapon State Machine */
-	UPROPERTY(EditDefaultsOnly, Category = WeaponState, NoClear)
+	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	/* Plays the idle, wandering or hunting sound */
 	UPROPERTY(VisibleAnywhere, Category = Sound)
 	UAudioComponent* m_AudioComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = WeaponAnim)
+	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
 	EWeaponTypeForEquipAnim m_WeaponHoldType;
 
 
