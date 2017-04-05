@@ -32,7 +32,7 @@ public:
 
 	virtual void OnStopFire();
 
-	void PlayWeaponSound(USoundBase* SoundToPlay);
+	UAudioComponent* PlayWeaponSound(USoundBase* Sound);
 
 	FORCEINLINE int32 GetCurrentFireMode() const { return m_CurrentFireMode;}
 
@@ -58,10 +58,6 @@ protected:
 	/** Weapon State Machine */
 	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
-
-	/* Plays the idle, wandering or hunting sound */
-	UPROPERTY(VisibleAnywhere, Category = Sound)
-	UAudioComponent* m_AudioComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
 	EWeaponTypeForEquipAnim m_WeaponHoldType;

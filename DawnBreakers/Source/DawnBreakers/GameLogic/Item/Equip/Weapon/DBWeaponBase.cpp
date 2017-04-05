@@ -7,10 +7,6 @@ ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
 	m_CurrentFireMode(0)
 {
-	m_AudioComp = ObjectInitializer.CreateDefaultSubobject<UAudioComponent>(this, TEXT("WeaponSoundComp"));
-	m_AudioComp->bAutoActivate = false;
-	m_AudioComp->bAutoDestroy = false;
-	m_AudioComp->SetupAttachment(RootComponent);
 	m_WeaponStateMachine = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateMachine>(this, TEXT("WeaponStateMachine"), false);
 }
 
@@ -75,10 +71,15 @@ void ADBWeaponBase::OnStopFire()
 	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
 }
 
-void ADBWeaponBase::PlayWeaponSound(USoundBase* SoundToPlay)
+UAudioComponent* ADBWeaponBase::PlayWeaponSound(USoundBase* Sound)
 {
-	m_AudioComp->SetSound(SoundToPlay);
-	m_AudioComp->Play();
+	UAudioComponent* TAuidioComp = nullptr;
+	if (Sound)
+	{
+		TAuidioComp = UGameplayStatics::SpawnSoundAttached(Sound, GetItemOwner()->GetRootComponent());
+	}
+
+	return TAuidioComp;
 }
 
 bool ADBWeaponBase::IsInState(EWeaponState::Type WeaponState) const
