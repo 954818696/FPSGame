@@ -25,6 +25,8 @@ public:
 
 	bool IsInState(EWeaponState::Type WeaponState);
 
+	FORCEINLINE class UDBWeaponStateBase* GetPrevState() const;
+
 	void Tick(float DeltaTime);
 	
 public:
@@ -54,6 +56,7 @@ public:
 	class UDBWeaponStateReload* m_WeaponStateReloading;
 
 private:
-	class UDBWeaponStateBase* m_CurrentWeaponState;
+	UDBWeaponStateBase* m_CurrentWeaponState;
+	UDBWeaponStateBase* m_PrevWeaponState;
 
 };

@@ -16,6 +16,8 @@ class DAWNBREAKERS_API UDBWeaponStateFireInst : public UDBWeaponStateFiring
 public:
 	virtual void EnterWeaponState() override;
 
-	virtual void RefireTimer() override;
+	void RefireTimer();
+
+	virtual void Fire() override;
 	
 };

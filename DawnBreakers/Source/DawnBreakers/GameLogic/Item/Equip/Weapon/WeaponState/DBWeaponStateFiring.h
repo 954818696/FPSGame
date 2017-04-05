@@ -3,6 +3,7 @@
 #pragma once
 
 #include "DBWeaponStateBase.h"
+#include "GameLogic/Item/Equip/Weapon/Effects/WeaponImpactEffect.h"
 #include "DBWeaponStateFiring.generated.h"
 
 /**
@@ -22,8 +23,6 @@ public:
 
 	virtual bool CanTransferTo(EWeaponState::Type NewState) override;
 
-	virtual void RefireTimer();
-
 	virtual void Fire();
 
 	virtual void PlayFiringEffect();
@@ -31,7 +30,16 @@ public:
 	virtual void StopFiringEffect();
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	TSubclassOf<class UDamageType> m_DamageType;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_HitDamage;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireShotsPerMinute;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_FireRange;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_FiringAnim;
@@ -41,6 +49,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite ,EditDefaultsOnly,  Category = Effect)
 	TArray<int32> m_FiringEffects;
+
+	UPROPERTY(EditDefaultsOnly, Category = Effect)
+	TSubclassOf<AWeaponImpactEffect> m_ImpactEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = Effect)
 	TSubclassOf<UCameraShake> m_FiringCameraShake;

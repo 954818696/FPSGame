@@ -44,33 +44,8 @@ bool UDBWeaponStateFiring::CanTransferTo(EWeaponState::Type NewState)
 	return false;
 }
 
-void UDBWeaponStateFiring::RefireTimer()
-{
-
-}
-
 void UDBWeaponStateFiring::Fire()
 {
-#ifdef DEBUG_FIRE
-	FVector CamLoc;
-	FRotator CamRot;
-	GetWeaponOwner()->GetController()->GetPlayerViewPoint(CamLoc, CamRot);
-	//Controller->GetPlayerViewPoint(CamLoc, CamRot);
-	const FVector TraceStart = CamLoc;
-	const FVector Direction = CamRot.Vector();
-	const FVector TraceEnd = TraceStart + (Direction * 10000);
-	FHitResult Hit(ForceInit);
-	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, GetWeaponOwner());
-	UWorld* TCurrentWorld = GetWeaponOwner()->GetWorld();
-	TCurrentWorld->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, TraceParams);
-	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
-	DrawDebugPoint(TCurrentWorld, Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
-
-	//FireShot(damage, loc, Rot)
-#endif
-
-	// Consume ammo.
-
 
 	// Effect.
 	PlayFiringEffect();

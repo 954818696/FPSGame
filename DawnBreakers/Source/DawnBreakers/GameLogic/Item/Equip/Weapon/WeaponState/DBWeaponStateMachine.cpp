@@ -13,24 +13,17 @@
 
 UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
-	m_CurrentWeaponState(nullptr)
+	m_CurrentWeaponState(nullptr),
+	m_PrevWeaponState(nullptr)
 {
 	m_WeaponStateActive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateActive>(this, TEXT("WeaponStateActive"), false);
-	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WeaponStateInactive"), false);
+	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WseaponStateInactive"), false);
 	m_WeaponStateEquipDirectly = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquipDirectly>(this, TEXT("WeaponStateEquipDirectly"), false);
 	m_WeaponStateEquipFromInventory = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquipFromInventory>(this, TEXT("WeaponStateEquipFromInventory"), false);
 	m_WeaponStateUnequiping = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateUnEquiping>(this, TEXT("WeaponStateUnEquiping"), false);
 	m_WeaponStateSwitchMode = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateSwitchMode>(this, TEXT("WeaponStateSwitchMode"), false);
 	m_WeaponStateReloading = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateReload>(this, TEXT("WeaponStateReloading"), false);
-	// Multi-Fire Mode.
-	//for (int32 i = 0; i < m_TotalFireModes; ++i)
-	//{
-	//	FName ObjName = *FString::Printf(TEXT("WeaponStateFiring%d"), i);
-	//	m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, ObjName, false));
-	//}
 	m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, TEXT("WeaponStateFiring"), false));
-
-	//m_CurrentWeaponState = m_WeaponStateInactive;
 }
 
 void UDBWeaponStateMachine::InitStateMachine()
@@ -42,6 +35,7 @@ void UDBWeaponStateMachine::InitStateMachine()
 bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 {
 	bool bResult = true;
+	UDBWeaponStateBase* TWeaponState = m_CurrentWeaponState;
 	switch (WeaponState)
 	{
 		case EWeaponState::EWeaponState_Active:
@@ -76,6 +70,11 @@ bool UDBWeaponStateMachine::SetCurrentState(EWeaponState::Type WeaponState)
 			bResult = false;
 			DAWNBREAKERS_LOG_ERROR("UDBWeaponStateMachine::SetCurrentState Invalid State id = %d", (int32)WeaponState);
 		}
+	}
+
+	if (bResult)
+	{
+		m_PrevWeaponState = TWeaponState;
 	}
 
 	return bResult;
@@ -115,6 +114,11 @@ bool UDBWeaponStateMachine::IsInState(EWeaponState::Type WeaponState)
 	}
 
 	return false;
+}
+
+class UDBWeaponStateBase* UDBWeaponStateMachine::GetPrevState() const
+{
+	return m_PrevWeaponState;
 }
 
 void UDBWeaponStateMachine::Tick(float DeltaTime)
