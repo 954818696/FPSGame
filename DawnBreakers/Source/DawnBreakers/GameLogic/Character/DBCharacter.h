@@ -58,6 +58,8 @@ public:
 	// Camera.
 	//void CalcCamera(float DeltaTime, FMinimalViewInfo & OutResult) override;
 
+	FVector GetFiringDirection();
+
 	void UpdateIronSightLoc(ADBWeaponBase* NewShootWeapon);
 
 	void SwitchCamaraMode();

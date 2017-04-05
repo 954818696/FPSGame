@@ -5,7 +5,9 @@
 
 
 UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_bAutomaticMode(true),
+	m_FireRange(10000.0f)
 {
 	m_StateID = EWeaponState::EWeaponState_Attack;
 

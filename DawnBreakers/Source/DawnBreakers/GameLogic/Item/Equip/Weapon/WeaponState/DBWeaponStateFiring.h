@@ -28,6 +28,9 @@ public:
 	virtual void PlayFiringEffect();
 
 	virtual void StopFiringEffect();
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	bool m_bAutomaticMode;
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	TSubclassOf<class UDamageType> m_DamageType;

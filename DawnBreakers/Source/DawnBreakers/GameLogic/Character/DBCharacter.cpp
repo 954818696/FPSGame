@@ -247,6 +247,34 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 	}
 }
 
+FVector ADBCharacter::GetFiringDirection()
+{
+	ADBPlayerController* TPlayerController = Cast<ADBPlayerController>(GetController());
+	FVector OutDirection;
+
+	if (TPlayerController)
+	{
+		FVector TCamLoc;
+		FRotator TCamRot;
+		TPlayerController->GetPlayerViewPoint(TCamLoc, TCamRot);
+		OutDirection = TCamRot.Vector();
+	}
+	// AI
+	else if (Instigator)
+	{
+		//ADBShootAIController* AIController = MyPawn ? Cast<ADBShootAIController>(MyPawn->Controller) : NULL;
+		//if (AIController != NULL)
+		//{
+		//	AimDirection = AIController->GetControlRotation().Vector();
+		//}
+		//else
+		{
+			OutDirection = Instigator->GetBaseAimRotation().Vector();
+		}
+	}
+
+	return OutDirection;
+}
 
 void ADBCharacter::UpdateIronSightLoc(ADBWeaponBase* NewShootWeapon)
 {
