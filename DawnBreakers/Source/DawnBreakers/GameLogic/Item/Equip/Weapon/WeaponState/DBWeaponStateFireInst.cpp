@@ -4,16 +4,25 @@
 #include "DBWeaponStateFireInst.h"
 
 UDBWeaponStateFireInst::UDBWeaponStateFireInst(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_FireBaseSpread(5.f),
+	m_FireSpreadIncrement(0.15f),
+	m_FireMaxSpread(3.f),
+	m_CurFireSpread(0.f)
 {
 }
-
-
 
 void UDBWeaponStateFireInst::EnterWeaponState()
 {
 	Fire();
 	GetWeapon()->GetWorldTimerManager().SetTimer(TimerHandle_RefireTimer, this, &UDBWeaponStateFireInst::RefireTimer, m_TimeBetweenShots, true);
+}
+
+void UDBWeaponStateFireInst::ExitWeaponState()
+{
+	Super::ExitWeaponState();
+
+	m_CurFireSpread = 0.f;
 }
 
 void UDBWeaponStateFireInst::RefireTimer()
@@ -23,12 +32,17 @@ void UDBWeaponStateFireInst::RefireTimer()
 
 void UDBWeaponStateFireInst::Fire()
 {
+	float TSpread = m_FireBaseSpread + m_CurFireSpread;
+	m_CurFireSpread = FMath::Min(m_FireMaxSpread, m_CurFireSpread + m_FireSpreadIncrement);
+	const int32 TRandomSeed = FMath::Rand();
+	FRandomStream TWeaponRandomStream(TRandomSeed);
+	const float TConeHalfAngle = FMath::DegreesToRadians(TSpread * 0.5f);
+	const FVector TDirection = GetWeaponOwner()->GetFiringDirection();
+	const FVector FiringDir = TWeaponRandomStream.VRandCone(TDirection, TConeHalfAngle, TConeHalfAngle);
 
-	FVector CamLoc;
-	FRotator CamRot;
-	const FVector TraceStart = GetWeapon()->GetMeshComp()->GetSocketLocation(FName(TEXT("MuzzleSocket")));
-	const FVector Direction = GetWeaponOwner()->GetFiringDirection()
-	const FVector TraceEnd = TraceStart + Direction * m_FireRange;
+	const FVector TraceStart = GetWeapon()->GetMeshComp()->GetSocketLocation(FName(TEXT("Muzzle")));
+	const FVector TraceEnd = TraceStart + FiringDir * m_FireRange;
+	
 	FHitResult Hit(ForceInit);
 	FCollisionQueryParams TraceParams(TEXT("HitTest"), true, GetWeaponOwner());
 	UWorld* TCurrentWorld = GetWeaponOwner()->GetWorld();

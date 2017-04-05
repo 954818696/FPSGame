@@ -16,8 +16,23 @@ class DAWNBREAKERS_API UDBWeaponStateFireInst : public UDBWeaponStateFiring
 public:
 	virtual void EnterWeaponState() override;
 
+	virtual void ExitWeaponState() override;
+
 	void RefireTimer();
 
 	virtual void Fire() override;
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_FireBaseSpread;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_FireSpreadIncrement;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_FireMaxSpread;
+
+private:
+	float m_CurFireSpread;
 	
 };
