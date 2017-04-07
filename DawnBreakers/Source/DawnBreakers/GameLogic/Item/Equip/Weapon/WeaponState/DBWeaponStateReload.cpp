@@ -35,6 +35,8 @@ void UDBWeaponStateReload::ExitWeaponState()
 		if (TCharacter)
 		{
 			TCharacter->StopAnimMontage(m_ReloadAnim);
+			ADBShootWeaponBase* TShootWeapon = Cast<ADBShootWeaponBase>(GetWeapon());
+			TShootWeapon->WeaponReloadAmmo();
 		}
 	}
 }

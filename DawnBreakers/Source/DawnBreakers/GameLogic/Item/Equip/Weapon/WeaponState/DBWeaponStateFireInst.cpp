@@ -17,7 +17,7 @@ void UDBWeaponStateFireInst::EnterWeaponState()
 	Super::EnterWeaponState();
 
 	Fire();
-	GetWeapon()->GetWorldTimerManager().SetTimer(TimerHandle_RefireTimer, this, &UDBWeaponStateFireInst::RefireTimer, m_TimeBetweenShots, true);
+	m_Weapon->GetWorldTimerManager().SetTimer(TimerHandle_RefireTimer, this, &UDBWeaponStateFireInst::RefireTimer, m_TimeBetweenShots, true);
 }
 
 void UDBWeaponStateFireInst::ExitWeaponState()
@@ -42,7 +42,7 @@ void UDBWeaponStateFireInst::Fire()
 	const float TConeHalfAngle = FMath::DegreesToRadians(TSpread * 0.5f);
 	const FVector TDirection = GetWeaponOwner()->GetFiringDirection();
 	const FVector FiringDir = TWeaponRandomStream.VRandCone(TDirection, TConeHalfAngle, TConeHalfAngle);
-	const FVector TraceStart = GetWeapon()->GetMeshComp()->GetSocketLocation(FName(TEXT("Muzzle")));
+	const FVector TraceStart = m_Weapon->GetMeshComp()->GetSocketLocation(FName(TEXT("Muzzle")));
 	const FVector TraceEnd = TraceStart + FiringDir * m_FireRange;
 
 	// Trace parameter Set and Perform trace to retrieve hit info.

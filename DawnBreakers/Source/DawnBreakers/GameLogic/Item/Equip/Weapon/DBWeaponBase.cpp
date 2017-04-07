@@ -97,14 +97,19 @@ int32 ADBWeaponBase::GetWeaponHoldStanceType()
 	return (int32)m_WeaponHoldType;
 }
 
-// 不做校验了，靠人，每帧检查恶心人
 FORCEINLINE void ADBWeaponBase::PlayFireShotEffectByIndex(int32 EffectIndex)
 {
+	if (EffectIndex < 0)
+	{
+		return;
+	}
 	FireShotEffect[EffectIndex]->ActivateSystem();
 }
 
 FORCEINLINE void ADBWeaponBase::StopFireShotEffectByIndex(int32 EffectIndex)
 {
+	if (EffectIndex == -1)
+		return;
 	FireShotEffect[EffectIndex]->DeactivateSystem();
 }
 

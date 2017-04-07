@@ -15,11 +15,7 @@ UDBWeaponStateActive::UDBWeaponStateActive(const FObjectInitializer& ObjectIniti
 void UDBWeaponStateActive::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Active %s", *GetWeapon()->GetName());
-	ADBCharacter *TCharacter = GetWeaponOwner();
-	if (TCharacter)
-	{
-		TCharacter->UpdateIronSightLoc(GetWeapon());
-	}
+
 }
 
 void UDBWeaponStateActive::ExitWeaponState()
@@ -32,19 +28,6 @@ bool UDBWeaponStateActive::CanTransferTo(EWeaponState::Type NewState, UDBWeaponS
 	if (NewState != EWeaponState::EWeaponState_EquipingDirectly ||
 		NewState != EWeaponState::EWeaponState_EquipingFromInventory)
 	{
-		if (NewState == EWeaponState::EWeaponState_Attack)
-		{
-			if (State->IsA(UDBWeaponStateFiring::StaticClass()))
-			{
-				UDBWeaponStateFiring* FiringState = Cast<UDBWeaponStateFiring>(State);
-				bool IsHaveAmmo = GetWeaponOwner()->GetInventory()->IsHaveAmmo(FiringState->m_CostAmmoType);
-				if (!IsHaveAmmo)
-				{
-					GetWeapon()->PlayWeaponSound(FiringState->m_RunOutOfAmmoSound);
-				}
-				return IsHaveAmmo;
-			}
-		}
 		return true;
 	}
 	return false;

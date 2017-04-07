@@ -42,6 +42,8 @@ public:
 
 	void OnStopFire();
 
+	void OnReloadAmmo();
+
 	void OnStartTargeting();
 
 	void OnStopTargeting();

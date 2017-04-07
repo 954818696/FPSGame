@@ -91,25 +91,28 @@ bool ADBInventoryBase::IsHaveAmmo(EAmmoType AmmoType) const
 	return false;
 }
 
-bool ADBInventoryBase::CostAmmo(EAmmoType AmmoType, int32 CostAmount)
+int32 ADBInventoryBase::GetAmmoForWeapon(EAmmoType AmmoType, int32 AmmoClipSize, int32 CurAmmosInClip)
 {
-	bool Result = false;
+	int32 GetAmmos = 0;
 	for (int32 i = 0; i < m_Ammo.Num(); ++i)
 	{
 		if (m_Ammo[i].m_AmmoType == AmmoType)
 		{
-			if (m_Ammo[i].m_CurrentAmount > 0)
+			int32 NeedAmmos = AmmoClipSize - CurAmmosInClip;
+			if (m_Ammo[i].m_CurrentAmount >= NeedAmmos)
 			{
-				Result = true;
-				--m_Ammo[i].m_CurrentAmount;
+				GetAmmos = NeedAmmos;
+				m_Ammo[i].m_CurrentAmount -= NeedAmmos;
 			}
 			else
 			{
-				break;
+				GetAmmos = m_Ammo[i].m_CurrentAmount;
+				m_Ammo[i].m_CurrentAmount = 0;
 			}
+			break;
 		}
 	}
 
-	return Result;
+	return GetAmmos;
 }
 

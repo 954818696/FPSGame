@@ -72,4 +72,6 @@ protected:
 	float m_TimeBetweenShots;
 
 	FTimerHandle TimerHandle_RefireTimer;
+
+	class ADBShootWeaponBase* m_Weapon;
 };

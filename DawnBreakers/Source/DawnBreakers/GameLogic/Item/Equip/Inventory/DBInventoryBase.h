@@ -28,7 +28,7 @@ public:
 
 	bool IsHaveAmmo(EAmmoType AmmoType) const;
 
-	bool CostAmmo(EAmmoType AmmoType, int32 CostAmount);
+	int32 GetAmmoForWeapon(EAmmoType AmmoType, int32 AmmoClipSize, int32 CurAmmosInClip);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)

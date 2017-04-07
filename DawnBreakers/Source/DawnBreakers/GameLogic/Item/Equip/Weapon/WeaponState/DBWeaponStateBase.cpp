@@ -26,7 +26,7 @@ ADBCharacter* UDBWeaponStateBase::GetWeaponOwner()
 	ADBWeaponBase* TWeapon = GetWeapon();
 	if (TWeapon)
 	{
-		ADBCharacter* TOwner = Cast<ADBCharacter>(TWeapon->GetOwner());
+		ADBCharacter* TOwner = TWeapon->GetItemOwner();
 		return TOwner;
 	}
 

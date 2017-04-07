@@ -7,7 +7,8 @@
 UDBWeaponStateFiring::UDBWeaponStateFiring(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
 	m_bAutomaticMode(true),
-	m_FireRange(10000.0f)
+	m_FireRange(10000.0f),
+	m_Weapon(nullptr)
 {
 	m_StateID = EWeaponState::EWeaponState_Attack;
 
@@ -25,8 +26,10 @@ void UDBWeaponStateFiring::PostInitProperties()
 void UDBWeaponStateFiring::EnterWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("EnterWeaponState:EWeaponState_Attack %s", *GetWeapon()->GetName());
-
-
+	if (m_Weapon == nullptr)
+	{
+		m_Weapon = Cast<ADBShootWeaponBase>(GetWeapon());
+	}
 }
 
 void UDBWeaponStateFiring::ExitWeaponState()
@@ -52,12 +55,7 @@ void UDBWeaponStateFiring::Fire()
 {
 	// Effect.
 	PlayFiringEffect();
-	bool CanContinueFire = GetWeaponOwner()->GetInventory()->CostAmmo(m_CostAmmoType, 1);
-	if (CanContinueFire == false)
-	{
-		GetWeapon()->PlayWeaponSound(m_RunOutOfAmmoSound);
-		GetWeapon()->OnStopFire();
-	}
+	 m_Weapon->ConsumeAmmo(m_CostAmmoType, 1);
 }
 
 void UDBWeaponStateFiring::PlayFiringEffect()
@@ -70,9 +68,9 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 
 	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
 	{
-		GetWeapon()->PlayFireShotEffectByIndex(m_FiringEffects[i]);
+		m_Weapon->PlayFireShotEffectByIndex(m_FiringEffects[i]);
 	}
-	GetWeapon()->PlayWeaponSound(m_FiringSound);
+	m_Weapon->PlayWeaponSound(m_FiringSound);
 
 	if (m_FiringCameraShake != nullptr)
 	{
@@ -89,7 +87,7 @@ void UDBWeaponStateFiring::StopFiringEffect()
 	}
 	for (int32 i = 0; i < m_FiringEffects.Num(); ++i)
 	{
-		GetWeapon()->StopFireShotEffectByIndex(m_FiringEffects[i]);
+		m_Weapon->StopFireShotEffectByIndex(m_FiringEffects[i]);
 	}
 }
 

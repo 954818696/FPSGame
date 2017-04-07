@@ -140,6 +140,15 @@ void ADBCharacter::OnStopFire()
 	}
 }
 
+void ADBCharacter::OnReloadAmmo()
+{
+	if (m_HoldWeapon && m_HoldWeapon->IsA(ADBShootWeaponBase::StaticClass()))
+	{
+		ADBShootWeaponBase* ShootWeapon = Cast<ADBShootWeaponBase>(m_HoldWeapon);
+		ShootWeapon->OnReload();
+	}
+}
+
 void ADBCharacter::OnStartTargeting()
 {
 	if (m_HoldWeapon && m_HoldWeapon->IsA(ADBShootWeaponBase::StaticClass()))

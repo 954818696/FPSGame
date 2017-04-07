@@ -13,7 +13,17 @@ class DAWNBREAKERS_API UDawnBreakersGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void Init() override;
+
+	virtual void Shutdown() override;
 	
-	
-	
+	void BeginLoadMap(const FString& MapName);
+
+	//UFUNCTION()
+	void EndLoadMap();
+
+
+private:
+	TSharedPtr<class LevelStreamLoader>  m_LevelStreamLoader;
 };
