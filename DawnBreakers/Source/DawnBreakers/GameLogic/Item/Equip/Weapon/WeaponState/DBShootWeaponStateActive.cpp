@@ -16,12 +16,11 @@ void UDBShootWeaponStateActive::EnterWeaponState()
 {
 	Super::EnterWeaponState();
 	
-	GetWeapon()->PlayFireShotEffectByIndex(m_AfterFiringSmokeEffects);
+	UDBWeaponStateBase* PrevState = GetOuterUDBWeaponStateMachine()->GetPrevState();
 
-	ADBCharacter *TCharacter = GetWeaponOwner();
-	if (TCharacter)
+	if (PrevState->GetStateID() == EWeaponState::EWeaponState_Attack)
 	{
-		TCharacter->UpdateIronSightLoc(GetWeapon());
+		GetWeapon()->PlayFireShotEffectByIndex(m_AfterFiringSmokeEffects);
 	}
 }
 

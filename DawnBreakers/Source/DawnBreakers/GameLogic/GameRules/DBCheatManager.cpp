@@ -18,3 +18,8 @@ void UDBCheatManager::Test()
 	}
 	
 }
+
+void UDBCheatManager::SetIronSight()
+{
+
+}

@@ -14,7 +14,9 @@ class DAWNBREAKERS_API UDBCheatManager : public UCheatManager
 	GENERATED_BODY()
 
 	UFUNCTION(exec)
-	virtual void Test();
+	void Test();
 	
+	UFUNCTION(exec)
+	void SetIronSight();
 	
 };

@@ -81,4 +81,10 @@ private:
 	
 	// To Support Multikeys press trigger firing.
 	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
+
+
+	// Cheat
+public:
+
+private:
 };

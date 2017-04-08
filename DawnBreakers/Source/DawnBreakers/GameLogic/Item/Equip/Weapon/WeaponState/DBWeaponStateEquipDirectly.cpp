@@ -68,6 +68,11 @@ bool UDBWeaponStateEquipDirectly::CanTransferTo(EWeaponState::Type NewState, UDB
 void UDBWeaponStateEquipDirectly::OnEquipDirectlyAnimFinish()
 {
 	m_bHandled = true;
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->UpdateIronSightLoc(GetWeapon());
+	}
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 

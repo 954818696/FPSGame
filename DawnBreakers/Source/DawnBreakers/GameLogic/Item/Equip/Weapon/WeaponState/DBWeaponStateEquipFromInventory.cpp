@@ -61,6 +61,11 @@ bool UDBWeaponStateEquipFromInventory::CanTransferTo(EWeaponState::Type NewState
 void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 {
 	m_bHandled = true;
+	ADBCharacter *TCharacter = GetWeaponOwner();
+	if (TCharacter)
+	{
+		TCharacter->UpdateIronSightLoc(GetWeapon());
+	}
 	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
 }
 
