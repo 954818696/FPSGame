@@ -446,6 +446,7 @@ void ADBCharacter::SetCameraAim(float Delta, bool bAim)
 	{
 		if (bAim)
 		{
+			//UpdateIronSightLoc(m_HoldWeapon);
 			m_CameraComp->RelativeLocation = FMath::VInterpTo(m_CameraComp->RelativeLocation, m_IronSightLoc, Delta, 10.f);
 		}
 		else

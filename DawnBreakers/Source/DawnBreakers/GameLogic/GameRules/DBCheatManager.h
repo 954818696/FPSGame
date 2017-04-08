@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Within = DBBasePlayerController)
 class DAWNBREAKERS_API UDBCheatManager : public UCheatManager
 {
 	GENERATED_BODY()
