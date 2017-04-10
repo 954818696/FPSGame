@@ -12,6 +12,12 @@ UCLASS()
 class DAWNBREAKERS_API UDBWeaponStateReload : public UDBWeaponStateBase
 {
 	GENERATED_UCLASS_BODY()
+
+	enum EReloadStage
+	{
+		E_ReloadStage_PullEmptyClip,
+		E_ReloadStage_PushFullClip,
+	};
 	
 public:
 
@@ -21,14 +27,26 @@ public:
 
 	virtual bool CanTransferTo(EWeaponState::Type NewState, UDBWeaponStateBase* State);
 
-protected:
+private:
+	void OnReloadAnimFinish();
+
+	void PullOrPushClip();
+
+public:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	UAnimMontage* m_ReloadAnim;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	USoundBase* m_ReloadSound;
-	
-private:
-	void OnReloadAnimFinish();
 
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	TSubclassOf<AActor> m_EmptyAmmoClipClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	TSubclassOf<AActor> m_FullAmmoClipClass;
+
+private:
+	EReloadStage m_ReloadStage;
+
+	AActor* m_AmmoClip;
 };

@@ -62,6 +62,8 @@ private:
 
 	void OnStopFire();
 
+	void OnReload();
+
 	void OnStartTargeting();
 
 	void OnStopTargeting();

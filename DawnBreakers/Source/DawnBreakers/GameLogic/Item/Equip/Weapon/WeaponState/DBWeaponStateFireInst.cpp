@@ -50,7 +50,7 @@ void UDBWeaponStateFireInst::Fire()
 	FCollisionQueryParams TraceParams(TWeaponFireTag, true, GetWeaponOwner());
 	TraceParams.bTraceAsyncScene = true;
 	TraceParams.bReturnPhysicalMaterial = true;
-	UWorld* TCurrentWorld = GetWeaponOwner()->GetWorld();
+	UWorld* TCurrentWorld = GetWeapon()->GetWorld();
 	FHitResult Hit(ForceInit);
 	TCurrentWorld->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, COLLISION_WEAPON_INST, TraceParams);
 

@@ -61,6 +61,7 @@ void ADBPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ADBPlayerController::OnStartFire);
 	InputComponent->BindAction("Fire", IE_Released, this, &ADBPlayerController::OnStopFire);
+	InputComponent->BindAction("Reload", IE_Pressed, this, &ADBPlayerController::OnReload);
 
 	InputComponent->BindAction("PrevWeapon", IE_Pressed, this, &ADBPlayerController::OnPrevWeapon);
 	InputComponent->BindAction("NextWeapon", IE_Pressed, this, &ADBPlayerController::OnNextWeapon);
@@ -129,6 +130,14 @@ void ADBPlayerController::OnStopFire()
 	if (m_ControlledCharacter != nullptr)
 	{
 		new(m_DeferredFireInputs)FDeferredFireInput(false);
+	}
+}
+
+void ADBPlayerController::OnReload()
+{
+	if (m_ControlledCharacter != nullptr)
+	{
+		m_ControlledCharacter->OnReloadAmmo();
 	}
 }
 

@@ -23,6 +23,8 @@ void UDBCharacterMovementComponent::TickComponent(float DeltaTime, enum ELevelTi
 			PC->ApplyDeferredFireInputs();
 		}
 	}
+
+	// Camera Shake
 }
 
 bool UDBCharacterMovementComponent::Is3DSpaceFreeMove() const
