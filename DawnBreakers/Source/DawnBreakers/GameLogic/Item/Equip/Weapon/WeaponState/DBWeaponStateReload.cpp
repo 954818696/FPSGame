@@ -34,7 +34,6 @@ void UDBWeaponStateReload::EnterWeaponState()
 void UDBWeaponStateReload::ExitWeaponState()
 {
 	DAWNBREAKERS_LOG_INFO("ExitWeaponState:EWeaponState_Reloading");
-	m_AmmoClip->Destroy();
 	m_ReloadStage = EReloadStage::E_ReloadStage_PullEmptyClip;
 }
 
@@ -58,6 +57,7 @@ void UDBWeaponStateReload::OnReloadAnimFinish()
 	ADBCharacter* TCharacter = GetWeaponOwner();
 	if (TCharacter)
 	{
+		m_AmmoClip->Destroy();
 		GetWeapon()->GetMeshComp()->UnHideBoneByName(FName(TEXT("b_gun_mag")));
 		TCharacter->StopAnimMontage(m_ReloadAnim);
 		ADBShootWeaponBase* TShootWeapon = Cast<ADBShootWeaponBase>(GetWeapon());

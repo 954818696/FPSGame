@@ -15,7 +15,16 @@ void ADBShootWeaponBase::OnReload()
 {
 	if (m_CurAmmosInClip < m_AmmoClipSize)
 	{
-		m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Reloading);
+		UDBWeaponStateFiring* TFiringState = Cast<UDBWeaponStateFiring>(m_WeaponStateMachine->GetState(EWeaponState::EWeaponState_Attack));
+		ADBCharacter* TOwner = GetItemOwner();
+		if (TFiringState && TOwner)
+		{
+			bool IsHaveAmmo = TOwner->GetInventory()->IsHaveAmmo(TFiringState->m_CostAmmoType);
+			if (IsHaveAmmo)
+			{
+				m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Reloading);
+			}
+		}
 	}
 }
 
@@ -30,21 +39,21 @@ void ADBShootWeaponBase::OnStartFire()
 	UDBWeaponStateFiring* TFiringState = Cast<UDBWeaponStateFiring>(m_WeaponStateMachine->GetState(EWeaponState::EWeaponState_Attack));
 	if (TOwner && TFiringState)
 	{
-		bool IsHaveAmmo = TOwner->GetInventory()->IsHaveAmmo(TFiringState->m_CostAmmoType);
-		if (IsHaveAmmo)
+		if (m_CurAmmosInClip > 0)
 		{
-			if (m_CurAmmosInClip == 0)
+			Super::OnStartFire();
+		}
+		else
+		{
+			bool IsHaveAmmo = TOwner->GetInventory()->IsHaveAmmo(TFiringState->m_CostAmmoType);
+			if (IsHaveAmmo)
 			{
 				OnReload();
 			}
 			else
 			{
-				Super::OnStartFire();
+				PlayOutOfAmmoSound();
 			}
-		}
-		else
-		{
-			PlayOutOfAmmoSound();
 		}
 	}
 }
@@ -86,7 +95,7 @@ void ADBShootWeaponBase::WeaponReloadAmmo()
 	UDBWeaponStateFiring* TFiringState = Cast<UDBWeaponStateFiring>(m_WeaponStateMachine->GetState(EWeaponState::EWeaponState_Attack));
 	if (TFiringState)
 	{
-		GetItemOwner()->GetInventory()->GetAmmoForWeapon(TFiringState->m_CostAmmoType, m_AmmoClipSize, m_CurAmmosInClip);
+		m_CurAmmosInClip += GetItemOwner()->GetInventory()->GetAmmoForWeapon(TFiringState->m_CostAmmoType, m_AmmoClipSize, m_CurAmmosInClip);
 	}
 }
 
