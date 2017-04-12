@@ -77,11 +77,11 @@ void ADayLightingSystem::Tick( float DeltaTime )
 		mbLastIsNight = MyGameState->mbIsNight;
 
 		// 环境光设置
-		// 照度 时间0-12-24点对应0-1-0 alpha
+		// 照度 时间24-12-24点对应0-1-0 alpha
 		if (mSkyLight)
 		{
 			const float fAlpha = FMath::Sin(MyGameState->GetCurDayElapsedMinutes() / MyGameState->mfTotalMinutesPerDay * 3.14);
-			const float fNewIntensity = FMath::Lerp(0.01, 1.0, fAlpha);
+			const float fNewIntensity = FMath::Lerp(0.1, 1.0, fAlpha);
 			mSkyLight->GetLightComponent()->SetIntensity(fNewIntensity);
 
 			if (mfRequiredCaptureDelta < FMath::Abs(fNewIntensity - mfLastCapturedIntensity))

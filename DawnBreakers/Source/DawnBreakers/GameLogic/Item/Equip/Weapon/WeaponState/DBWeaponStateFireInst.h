@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateFiring.h"
+#include "GameLogic/Item/Equip/Weapon/Effects/WeaponImpactEffect.h"
 #include "DBWeaponStateFireInst.generated.h"
 
 /**
@@ -22,6 +23,9 @@ public:
 
 	virtual void Fire() override;
 
+private:
+	void SpawnImpactEffects(const FHitResult& Impact);
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireBaseSpread;
@@ -31,6 +35,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireMaxSpread;
+
+	UPROPERTY(EditDefaultsOnly, Category = Effect)
+	TSubclassOf<AWeaponImpactEffect> m_ImpactEffect;
 
 private:
 	float m_CurFireSpread;

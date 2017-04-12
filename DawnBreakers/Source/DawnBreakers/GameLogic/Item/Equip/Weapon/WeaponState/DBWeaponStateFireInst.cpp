@@ -54,14 +54,32 @@ void UDBWeaponStateFireInst::Fire()
 	FHitResult Hit(ForceInit);
 	TCurrentWorld->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, COLLISION_WEAPON_INST, TraceParams);
 
+	// Impact
+	if (Hit.bBlockingHit)
+	{
+		SpawnImpactEffects(Hit);
+	}
+
+	//FireShot(damage, loc, Rot)
+
 #ifdef DEBUG_FIRE
 	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
 	DrawDebugPoint(TCurrentWorld, Hit.Location, 10, FColor(255, 0, 255), false, 1.f);
 #endif
 
-	//FireShot(damage, loc, Rot)
-
-
-
 	Super::Fire();
+}
+
+void UDBWeaponStateFireInst::SpawnImpactEffects(const FHitResult& Impact)
+{
+	if (m_ImpactEffect && Impact.bBlockingHit)
+	{
+		FTransform const SpawnTransform(Impact.ImpactNormal.Rotation(), Impact.ImpactPoint);
+		AWeaponImpactEffect* ImpactEffectActor = GetWeapon()->GetWorld()->SpawnActorDeferred<AWeaponImpactEffect>(m_ImpactEffect, SpawnTransform);
+		if (ImpactEffectActor)
+		{
+			ImpactEffectActor->m_SurfaceHit = Impact;
+			UGameplayStatics::FinishSpawningActor(ImpactEffectActor, SpawnTransform);
+		}
+	}
 }
