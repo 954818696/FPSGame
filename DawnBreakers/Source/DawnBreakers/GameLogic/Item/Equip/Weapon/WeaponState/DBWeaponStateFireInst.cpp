@@ -75,7 +75,7 @@ void UDBWeaponStateFireInst::SpawnImpactEffects(const FHitResult& Impact)
 	if (m_ImpactEffect && Impact.bBlockingHit)
 	{
 		FTransform const SpawnTransform(Impact.ImpactNormal.Rotation(), Impact.ImpactPoint);
-		AWeaponImpactEffect* ImpactEffectActor = GetWeapon()->GetWorld()->SpawnActorDeferred<AWeaponImpactEffect>(m_ImpactEffect, SpawnTransform);
+		AWeaponImpactEffect* ImpactEffectActor = m_Weapon->GetWorld()->SpawnActorDeferred<AWeaponImpactEffect>(m_ImpactEffect, SpawnTransform);
 		if (ImpactEffectActor)
 		{
 			ImpactEffectActor->m_SurfaceHit = Impact;
