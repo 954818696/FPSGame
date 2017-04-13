@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DawnBreakersGameInstance.h"
-#include "GameLogic/LogicGlue/LevelStreamLoader.h"
+#include "GameModule/Level/LevelAssist.h"
 
 
 
@@ -11,7 +11,7 @@ void UDawnBreakersGameInstance::Init()
 {
 	Super::Init();
 
-	m_LevelStreamLoader = MakeShareable(new LevelStreamLoader());
+	m_LevelAssist = MakeShareable(new LevelAssist());
 
 	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UDawnBreakersGameInstance::BeginLoadMap);
 	FCoreUObjectDelegates::PostLoadMap.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
@@ -21,10 +21,10 @@ void UDawnBreakersGameInstance::Shutdown()
 {
 	Super::Shutdown();
 
-	if (m_LevelStreamLoader.IsValid())
+	if (m_LevelAssist.IsValid())
 	{
-		m_LevelStreamLoader->Clear();
-		m_LevelStreamLoader.Reset();
+		m_LevelAssist->Clear();
+		m_LevelAssist.Reset();
 	}
 
 }

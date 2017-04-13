@@ -25,5 +25,5 @@ public:
 
 
 private:
-	TSharedPtr<class LevelStreamLoader>  m_LevelStreamLoader;
+	TSharedPtr<class LevelAssist> m_LevelAssist;
 };

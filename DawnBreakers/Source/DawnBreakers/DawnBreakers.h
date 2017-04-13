@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "Net/UnrealNetwork.h"
 
+#include "Miscellaneous/DawnBreakerHelper.h"
 #include "Miscellaneous/GameDebugLog.h"
 #include "DawnBreakersEnvConfig.h"
 
