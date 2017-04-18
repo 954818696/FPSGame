@@ -9,7 +9,7 @@
  * 
  */
 UCLASS()
-class DAWNBREAKERS_API UDawnBreakersGameInstance : public UGameInstance
+class DAWNBREAKERS_API UDawnBreakersGameInstance : public UGameInstance//, public FTickableGameObject
 {
 	GENERATED_BODY()
 	
@@ -25,5 +25,6 @@ public:
 
 
 private:
-	TSharedPtr<class LevelAssist> m_LevelAssist;
+	UPROPERTY()
+	class ULevelLoadAssist* m_LevelLoadAssisit;
 };

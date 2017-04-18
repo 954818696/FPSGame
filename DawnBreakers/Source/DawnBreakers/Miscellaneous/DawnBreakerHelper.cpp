@@ -3,6 +3,8 @@
 #include "DawnBreakers.h"
 #include "DawnBreakerHelper.h"
 
+UGameInstance* DawnBreakerHelper::m_GameIntance = nullptr;
+
 DawnBreakerHelper::DawnBreakerHelper()
 {
 }
@@ -13,15 +15,15 @@ DawnBreakerHelper::~DawnBreakerHelper()
 
 UWorld* DawnBreakerHelper::GetGameWorld()
 {
-	UWorld* TWorld = GEngine->GetWorld();
-	if (TWorld != nullptr)
+	if (m_GameIntance)
 	{
-		UGameInstance* TGameInstance = TWorld->GetGameInstance();
-		if (TGameInstance)
-		{
-			return TGameInstance->GetWorld();
-		}
+		return m_GameIntance->GetWorld();
 	}
 
 	return nullptr;
+}
+
+void DawnBreakerHelper::SaveGameInstance(UGameInstance* NewGameInstance)
+{
+	m_GameIntance = NewGameInstance;
 }

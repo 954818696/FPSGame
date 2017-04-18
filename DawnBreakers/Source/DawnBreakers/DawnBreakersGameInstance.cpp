@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DawnBreakersGameInstance.h"
-#include "GameModule/Level/LevelAssist.h"
+#include "GameModule/Level/LevelLoadAssist.h"
 
 
 
@@ -11,7 +11,9 @@ void UDawnBreakersGameInstance::Init()
 {
 	Super::Init();
 
-	m_LevelAssist = MakeShareable(new LevelAssist());
+	DawnBreakerHelper::SaveGameInstance(this);
+
+	m_LevelLoadAssisit = NewObject<ULevelLoadAssist>(this);
 
 	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UDawnBreakersGameInstance::BeginLoadMap);
 	FCoreUObjectDelegates::PostLoadMap.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
@@ -21,20 +23,20 @@ void UDawnBreakersGameInstance::Shutdown()
 {
 	Super::Shutdown();
 
-	if (m_LevelAssist.IsValid())
+	if (m_LevelLoadAssisit)
 	{
-		m_LevelAssist->Clear();
-		m_LevelAssist.Reset();
+		m_LevelLoadAssisit->Clear();
+		m_LevelLoadAssisit->ConditionalBeginDestroy();
 	}
 
 }
 
 void UDawnBreakersGameInstance::BeginLoadMap(const FString& MapName)
 {
-
+	m_LevelLoadAssisit->OnLoadMasterLevelBegin(MapName);
 }
 
 void UDawnBreakersGameInstance::EndLoadMap()
 {
-
+	m_LevelLoadAssisit->OnLoadMasterLevelFinish();
 }

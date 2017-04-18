@@ -12,4 +12,9 @@ public:
 	~DawnBreakerHelper();
 
 	static UWorld* GetGameWorld();
+
+	static void SaveGameInstance(UGameInstance* NewGameInstance);
+
+private:
+	static UGameInstance* m_GameIntance;
 };
