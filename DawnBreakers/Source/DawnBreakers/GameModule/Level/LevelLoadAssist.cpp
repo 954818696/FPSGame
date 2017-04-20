@@ -20,7 +20,8 @@ void ULevelLoadAssist::OnLoadMasterLevelFinish()
 		UWorld* TCurWorld = DawnBreakerHelper::GetGameWorld();
 		if (TCurWorld && TCurWorld->IsValidLowLevel())
 		{
-			TCurWorld->GetTimerManager().SetTimer(TimerHandle_UpdateLoadProgress, this, &ULevelLoadAssist::UpdateLoadProgress, 1.f, true);
+			m_SubLevelsPackageNameList = GetSubLevelsPackageName(TCurWorld);
+			TCurWorld->GetTimerManager().SetTimer(TimerHandle_UpdateLoadProgress, this, &ULevelLoadAssist::UpdateLoadProgress, 0.1f, true);
 			UGameplayStatics::LoadStreamLevel(TCurWorld, SubLevel, true, false, LatentInfo);
 		}
 	}
@@ -42,9 +43,14 @@ void ULevelLoadAssist::OpenMultiplayerLevel(const FName& LevelName)
 
 void ULevelLoadAssist::UpdateLoadProgress()
 {
-	float TPercent = GetAsyncLoadPercentage(TEXT("Level1_Main"));
-	DAWNBREAKERS_LOG_INFO("Load Percent %f", TPercent);
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("Load Percent %f"), TPercent));
+	for (int32 i = 0; i < m_SubLevelsPackageNameList.Num(); ++i)
+	{
+		float TPercent = GetAsyncLoadPercentage(m_SubLevelsPackageNameList[i]);
+		DAWNBREAKERS_LOG_INFO("%s Load Percent %f", *m_SubLevelsPackageNameList[i].ToString(), TPercent);
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s Load Percent %f"), *m_SubLevelsPackageNameList[i].ToString(), TPercent));
+	}
+
+
 }
 
 void ULevelLoadAssist::LoadSubLevelFinish()
@@ -67,8 +73,29 @@ void ULevelLoadAssist::LoadSubLevelFinish()
 		{
 			//TCurWorld->GetTimerManager().SetTimer(TimerHandle_UpdateLoadProgress, this, &ULevelLoadAssist::UpdateLoadProgress, 1.f, true);
 			UGameplayStatics::LoadStreamLevel(TCurWorld, SubLevel, true, false, LatentInfo);
+
+		}
+
+	}
+}
+
+TArray<FName> ULevelLoadAssist::GetSubLevelsPackageName(UWorld* InWorld)
+{
+	TArray<FName> Result;
+
+	Result.Reserve(InWorld->StreamingLevels.Num());
+	for (int32 LevelIndex = 0; LevelIndex < InWorld->StreamingLevels.Num(); LevelIndex++)
+	{
+		ULevelStreaming* LevelStreaming = InWorld->StreamingLevels[LevelIndex];
+		if (LevelStreaming
+			&& !LevelStreaming->GetWorldAsset().IsNull()
+			&& LevelStreaming->GetWorldAsset() != InWorld)
+		{
+			Result.Add(LevelStreaming->GetWorldAssetPackageFName());
 		}
 	}
+	
+	return Result;
 }
 
 void ULevelLoadAssist::Clear()

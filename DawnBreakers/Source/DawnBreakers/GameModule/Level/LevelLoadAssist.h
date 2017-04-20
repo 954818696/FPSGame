@@ -30,8 +30,12 @@ private:
 	UFUNCTION()
 	void LoadSubLevelFinish();
 
+	TArray<FName> GetSubLevelsPackageName(UWorld* InWorld);
+
 private:
 	FName m_LoadMapName;
+
+	TArray<FName> m_SubLevelsPackageNameList;
 
 	FTimerHandle TimerHandle_UpdateLoadProgress;
 	
