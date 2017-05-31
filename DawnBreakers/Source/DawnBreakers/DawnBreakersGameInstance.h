@@ -21,7 +21,7 @@ public:
 	void BeginLoadMap(const FString& MapName);
 
 	//UFUNCTION()
-	void EndLoadMap();
+	void EndLoadMap(UWorld* World);
 
 
 private:

@@ -41,7 +41,7 @@ void ADBWeaponBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	m_WeaponStateMachine->InitStateMachine();
+	//m_WeaponStateMachine->InitStateMachine();
 }
 
 void ADBWeaponBase::OnEquip(bool bEquipedWeaponFromInventory)

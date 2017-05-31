@@ -16,7 +16,7 @@ void UDawnBreakersGameInstance::Init()
 	m_LevelLoadAssisit = NewObject<ULevelLoadAssist>(this);
 
 	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UDawnBreakersGameInstance::BeginLoadMap);
-	FCoreUObjectDelegates::PostLoadMap.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
+	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
 }
 
 void UDawnBreakersGameInstance::Shutdown()
@@ -36,7 +36,7 @@ void UDawnBreakersGameInstance::BeginLoadMap(const FString& MapName)
 	m_LevelLoadAssisit->OnLoadMasterLevelBegin(MapName);
 }
 
-void UDawnBreakersGameInstance::EndLoadMap()
+void UDawnBreakersGameInstance::EndLoadMap(UWorld* World)
 {
 	m_LevelLoadAssisit->OnLoadMasterLevelFinish();
 }

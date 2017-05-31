@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable, Abstract, NotPlaceable)
+UCLASS(Blueprintable, Abstract, Placeable)
 class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 {
 	GENERATED_UCLASS_BODY()
