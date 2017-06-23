@@ -2,8 +2,8 @@ namespace UnrealBuildTool.Rules
 {
 	public class DawnBreakersEditorExtend : ModuleRules
 	{
-		public DawnBreakersEditorExtend( TargetInfo Target )
-		{
+		public DawnBreakersEditorExtend(ReadOnlyTargetRules Target) : base(Target)
+        {
 
 			/*
 			PublicIncludePaths.AddRange(

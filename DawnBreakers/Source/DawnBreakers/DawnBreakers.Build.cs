@@ -4,8 +4,8 @@ using UnrealBuildTool;
 
 public class DawnBreakers : ModuleRules
 {
-	public DawnBreakers(TargetInfo Target)
-	{
+	public DawnBreakers(ReadOnlyTargetRules Target) : base(Target)
+    {
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "GameUISystem" });
 	}
 }

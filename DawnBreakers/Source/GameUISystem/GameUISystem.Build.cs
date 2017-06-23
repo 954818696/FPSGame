@@ -4,8 +4,8 @@ using UnrealBuildTool;
 
 public class GameUISystem : ModuleRules
 {
-	public GameUISystem(TargetInfo Target)
-	{
+	public GameUISystem(ReadOnlyTargetRules Target) : base(Target)
+    {
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
 	}
 }

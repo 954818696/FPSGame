@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	USoundBase* m_EquipDirectlySound;
 
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	int32 test;
+
 
 	void OnEquipDirectlyAnimFinish();
 private:

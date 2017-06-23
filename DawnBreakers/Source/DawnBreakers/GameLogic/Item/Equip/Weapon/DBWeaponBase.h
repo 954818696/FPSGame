@@ -56,7 +56,7 @@ public:
 
 protected:
 	/** Weapon State Machine */
-	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig, NoClear)
+	UPROPERTY(VisibleAnywhere, Category = WeaponConfig, NoClear)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
