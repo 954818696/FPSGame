@@ -26,7 +26,7 @@ namespace EWeaponState
 /**
  * 
  */
-UCLASS(DefaultToInstanced, EditInlineNew, Within = DBWeaponStateMachine)
+UCLASS(DefaultToInstanced, EditInlineNew)
 class DAWNBREAKERS_API UDBWeaponStateBase : public UObject
 {
 	GENERATED_UCLASS_BODY()
@@ -50,9 +50,15 @@ public:
 
 	ADBCharacter* GetWeaponOwner();
 
+	FORCEINLINE class UDBWeaponStateMachine* GetOuterUDBWeaponStateMachine() { return m_WeaponStateMachine; }
+
+	FORCEINLINE void SetOuterWeaponStateMachine(UDBWeaponStateMachine* WeapStateMachine) { m_WeaponStateMachine = WeapStateMachine; }
+
 protected:
 
 	EWeaponState::Type m_StateID;
 
 	bool m_bHandled;
+
+	UDBWeaponStateMachine* m_WeaponStateMachine;
 };

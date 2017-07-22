@@ -50,13 +50,19 @@ public:
 
 	static void SetInstanceOnFireEffectArray(AActor* Weapon, TArray<UParticleSystemComponent*>& OnFireEffectArray);
 
+private:
+	void MapStateToStateMachine();
+
 	/*武器激发特效，不仅仅局限于枪械。近战，投掷均可*/
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TArray<UParticleSystemComponent*> FireShotEffect;
 
 protected:
 	/** Weapon State Machine */
-	UPROPERTY(VisibleAnywhere, Category = WeaponConfig, NoClear)
+	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponConfig)
+	TArray<class UDBWeaponStateBase*> m_WeaponStates;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)

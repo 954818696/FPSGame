@@ -3,6 +3,14 @@
 #include "DawnBreakers.h"
 #include "DBWeaponBase.h"
 
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateActive.h"
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateAttack.h
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateEquipDirectly.h"
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateEquipFromInventory.h"
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateFiring.h"
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateInactive.h"
+
+
 ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
 	m_CurrentFireMode(0)
@@ -34,14 +42,15 @@ void ADBWeaponBase::BeginPlay()
 		}
 	}
 
-	m_WeaponStateMachine->SetStateDirectly(EWeaponState::EWeaponState_Inactive);
+
+	MapStateToStateMachine();
 }
 
 void ADBWeaponBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	//m_WeaponStateMachine->InitStateMachine();
+
 }
 
 void ADBWeaponBase::OnEquip(bool bEquipedWeaponFromInventory)
@@ -135,4 +144,48 @@ void ADBWeaponBase::SetInstanceOnFireEffectArray(AActor* Weapon, TArray<UParticl
 			}
 		}
 	}
+}
+
+void ADBWeaponBase::MapStateToStateMachine()
+{
+	for (int32 i = 0; i < m_WeaponStates.Num(); ++i)
+	{
+		m_WeaponStates[i]->SetOuterWeaponStateMachine(m_WeaponStateMachine);
+
+		switch (m_WeaponStates[i]->GetStateID())
+		{
+		case EWeaponState::EWeaponState_Active:
+			m_WeaponStateMachine->m_WeaponStateActive =  Cast<UDBWeaponStateActive>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_Inactive:
+			m_WeaponStateMachine->m_WeaponStateInactive = Cast<UDBWeaponStateInactive>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_Attack:
+			UDBWeaponStateFiring* AttackState = Cast<UDBWeaponStateFiring>(m_WeaponStates[i]);
+			if (AttackState)
+			{
+				m_WeaponStateMachine->m_WeaponStateFiring.Add(AttackState);
+			}	
+			break;
+		case EWeaponState::EWeaponState_EquipingDirectly:
+			m_WeaponStateMachine->m_WeaponStateEquipDirectly = Cast<UDBWeaponStateEquipDirectly>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_EquipingFromInventory:
+			m_WeaponStateMachine->m_WeaponStateEquipFromInventory = Cast<UDBWeaponStateEquipFromInventory>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_Unequiping:
+			m_WeaponStateMachine->m_WeaponStateUnequiping = Cast<UDBWeaponStateUnEquiping>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_SwitchMode:
+			m_WeaponStateMachine->m_WeaponStateSwitchMode = Cast<UDBWeaponStateSwitchMode>(m_WeaponStates[i]);
+			break;
+		case EWeaponState::EWeaponState_Reloading:
+			m_WeaponStateMachine->m_WeaponStateReloading = Cast<UDBWeaponStateReload>(m_WeaponStates[i]);
+			break;
+		default:
+			DAWNBREAKERS_LOG_WARNING("InitWeapStateMachine invalid stateID:%d", m_WeaponStates[i].GetStatID());
+		}
+	}
+
+	m_WeaponStateMachine->SetStateDirectly(EWeaponState::EWeaponState_Inactive);
 }
