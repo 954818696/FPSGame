@@ -55,7 +55,7 @@ bool UDBWeaponStateUnEquiping::CanTransferTo(EWeaponState::Type NewState, UDBWea
 void UDBWeaponStateUnEquiping::OnUnEquipAnimFinish()
 {
 	m_bHandled = true;
-	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Inactive);
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Inactive);
 
 }
 

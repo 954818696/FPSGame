@@ -50,9 +50,7 @@ public:
 
 	ADBCharacter* GetWeaponOwner();
 
-	FORCEINLINE class UDBWeaponStateMachine* GetOuterUDBWeaponStateMachine() { return m_WeaponStateMachine; }
-
-	FORCEINLINE void SetOuterWeaponStateMachine(UDBWeaponStateMachine* WeapStateMachine) { m_WeaponStateMachine = WeapStateMachine; }
+	FORCEINLINE void SetOuterWeaponStateMachine(class UDBWeaponStateMachine* WeapStateMachine) { m_WeaponStateMachine = WeapStateMachine; }
 
 protected:
 
@@ -60,5 +58,5 @@ protected:
 
 	bool m_bHandled;
 
-	UDBWeaponStateMachine* m_WeaponStateMachine;
+	TWeakObjectPtr<UDBWeaponStateMachine> m_WeaponStateMachine;
 };

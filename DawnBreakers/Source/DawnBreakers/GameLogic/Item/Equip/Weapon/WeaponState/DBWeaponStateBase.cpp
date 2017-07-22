@@ -12,11 +12,10 @@ UDBWeaponStateBase::UDBWeaponStateBase(const FObjectInitializer& ObjectInitializ
 
 ADBWeaponBase* UDBWeaponStateBase::GetWeapon()
 {
-	//UDBWeaponStateMachine* TWeaponStateMachine = GetOuterUDBWeaponStateMachine();
-	//if (TWeaponStateMachine)
-	//{
-	//	return TWeaponStateMachine->GetOuterADBWeaponBase();
-	//}
+	if (m_WeaponStateMachine.IsValid())
+	{
+		return m_WeaponStateMachine->GetOuterADBWeaponBase();
+	}
 
 	return nullptr;
 }

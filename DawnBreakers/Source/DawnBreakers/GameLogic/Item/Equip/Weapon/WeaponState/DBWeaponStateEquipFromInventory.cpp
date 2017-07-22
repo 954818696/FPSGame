@@ -66,7 +66,7 @@ void UDBWeaponStateEquipFromInventory::OnEquipAnimFinish()
 	{
 		TCharacter->UpdateIronSightLoc(GetWeapon());
 	}
-	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
 }
 
 void UDBWeaponStateEquipFromInventory::OnAttachWeaponToHand()

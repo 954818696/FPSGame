@@ -4,12 +4,10 @@
 #include "DBWeaponBase.h"
 
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateActive.h"
-#include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateAttack.h
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateEquipDirectly.h"
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateEquipFromInventory.h"
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateFiring.h"
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/WeaponState/DBWeaponStateInactive.h"
-
 
 ADBWeaponBase::ADBWeaponBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
@@ -148,6 +146,10 @@ void ADBWeaponBase::SetInstanceOnFireEffectArray(AActor* Weapon, TArray<UParticl
 
 void ADBWeaponBase::MapStateToStateMachine()
 {
+	// For old support.....ue4 bug.
+	m_WeaponStateMachine->m_WeaponStateFiring.Empty();
+
+
 	for (int32 i = 0; i < m_WeaponStates.Num(); ++i)
 	{
 		m_WeaponStates[i]->SetOuterWeaponStateMachine(m_WeaponStateMachine);
@@ -161,12 +163,14 @@ void ADBWeaponBase::MapStateToStateMachine()
 			m_WeaponStateMachine->m_WeaponStateInactive = Cast<UDBWeaponStateInactive>(m_WeaponStates[i]);
 			break;
 		case EWeaponState::EWeaponState_Attack:
+		{
 			UDBWeaponStateFiring* AttackState = Cast<UDBWeaponStateFiring>(m_WeaponStates[i]);
 			if (AttackState)
 			{
 				m_WeaponStateMachine->m_WeaponStateFiring.Add(AttackState);
-			}	
+			}
 			break;
+		}
 		case EWeaponState::EWeaponState_EquipingDirectly:
 			m_WeaponStateMachine->m_WeaponStateEquipDirectly = Cast<UDBWeaponStateEquipDirectly>(m_WeaponStates[i]);
 			break;
@@ -183,7 +187,7 @@ void ADBWeaponBase::MapStateToStateMachine()
 			m_WeaponStateMachine->m_WeaponStateReloading = Cast<UDBWeaponStateReload>(m_WeaponStates[i]);
 			break;
 		default:
-			DAWNBREAKERS_LOG_WARNING("InitWeapStateMachine invalid stateID:%d", m_WeaponStates[i].GetStatID());
+			DAWNBREAKERS_LOG_WARNING("InitWeapStateMachine invalid stateID:%d", (int32)m_WeaponStates[i]->GetStateID());
 		}
 	}
 

@@ -33,28 +33,28 @@ public:
 	
 public:
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateActive* m_WeaponStateActive;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateInactive* m_WeaponStateInactive;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	TArray<class UDBWeaponStateFiring*> m_WeaponStateFiring;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateEquipDirectly* m_WeaponStateEquipDirectly;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateEquipFromInventory* m_WeaponStateEquipFromInventory;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateUnEquiping* m_WeaponStateUnequiping;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateSwitchMode* m_WeaponStateSwitchMode;
 
-	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponState)
+	UPROPERTY()
 	class UDBWeaponStateReload* m_WeaponStateReloading;
 
 private:

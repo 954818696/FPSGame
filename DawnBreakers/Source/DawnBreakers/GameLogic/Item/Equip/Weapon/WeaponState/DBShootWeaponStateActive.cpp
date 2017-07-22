@@ -16,7 +16,7 @@ void UDBShootWeaponStateActive::EnterWeaponState()
 {
 	Super::EnterWeaponState();
 	
-	UDBWeaponStateBase* PrevState = GetOuterUDBWeaponStateMachine()->GetPrevState();
+	UDBWeaponStateBase* PrevState = m_WeaponStateMachine->GetPrevState();
 
 	if (PrevState->GetStateID() == EWeaponState::EWeaponState_Attack)
 	{

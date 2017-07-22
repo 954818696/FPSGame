@@ -53,6 +53,7 @@ public:
 private:
 	void MapStateToStateMachine();
 
+public:
 	/*武器激发特效，不仅仅局限于枪械。近战，投掷均可*/
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TArray<UParticleSystemComponent*> FireShotEffect;
@@ -62,7 +63,7 @@ protected:
 	UPROPERTY(Instanced, EditDefaultsOnly, Category = WeaponConfig)
 	TArray<class UDBWeaponStateBase*> m_WeaponStates;
 
-	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
+	UPROPERTY()
 	class UDBWeaponStateMachine* m_WeaponStateMachine;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)

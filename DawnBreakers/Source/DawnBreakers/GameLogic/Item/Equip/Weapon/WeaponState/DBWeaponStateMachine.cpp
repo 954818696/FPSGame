@@ -17,13 +17,20 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	m_PrevWeaponState(nullptr)
 {
 	m_WeaponStateActive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateActive>(this, TEXT("WeaponStateActive"), false);
-	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WseaponStateInactive"), false);
+	m_WeaponStateInactive = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateInactive>(this, TEXT("WeaponStateInactive"), false);
 	m_WeaponStateEquipDirectly = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquipDirectly>(this, TEXT("WeaponStateEquipDirectly"), false);
 	m_WeaponStateEquipFromInventory = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateEquipFromInventory>(this, TEXT("WeaponStateEquipFromInventory"), false);
 	m_WeaponStateUnequiping = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateUnEquiping>(this, TEXT("WeaponStateUnEquiping"), false);
 	m_WeaponStateSwitchMode = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateSwitchMode>(this, TEXT("WeaponStateSwitchMode"), false);
 	m_WeaponStateReloading = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateReload>(this, TEXT("WeaponStateReloading"), false);
-	//m_WeaponStateFiring.Add(ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateFiring>(this, TEXT("WeaponStateFiring"), false));
+
+	m_WeaponStateActive->SetOuterWeaponStateMachine(this);
+	m_WeaponStateEquipDirectly->SetOuterWeaponStateMachine(this);
+	m_WeaponStateEquipFromInventory->SetOuterWeaponStateMachine(this);
+	m_WeaponStateUnequiping->SetOuterWeaponStateMachine(this);
+	m_WeaponStateSwitchMode->SetOuterWeaponStateMachine(this);
+	m_WeaponStateReloading->SetOuterWeaponStateMachine(this);
+	m_WeaponStateInactive->SetOuterWeaponStateMachine(this);
 }
 
 void UDBWeaponStateMachine::InitStateMachine()

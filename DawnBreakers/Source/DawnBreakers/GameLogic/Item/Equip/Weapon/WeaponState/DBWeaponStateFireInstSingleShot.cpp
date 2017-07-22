@@ -18,5 +18,5 @@ void UDBWeaponStateFireInstSingleShot::EnterWeaponState()
 void UDBWeaponStateFireInstSingleShot::RefireTimer()
 {
 	DAWNBREAKERS_LOG_INFO("UDBWeaponStateFireInstSingleShot::RefireTimer");
-	GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
 }

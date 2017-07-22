@@ -62,7 +62,7 @@ void UDBWeaponStateReload::OnReloadAnimFinish()
 		TCharacter->StopAnimMontage(m_ReloadAnim);
 		ADBShootWeaponBase* TShootWeapon = Cast<ADBShootWeaponBase>(GetWeapon());
 		TShootWeapon->WeaponReloadAmmo();
-		GetOuterUDBWeaponStateMachine()->GotoState(EWeaponState::EWeaponState_Active);
+		m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Active);
 	}
 }
 
