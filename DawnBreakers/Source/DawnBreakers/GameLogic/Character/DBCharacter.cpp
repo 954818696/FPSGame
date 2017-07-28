@@ -144,6 +144,7 @@ void ADBCharacter::OnReloadAmmo()
 {
 	if (m_HoldWeapon && m_HoldWeapon->IsA(ADBShootWeaponBase::StaticClass()))
 	{
+		m_IsTargeting = false;
 		ADBShootWeaponBase* ShootWeapon = Cast<ADBShootWeaponBase>(m_HoldWeapon);
 		ShootWeapon->OnReload();
 	}

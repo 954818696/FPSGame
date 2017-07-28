@@ -5,28 +5,46 @@ using System.Collections.Generic;
 
 public class DawnBreakersTarget : TargetRules
 {
-	public DawnBreakersTarget(TargetInfo Target) : base(Target)
-    {
-		Type = TargetType.Game;
-        ExtraModuleNames.Add("DawnBreakersEditorExtend");
+    //public DawnBreakersTarget(TargetInfo Target) : base(Target)
+    //   {
+    //	Type = TargetType.Game;
+    //       ExtraModuleNames.Add("DawnBreakersEditorExtend");
 
+    //   }
+
+    //   //
+    //   // TargetRules interface.
+    //   //
+
+    //   //public override void SetupBinaries(
+    //   //    TargetInfo Target,
+    //   //    ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
+    //   //    ref List<string> OutExtraModuleNames
+    //   //    )
+    //   //{
+    //   //    OutExtraModuleNames.Add("DawnBreakers");
+
+    //   //    if (UEBuildConfiguration.bBuildEditor)
+    //   //    {
+    //   //        OutExtraModuleNames.Add("DawnBreakersEditorExtend");
+    //   //    }
+    //   //}
+
+    public DawnBreakersTarget(TargetInfo Target)
+    {
+        Type = TargetType.Game;
     }
 
-	//
-	// TargetRules interface.
-	//
+    //
+    // TargetRules interface.
+    //
 
-	//public override void SetupBinaries(
-	//	TargetInfo Target,
-	//	ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-	//	ref List<string> OutExtraModuleNames
-	//	)
-	//{
-	//	OutExtraModuleNames.Add("DawnBreakers");
-		
-	//	if (UEBuildConfiguration.bBuildEditor)
- //       {
- //           OutExtraModuleNames.Add("DawnBreakersEditorExtend");
- //       }
-	//}
+    public override void SetupBinaries(
+        TargetInfo Target,
+        ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
+        ref List<string> OutExtraModuleNames
+        )
+    {
+        OutExtraModuleNames.Add("DawnBreakers");
+    }
 }
