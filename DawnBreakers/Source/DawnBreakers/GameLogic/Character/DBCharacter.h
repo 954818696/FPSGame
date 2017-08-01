@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "DawnBreakers/GameLogic/Character/DBBaseCharacter.h"
 #include "DBCharacter.generated.h"
 
 UCLASS()
-class DAWNBREAKERS_API ADBCharacter : public ACharacter
+class DAWNBREAKERS_API ADBCharacter : public ADBBaseCharacter
 {
 	GENERATED_UCLASS_BODY()
 

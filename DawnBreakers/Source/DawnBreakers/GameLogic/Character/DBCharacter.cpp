@@ -30,20 +30,6 @@ ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	m_CharacterMovement->bCanWalkOffLedgesWhenCrouching = true;
 	m_CharacterMovement->MaxWalkSpeedCrouched = 100;
 
-	// Character Mesh Configuration.
-	GetMesh()->bReceivesDecals = false;
-	GetMesh()->MeshComponentUpdateFlag = EMeshComponentUpdateFlag::AlwaysTickPoseAndRefreshBones;
-	GetMesh()->SetCollisionObjectType(ECC_Pawn);
-
-	GetMesh()->SetCollisionResponseToChannel(COLLISION_WEAPON_INST, ECR_Block);
-	GetMesh()->SetCollisionResponseToChannel(COLLISION_WEAPON_PROJ, ECR_Block);
-	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-
-
-
-	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
-	GetCapsuleComponent()->SetCapsuleHalfHeight(90.f);
-	GetCapsuleComponent()->SetCapsuleRadius(30.f);
 
 	// Camera Configuration.
 	m_CameraComp = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CharacterCamera"));
