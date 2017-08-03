@@ -14,7 +14,7 @@ class DAWNBREAKERS_API UBTTask_FindPatrolLocation : public UBTTask_BlackboardBas
 {
 	GENERATED_BODY()
 	
-	
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 	
 };
