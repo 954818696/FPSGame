@@ -95,7 +95,6 @@ void ADBZombieCharacter::OnSeePlayer(APawn* Pawn)
 		UpdateAudioLoop(true);
 	}
 
-	/* Keep track of the time the player was last sensed in order to clear the target */
 	LastSeenTime = GetWorld()->GetTimeSeconds();
 	bSensedTarget = true;
 
