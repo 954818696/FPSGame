@@ -68,6 +68,9 @@ protected:
 	float MeleeDamage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attacking")
+	float MeleeStrikeCooldown;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Attacking")
 	UAnimMontage* MeleeAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
@@ -92,7 +95,7 @@ private:
 
 	float LastMeleeAttackTime;
 
-	float MeleeStrikeCooldown;
+
 
 	bool bSensedTarget;
 

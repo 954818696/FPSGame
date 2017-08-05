@@ -38,7 +38,7 @@ ADBZombieCharacter::ADBZombieCharacter(const class FObjectInitializer& ObjectIni
 
 	Health = 100;
 	MeleeDamage = 20.0f;
-	MeleeStrikeCooldown = 1.0f;
+	MeleeStrikeCooldown = 4.0f;
 	SprintingSpeedModifier = 3.0f;
 
 	SenseTimeOut = 2.5f;
@@ -138,13 +138,14 @@ void ADBZombieCharacter::OnMeleeCompBeginOverlap(class UPrimitiveComponent* Over
 void ADBZombieCharacter::OnRetriggerMeleeStrike()
 {
 	TArray<AActor*> Overlaps;
-	MeleeCollisionComp->GetOverlappingActors(Overlaps, ADBBaseCharacter::StaticClass());
+	MeleeCollisionComp->GetOverlappingActors(Overlaps, ADBCharacter::StaticClass());
 	for (int32 i = 0; i < Overlaps.Num(); i++)
 	{
-		ADBBaseCharacter* OverlappingPawn = Cast<ADBBaseCharacter>(Overlaps[i]);
+		ADBCharacter* OverlappingPawn = Cast<ADBCharacter>(Overlaps[i]);
 		if (OverlappingPawn)
 		{
 			PerformMeleeStrike(OverlappingPawn);
+			break;
 		}
 	}
 
@@ -179,6 +180,7 @@ void ADBZombieCharacter::PerformMeleeStrike(AActor* HitActor)
 			DmgEvent.Damage = MeleeDamage;
 
 			HitActor->TakeDamage(DmgEvent.Damage, DmgEvent, GetController(), this);
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s attacked"), *HitActor->GetName()));
 
 			SimulateMeleeStrike();
 		}
@@ -214,7 +216,14 @@ void ADBZombieCharacter::PlayHit(float DamageTaken, struct FDamageEvent const& D
 
 void ADBZombieCharacter::SimulateMeleeStrike()
 {
-	PlayAnimMontage(MeleeAnimMontage);
+	if (MeleeAnimMontage)
+	{
+		float AnimDuration = MeleeAnimMontage->SequenceLength;
+
+		PlayAnimMontage(MeleeAnimMontage, AnimDuration / MeleeStrikeCooldown);
+	}
+	
+
 	PlayCharacterSound(SoundAttackMelee);
 }
 
