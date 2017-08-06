@@ -14,6 +14,8 @@ class DAWNBREAKERS_API ADBShootWeaponBase : public ADBWeaponBase
 	GENERATED_UCLASS_BODY()
 	
 public:
+	virtual void OnEquip(bool bEquipedWeaponFromInventory) override;
+
 	virtual void OnReload();
 
 	virtual void OnSwitchMode();
@@ -30,13 +32,19 @@ public:
 
 	FORCEINLINE int32 GetAmmoClipSize() { return m_AmmoClipSize; }
 
+	UFUNCTION(BlueprintImplementableEvent, Category = ShootWeapon)
+	void OnRefreshAmmoForBP();
+
 private:
 	void PlayOutOfAmmoSound();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = WeaponConfig)
 	int32 m_AmmoClipSize;
 
-	UPROPERTY(EditDefaultsOnly, Category = WeaponConfig)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = WeaponConfig)
 	int32 m_CurAmmosInClip;
+
+	UPROPERTY(EditDefaultsOnly, Category = WeaponShow)
+	class UWidgetComponent *WeaponWidgetComp;
 };

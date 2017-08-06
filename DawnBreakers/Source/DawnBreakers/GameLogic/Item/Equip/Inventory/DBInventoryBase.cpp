@@ -116,3 +116,16 @@ int32 ADBInventoryBase::GetAmmoForWeapon(EAmmoType AmmoType, int32 AmmoClipSize,
 	return GetAmmos;
 }
 
+int32 ADBInventoryBase::GetTotalAmmoForWeapon(EAmmoType AmmoType)
+{
+	for (int32 i = 0; i < m_Ammo.Num(); ++i)
+	{
+		if (m_Ammo[i].m_AmmoType == AmmoType)
+		{
+			return m_Ammo[i].m_CurrentAmount;
+		}
+	}
+
+	return 0;
+}
+

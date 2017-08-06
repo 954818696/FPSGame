@@ -30,6 +30,8 @@ public:
 
 	int32 GetAmmoForWeapon(EAmmoType AmmoType, int32 AmmoClipSize, int32 CurAmmosInClip);
 
+	int32 GetTotalAmmoForWeapon(EAmmoType AmmoType);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
 	FInventory m_Inventory;

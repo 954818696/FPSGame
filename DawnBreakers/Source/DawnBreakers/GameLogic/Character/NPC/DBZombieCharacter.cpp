@@ -100,7 +100,7 @@ void ADBZombieCharacter::OnSeePlayer(APawn* Pawn)
 
 	ADBZombieAIController* AIController = Cast<ADBZombieAIController>(GetController());
 	ADBBaseCharacter* SensedPawn = Cast<ADBBaseCharacter>(Pawn);
-	if (AIController && SensedPawn->IsAlive())
+	if (AIController && SensedPawn && SensedPawn->IsAlive())
 	{
 		AIController->SetTargetEnemy(SensedPawn);
 	}
@@ -159,11 +159,6 @@ void ADBZombieCharacter::PerformMeleeStrike(AActor* HitActor)
 {
 	if (LastMeleeAttackTime > GetWorld()->GetTimeSeconds() - MeleeStrikeCooldown)
 	{
-		if (!TimerHandle_MeleeAttack.IsValid())
-		{
-
-		}
-
 		return;
 	}
 

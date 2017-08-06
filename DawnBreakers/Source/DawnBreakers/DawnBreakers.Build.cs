@@ -12,7 +12,8 @@ public class DawnBreakers : ModuleRules
                                                             "InputCore",
                                                             "GameUISystem",
                                                             "GameplayTasks",
-                                                            "AIModule"
+                                                            "AIModule",
+                                                            "UMG"
                                                             });
 	}
 }

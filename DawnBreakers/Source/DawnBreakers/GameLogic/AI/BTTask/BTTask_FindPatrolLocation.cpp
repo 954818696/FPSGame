@@ -19,8 +19,8 @@ EBTNodeResult::Type UBTTask_FindPatrolLocation::ExecuteTask(UBehaviorTreeCompone
 		const float SearchRadius = 200.0f;
 		const FVector SearchOrigin = MyWaypoint->GetActorLocation();
 		FVector RandLoc;
-		bool FindResult = UNavigationSystem::K2_GetRandomReachablePointInRadius(AIController, SearchOrigin, RandLoc, SearchRadius);
-		if (FindResult)
+		RandLoc = UNavigationSystem::GetRandomPointInNavigableRadius(AIController, SearchOrigin, SearchRadius);
+		//if (FindResult)
 		{
 			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), RandLoc);
 			return EBTNodeResult::Succeeded;
