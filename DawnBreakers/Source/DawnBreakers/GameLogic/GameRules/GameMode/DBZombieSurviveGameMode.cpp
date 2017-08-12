@@ -11,7 +11,7 @@ ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& Obj
 
 class ADBZombieCharacter* ADBZombieSurviveGameMode::SpawnZombie()
 {
-
+	return nullptr;
 }
 
 
