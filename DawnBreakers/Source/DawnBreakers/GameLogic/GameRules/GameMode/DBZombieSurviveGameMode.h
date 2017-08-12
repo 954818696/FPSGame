@@ -12,9 +12,10 @@
 UCLASS()
 class DAWNBREAKERS_API ADBZombieSurviveGameMode : public ADBBattleGameModeBase
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
-	
-	
+public:
+	UFUNCTION(BlueprintCallable, Category = ADBZombieSurviveGameMode)
+	class ADBZombieCharacter* SpawnZombie();
 	
 };

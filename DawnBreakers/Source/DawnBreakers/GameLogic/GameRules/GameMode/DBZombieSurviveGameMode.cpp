@@ -3,6 +3,15 @@
 #include "DawnBreakers.h"
 #include "DBZombieSurviveGameMode.h"
 
+ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
 
+}
+
+class ADBZombieCharacter* ADBZombieSurviveGameMode::SpawnZombie()
+{
+
+}
 
 
