@@ -56,6 +56,8 @@ void UDBWeaponStateFiring::Fire()
 	// Effect.
 	PlayFiringEffect();
 	 m_Weapon->ConsumeAmmo(m_CostAmmoType, 1);
+
+
 }
 
 void UDBWeaponStateFiring::PlayFiringEffect()
@@ -90,4 +92,3 @@ void UDBWeaponStateFiring::StopFiringEffect()
 		m_Weapon->StopFireShotEffectByIndex(m_FiringEffects[i]);
 	}
 }
-

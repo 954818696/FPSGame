@@ -66,8 +66,178 @@ bool ADBBaseCharacter::IsSprinting() const
 	return false;
 }
 
+float ADBBaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+{
+	if (Health <= 0.f)
+	{
+		return 0.f;
+	}
+
+	//ASGameMode* MyGameMode = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
+	//Damage = MyGameMode ? MyGameMode->ModifyDamage(Damage, this, DamageEvent, EventInstigator, DamageCauser) : Damage;
+
+	const float ActualDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	if (ActualDamage > 0.f)
+	{
+		Health -= ActualDamage;
+		if (Health <= 0)
+		{
+			bool bCanDie = true;
+
+			if (DamageEvent.DamageTypeClass)
+			{
+				//USDamageType* DmgType = Cast<USDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject());
+				//bCanDie = (DmgType == nullptr || (DmgType && DmgType->GetCanDieFrom()));
+			}
+
+			if (bCanDie)
+			{
+				Die(ActualDamage, DamageEvent, EventInstigator, DamageCauser);
+			}
+			else
+			{
+				Health = 1.0f;
+			}
+		}
+		else
+		{
+			APawn* Pawn = EventInstigator ? EventInstigator->GetPawn() : nullptr;
+			PlayHit(ActualDamage, DamageEvent, Pawn, DamageCauser, false);
+		}
+	}
+
+	return ActualDamage;
+}
+
+bool ADBBaseCharacter::CanDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) const
+{
+	if (bIsDying ||
+		IsPendingKill() ||
+		Role != ROLE_Authority ||
+		GetWorld()->GetAuthGameMode() == nullptr)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool ADBBaseCharacter::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+{
+	if (!CanDie(KillingDamage, DamageEvent, Killer, DamageCauser))
+	{
+		return false;
+	}
+
+	Health = FMath::Min(0.0f, Health);
+
+	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? DamageEvent.DamageTypeClass->GetDefaultObject<UDamageType>() : GetDefault<UDamageType>();
+	Killer = GetDamageInstigator(Killer, *DamageType);
+
+	AController* KilledPlayer = Controller ? Controller : Cast<AController>(GetOwner());
+	//GetWorld()->GetAuthGameMode<ASGameMode>()->Killed(Killer, KilledPlayer, this, DamageType);
+
+	OnDeath(KillingDamage, DamageEvent, Killer ? Killer->GetPawn() : NULL, DamageCauser);
+	return true;
+}
+
+void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
+{
+	if (bIsDying)
+	{
+		return;
+	}
+
+	bReplicateMovement = false;
+	bTearOff = true;
+	bIsDying = true;
+
+	PlayHit(KillingDamage, DamageEvent, PawnInstigator, DamageCauser, true);
+
+	DetachFromControllerPendingDestroy();
+
+	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
+	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	USkeletalMeshComponent* Mesh3P = GetMesh();
+	if (Mesh3P)
+	{
+		Mesh3P->SetCollisionProfileName(TEXT("Ragdoll"));
+	}
+	SetActorEnableCollision(true);
+
+	SetRagdollPhysics();
+
+	if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	{
+		FPointDamageEvent PointDmg = *((FPointDamageEvent*)(&DamageEvent));
+		{
+			GetMesh()->AddImpulseAtLocation(PointDmg.ShotDirection * 12000, PointDmg.HitInfo.ImpactPoint, PointDmg.HitInfo.BoneName);
+		}
+	}
+	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
+	{
+		FRadialDamageEvent RadialDmg = *((FRadialDamageEvent const*)(&DamageEvent));
+		{
+			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 100000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
+		}
+	}
+}
+
+void ADBBaseCharacter::SetRagdollPhysics()
+{
+	bool bInRagdoll = false;
+	USkeletalMeshComponent* MainMesh = GetMesh();
+
+	if (IsPendingKill())
+	{
+		bInRagdoll = false;
+	}
+	else if (!MainMesh || !MainMesh->GetPhysicsAsset())
+	{
+		bInRagdoll = false;
+	}
+	else
+	{
+		MainMesh->SetAllBodiesSimulatePhysics(true);
+		MainMesh->SetSimulatePhysics(true);
+		MainMesh->WakeAllRigidBodies();
+		MainMesh->bBlendPhysics = true;
+
+		bInRagdoll = true;
+	}
+
+	UCharacterMovementComponent* CharacterComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	if (CharacterComp)
+	{
+		CharacterComp->StopMovementImmediately();
+		CharacterComp->DisableMovement();
+		CharacterComp->SetComponentTickEnabled(false);
+	}
+
+	if (!bInRagdoll)
+	{
+		// Immediately hide the pawn
+		TurnOff();
+		SetActorHiddenInGame(true);
+		SetLifeSpan(1.0f);
+	}
+	else
+	{
+		SetLifeSpan(10.0f);
+	}
+}
+
 void ADBBaseCharacter::PlayHit(float DamageTaken, struct FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser, bool bKilled)
 {
-
+	if (bKilled && SoundDeath)
+	{
+		UGameplayStatics::SpawnSoundAttached(SoundDeath, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+	}
+	else if (SoundTakeHit)
+	{
+		UGameplayStatics::SpawnSoundAttached(SoundTakeHit, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+	}
 }
 

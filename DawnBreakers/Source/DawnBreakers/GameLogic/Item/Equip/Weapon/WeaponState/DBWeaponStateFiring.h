@@ -29,6 +29,8 @@ public:
 
 	virtual void StopFiringEffect();
 
+public:
+
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	bool m_bAutomaticMode;
 
@@ -37,9 +39,6 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	TSubclassOf<class UDamageType> m_DamageType;
-
-	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
-	float m_HitDamage;
 
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireShotsPerMinute;

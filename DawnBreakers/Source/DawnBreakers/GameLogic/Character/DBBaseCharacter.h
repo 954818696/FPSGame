@@ -26,15 +26,33 @@ public:
 
 	virtual bool IsSprinting() const;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+
 protected:
 	virtual void PlayHit(float DamageTaken, struct FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser, bool bKilled);
+
+	virtual bool Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+	virtual void OnDeath(float KillingDamage, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser);
+
+	virtual void SetRagdollPhysics();
+
+	virtual bool CanDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) const;
 	
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attr")
 	float Health;
 	
-
 	UPROPERTY(EditDefaultsOnly, Category = "Attr")
 	float SprintingSpeedModifier;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* SoundTakeHit;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* SoundDeath;
+
+private:
+	bool bIsDying;
 };

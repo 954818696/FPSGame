@@ -26,7 +26,12 @@ public:
 private:
 	void SpawnImpactEffects(const FHitResult& Impact);
 
+	void DealInstDamage(const FHitResult& Impact, const FVector& ShootDir);
+
 public:
+	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
+	float m_HitDamage;
+
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_FireBaseSpread;
 
