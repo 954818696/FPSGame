@@ -4,6 +4,7 @@
 #include "DBPlayerController.h"
 #include "GameLogic/Character/Player/DBCharacter.h"
 #include "GameModule/Event/EventSets.h"
+#include "GameLogic/GameRules/GameMode/DBBattleGameModeBase.h"
 
 
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
@@ -233,5 +234,9 @@ void ADBPlayerController::EnterState(EPlayerInGameState State)
 
 void ADBPlayerController::Spawn()
 {
-
+	ADBBattleGameModeBase* GameMode = Cast<ADBBattleGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		GameMode->SpawnPlayer(this);
+	}
 }

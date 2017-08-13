@@ -8,7 +8,7 @@ ADBBattleGameModeBase::ADBBattleGameModeBase(const FObjectInitializer& ObjectIni
 	: Super(ObjectInitializer)
 {
 	PlayerControllerClass = ADBPlayerController::StaticClass();
-
+	//DefaultPawnClass = ADBCharacter::StaticClass();
 	//PlayerStateClass = 
 	//GameStateClass = 
 	//SpectatorClass = 
@@ -40,6 +40,20 @@ void ADBBattleGameModeBase::RestartPlayer(AController* NewPlayer)
 
 void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
 {
+	TArray<AActor*> AllWaypoints;
+	UGameplayStatics::GetAllActorsOfClass(PC, ADBBotWayPoint::StaticClass(), AllWaypoints);
+	AActor * PlayerStart = AllWaypoints[0];
+	if (PlayerStart)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+		ADBCharacter * PlayerPawn = DawnBreakerHelper::GetGameWorld()->SpawnActor<ADBCharacter>(DefaultPawnClass, PlayerStart->GetActorLocation(), FRotator(0.f, PlayerStart->GetActorRotation().Yaw, 0.f), SpawnParams);
+		if (PlayerPawn)
+		{
+			PC->Possess(PlayerPawn);
+		}
+	}
 
 }
 
