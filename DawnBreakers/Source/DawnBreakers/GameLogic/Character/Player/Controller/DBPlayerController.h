@@ -2,8 +2,20 @@
 
 #pragma once
 
-#include "GameLogic/Character/DBBasePlayerController.h"
+#include "GameLogic/Character/Player/Controller/DBBasePlayerController.h"
 #include "DBPlayerController.generated.h"
+
+
+UENUM()
+enum class EPlayerInGameState :uint8 
+{
+	PrepareForGettingIn,
+	SpawnPlayer,
+	Playing,
+	Death,
+	Spectating,
+	EndMatch,
+};
 
 // Extend Reserve
 struct FDeferredFireInput
@@ -36,7 +48,13 @@ public:
 
 	void ApplyDeferredFireInputs();
 
-private:
+	//-- GameMdoe Flow.
+	void EnterState(EPlayerInGameState State);
+
+	UFUNCTION(BlueprintCallable, Category = ADBPlayerController)
+	void Spawn();
+
+protected:
 	
 	virtual void PlayerTick(float DeltaTime) override;
 
@@ -78,15 +96,13 @@ private:
 
 	//////////////////////////////////////
 
+protected:
+	EPlayerInGameState PlayerInGameState;
+
 private:
 	class ADBCharacter* m_ControlledCharacter;
 	
 	// To Support Multikeys press trigger firing.
 	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
 
-
-	// Cheat
-public:
-
-private:
 };

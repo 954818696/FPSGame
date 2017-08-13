@@ -28,7 +28,10 @@ private:
 	void UpdateLoadProgress();
 
 	UFUNCTION()
-	void LoadSubLevelFinish();
+	void LoadLoadingLevelFinish();
+
+	UFUNCTION()
+	void AllSubLevelLoadFinish();
 
 	TArray<FName> GetSubLevelsPackageName(UWorld* InWorld);
 
@@ -38,5 +41,7 @@ private:
 	TArray<FName> m_SubLevelsPackageNameList;
 
 	FTimerHandle TimerHandle_UpdateLoadProgress;
+
+	bool BeginLoad;
 	
 };

@@ -3,6 +3,7 @@
 #include "DawnBreakers.h"
 #include "DawnBreakersGameInstance.h"
 #include "GameModule/Level/LevelLoadAssist.h"
+#include "GameModule/Event/EventSets.h"
 
 
 
@@ -15,8 +16,13 @@ void UDawnBreakersGameInstance::Init()
 
 	m_LevelLoadAssisit = NewObject<ULevelLoadAssist>(this);
 
-	FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UDawnBreakersGameInstance::BeginLoadMap);
-	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
+	if (!FParse::Param(FCommandLine::Get(), TEXT("server")))
+	{
+		FCoreUObjectDelegates::PreLoadMap.AddUObject(this, &UDawnBreakersGameInstance::BeginLoadMap);
+		FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UDawnBreakersGameInstance::EndLoadMap);
+
+	}
+
 }
 
 void UDawnBreakersGameInstance::Shutdown()
@@ -29,14 +35,25 @@ void UDawnBreakersGameInstance::Shutdown()
 		m_LevelLoadAssisit->ConditionalBeginDestroy();
 	}
 
+	UEventSets::Clear();
 }
 
 void UDawnBreakersGameInstance::BeginLoadMap(const FString& MapName)
 {
-	m_LevelLoadAssisit->OnLoadMasterLevelBegin(MapName);
+	if (!IsRunningDedicatedServer())
+	{
+		m_LevelLoadAssisit->OnLoadMasterLevelBegin(MapName);
+	}
+	
 }
 
 void UDawnBreakersGameInstance::EndLoadMap(UWorld* World)
 {
-	m_LevelLoadAssisit->OnLoadMasterLevelFinish();
+	//if (!IsRunningDedicatedServer())
+	{	
+		m_LevelLoadAssisit->OnLoadMasterLevelFinish();
+
+	}
+
+	
 }

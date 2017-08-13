@@ -2,15 +2,45 @@
 
 #include "DawnBreakers.h"
 #include "DBBattleGameModeBase.h"
+#include "GameLogic/Character/Player/Controller/DBPlayerController.h"
 
 ADBBattleGameModeBase::ADBBattleGameModeBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	PlayerControllerClass = ADBPlayerController::StaticClass();
-	DefaultPawnClass = ADBCharacter::StaticClass();
+
 	//PlayerStateClass = 
 	//GameStateClass = 
 	//SpectatorClass = 
+}
+
+void ADBBattleGameModeBase::PostLogin(APlayerController * NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	ADBPlayerController * PC = Cast<ADBPlayerController>(NewPlayer);
+	if (PC)
+	{
+		if (HasMatchEnded())
+		{
+			PC->EnterState(EPlayerInGameState::EndMatch);
+		}
+		else
+		{
+			PC->EnterState(EPlayerInGameState::PrepareForGettingIn);
+		}
+	}
+}
+
+void ADBBattleGameModeBase::RestartPlayer(AController* NewPlayer)
+{
+	return;
+}
+
+
+void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
+{
+
 }
 
 void ADBBattleGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)

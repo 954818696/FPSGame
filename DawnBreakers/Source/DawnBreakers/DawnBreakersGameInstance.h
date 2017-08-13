@@ -18,9 +18,11 @@ public:
 
 	virtual void Shutdown() override;
 	
+
+	UFUNCTION()
 	void BeginLoadMap(const FString& MapName);
 
-	//UFUNCTION()
+	UFUNCTION()
 	void EndLoadMap(UWorld* World);
 
 

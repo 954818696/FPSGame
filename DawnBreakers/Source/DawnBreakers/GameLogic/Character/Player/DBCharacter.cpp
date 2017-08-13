@@ -2,11 +2,11 @@
 
 #include "DawnBreakers.h"
 #include "DBCharacter.h"
-#include "DBCharacterMovementComponent.h"
+#include "GameLogic/Character/Player/Movement/DBCharacterMovementComponent.h"
 #include "GameLogic/Animation/AnimInstance/DBCharacterAnimInstance.h"
 #include "GameLogic/Item/Equip/Weapon/ShootWeapon/DBShootWeaponBase.h"
 #include "GameLogic/Item/Equip/Inventory/DBInventoryBase.h"
-#include "Player/DBPlayerController.h"
+#include "GameLogic/Character/Player/Controller/DBPlayerController.h"
 
 #define DEFAULT_FOV 90.f
 #define MAX_ARM_LAG_ROT 20.f

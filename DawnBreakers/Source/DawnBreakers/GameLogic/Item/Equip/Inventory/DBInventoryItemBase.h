@@ -4,7 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "GameLogic/Item/ItemInteractInterface.h"
-#include "GameLogic/Character/DBCharacter.h"
+#include "GameLogic/Character/Player/DBCharacter.h"
 #include "ItemType.h"
 #include "DBInventoryItemBase.generated.h"
 

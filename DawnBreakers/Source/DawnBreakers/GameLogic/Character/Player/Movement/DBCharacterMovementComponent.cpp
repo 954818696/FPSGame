@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DBCharacterMovementComponent.h"
-#include "Player/DBPlayerController.h"
+#include "GameLogic/Character/Player/Controller/DBPlayerController.h"
 
 UDBCharacterMovementComponent::UDBCharacterMovementComponent(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

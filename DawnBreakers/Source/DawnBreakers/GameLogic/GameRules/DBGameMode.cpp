@@ -2,8 +2,8 @@
 
 #include "DawnBreakers.h"
 #include "DBGameMode.h"
-#include "GameLogic/Character/Player/DBPlayerController.h"
-#include "GameLogic/Character/DBCharacter.h"
+#include "GameLogic/Character/Player/Controller/DBBasePlayerController.h"
+#include "GameLogic/Character/Player/DBCharacter.h"
 
 
 ADBGameMode::ADBGameMode(const class FObjectInitializer& ObjectInitializer)

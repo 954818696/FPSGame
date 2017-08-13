@@ -10,7 +10,7 @@ UEventSets* UEventSets::Instance()
 {
 	if (m_EventSetsInstance == nullptr || ! m_EventSetsInstance->IsValidLowLevel())
 	{
-		m_EventSetsInstance = NewObject<UEventSets>(GEngine->GetWorld()->GetGameInstance());
+		m_EventSetsInstance = NewObject<UEventSets>(DawnBreakerHelper::GetGameWorld());
 		m_EventSetsInstance->AddToRoot();
 	}
 
@@ -19,6 +19,9 @@ UEventSets* UEventSets::Instance()
 
 void UEventSets::Clear()
 {
-	m_EventSetsInstance->RemoveFromRoot();
-	m_EventSetsInstance = nullptr;
+	if (m_EventSetsInstance)
+	{
+		m_EventSetsInstance->RemoveFromRoot();
+		m_EventSetsInstance = nullptr;
+	}
 }

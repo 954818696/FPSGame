@@ -18,6 +18,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = DBBattleGameMode)
 	virtual void FinishMatch();
 
+	virtual void PostLogin(APlayerController * NewPlayer) override;
+
+	// Override Default Game sequence.
+	virtual void RestartPlayer(AController* NewPlayer) override;
+
+	void SpawnPlayer(ADBBasePlayerController * PC);
+
 protected:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 

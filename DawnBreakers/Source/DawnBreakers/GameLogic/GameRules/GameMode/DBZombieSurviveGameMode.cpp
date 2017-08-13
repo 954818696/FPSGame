@@ -6,7 +6,7 @@
 ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
+	PlayerControllerClass = ADBZombieModePlayerController::StaticClass();
 }
 
 class ADBZombieCharacter* ADBZombieSurviveGameMode::SpawnZombie()

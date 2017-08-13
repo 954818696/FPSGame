@@ -2,7 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DBCharacterAnimInstance.h"
-#include "GameLogic/Character/DBCharacter.h"
+#include "GameLogic/Character/Player/DBCharacter.h"
 
 UDBCharacterAnimInstance::UDBCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),

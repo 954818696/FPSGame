@@ -2,7 +2,8 @@
 
 #include "DawnBreakers.h"
 #include "DBPlayerController.h"
-#include "GameLogic/Character/DBCharacter.h"
+#include "GameLogic/Character/Player/DBCharacter.h"
+#include "GameModule/Event/EventSets.h"
 
 
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
@@ -209,4 +210,28 @@ void ADBPlayerController::OnInteractWithItem()
 	{
 		m_ControlledCharacter->InteractWithItem();
 	}
+}
+
+// -----------------------------GameMode....
+void ADBPlayerController::EnterState(EPlayerInGameState State)
+{
+	PlayerInGameState = State;
+
+	switch (State)
+	{
+	case EPlayerInGameState::PrepareForGettingIn:
+	{
+		UEventSets::Instance()->OnPreparedForGetInGame.Broadcast();
+	}
+	break;
+
+	default:
+		;
+	}
+
+}
+
+void ADBPlayerController::Spawn()
+{
+
 }
