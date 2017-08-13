@@ -17,3 +17,9 @@ void ADBBasePlayerController::SetupInputComponent()
 
 
 }
+
+void ADBBasePlayerController::RestartLevel()
+{
+	UEventSets::Clear();
+	Super::RestartLevel();
+}

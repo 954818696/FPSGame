@@ -16,6 +16,8 @@ class DAWNBREAKERS_API ADBBasePlayerController : public APlayerController
 public:
 
 	virtual void SetupInputComponent() override;
+
+	virtual void RestartLevel() override;
 	
 	
 };
