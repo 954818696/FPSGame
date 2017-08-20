@@ -60,6 +60,8 @@ void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
 void ADBBattleGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+
+	UEventSets::Clear();
 }
 
 void ADBBattleGameModeBase::InitGameState()
