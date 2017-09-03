@@ -18,5 +18,8 @@ class DAWNBREAKERS_API UDBCheatManager : public UCheatManager
 	
 	UFUNCTION(exec)
 	void SetIronSight();
+
+	UFUNCTION(exec)
+	void KillSelf();
 	
 };

@@ -2,6 +2,7 @@
 
 #include "DawnBreakers.h"
 #include "DBBaseCharacter.h"
+#include "DawnBreakers/GameLogic/Item/Equip/Weapon/Effects/DBDamageType.h"
 
 
 // Sets default values
@@ -40,6 +41,7 @@ void ADBBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	OnRefreshHP();
 }
 
 // Called every frame
@@ -73,9 +75,6 @@ float ADBBaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dama
 		return 0.f;
 	}
 
-	//ASGameMode* MyGameMode = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
-	//Damage = MyGameMode ? MyGameMode->ModifyDamage(Damage, this, DamageEvent, EventInstigator, DamageCauser) : Damage;
-
 	const float ActualDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	if (ActualDamage > 0.f)
 	{
@@ -86,8 +85,8 @@ float ADBBaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dama
 
 			if (DamageEvent.DamageTypeClass)
 			{
-				//USDamageType* DmgType = Cast<USDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject());
-				//bCanDie = (DmgType == nullptr || (DmgType && DmgType->GetCanDieFrom()));
+				UDBDamageType* DmgType = Cast<UDBDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject());
+				bCanDie = (DmgType == nullptr || (DmgType && DmgType->GetCanDieFrom()));
 			}
 
 			if (bCanDie)
@@ -105,6 +104,8 @@ float ADBBaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dama
 			PlayHit(ActualDamage, DamageEvent, Pawn, DamageCauser, false);
 		}
 	}
+
+	OnRefreshHP();
 
 	return ActualDamage;
 }
@@ -135,7 +136,6 @@ bool ADBBaseCharacter::Die(float KillingDamage, FDamageEvent const& DamageEvent,
 	Killer = GetDamageInstigator(Killer, *DamageType);
 
 	AController* KilledPlayer = Controller ? Controller : Cast<AController>(GetOwner());
-	//GetWorld()->GetAuthGameMode<ASGameMode>()->Killed(Killer, KilledPlayer, this, DamageType);
 
 	OnDeath(KillingDamage, DamageEvent, Killer ? Killer->GetPawn() : NULL, DamageCauser);
 	return true;
@@ -173,14 +173,14 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 	{
 		FPointDamageEvent PointDmg = *((FPointDamageEvent*)(&DamageEvent));
 		{
-			GetMesh()->AddImpulseAtLocation(PointDmg.ShotDirection * 12000, PointDmg.HitInfo.ImpactPoint, PointDmg.HitInfo.BoneName);
+			GetMesh()->AddImpulseAtLocation(PointDmg.ShotDirection * 1200, PointDmg.HitInfo.ImpactPoint, PointDmg.HitInfo.BoneName);
 		}
 	}
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		FRadialDamageEvent RadialDmg = *((FRadialDamageEvent const*)(&DamageEvent));
 		{
-			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 100000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
+			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 10000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
 		}
 	}
 }

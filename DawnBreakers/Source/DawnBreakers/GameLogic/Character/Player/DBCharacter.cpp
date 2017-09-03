@@ -35,6 +35,11 @@ ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 	m_CameraComp = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("CharacterCamera"));
 	m_CameraComp->bUsePawnControlRotation = true;
 
+	FPostProcessSettings & PPS = m_CameraComp->PostProcessSettings;
+	PPS.bOverride_FilmSaturation = true;
+	PPS.bOverride_SceneFringeIntensity = true;
+	PPS.bOverride_VignetteIntensity = true;
+
 	m_CameraBoomComp = ObjectInitializer.CreateDefaultSubobject<USpringArmComponent>(this, TEXT("CameraBoom"));
 	m_CameraBoomComp->SocketOffset = FVector(0, 35, 0);
 	m_CameraBoomComp->bUsePawnControlRotation = true;
@@ -44,7 +49,7 @@ ADBCharacter::ADBCharacter(const class FObjectInitializer& ObjectInitializer)
 void ADBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	SetFPSCamera();
 
 	CreateInventory();
@@ -53,18 +58,26 @@ void ADBCharacter::BeginPlay()
 
 void ADBCharacter::Tick( float DeltaTime )
 {
+	if (!IsAlive())
+	{
+		return;
+	}
+
 	Super::Tick( DeltaTime );
 
 	InteractQueryTick();
 
 	// UpperBody Rotate.
-	const float TViewPitch = Controller->GetControlRotation().Pitch;
-	const float TViewYaw = GetActorRotation().Yaw;
-	const float TNewPitchLag = FMath::ClampAngle((TViewPitch - m_PrevViewPitchRotation) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
-	const float TNewYawLag = FMath::ClampAngle((m_PrevViewYawRotation - TViewYaw) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
-	m_ArmsLagRotation = FMath::RInterpTo(m_ArmsLagRotation, FRotator(TNewPitchLag, TNewYawLag, TNewYawLag), DeltaTime, 8.f);
-	m_PrevViewPitchRotation = TViewPitch;
-	m_PrevViewYawRotation = TViewYaw;
+	if (Controller && Controller->IsValidLowLevel())
+	{
+		const float TViewPitch = Controller->GetControlRotation().Pitch;
+		const float TViewYaw = GetActorRotation().Yaw;
+		const float TNewPitchLag = FMath::ClampAngle((TViewPitch - m_PrevViewPitchRotation) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
+		const float TNewYawLag = FMath::ClampAngle((m_PrevViewYawRotation - TViewYaw) * 2.f, -MAX_ARM_LAG_ROT, MAX_ARM_LAG_ROT);
+		m_ArmsLagRotation = FMath::RInterpTo(m_ArmsLagRotation, FRotator(TNewPitchLag, TNewYawLag, TNewYawLag), DeltaTime, 8.f);
+		m_PrevViewPitchRotation = TViewPitch;
+		m_PrevViewYawRotation = TViewYaw;
+	}
 }
 
 void ADBCharacter::MoveForward(float Delta)
@@ -325,6 +338,14 @@ UDBCharacterAnimInstance* ADBCharacter::GetAnimInstance()
 		m_AnimationInstance = Cast<UDBCharacterAnimInstance>(GetMesh()->GetAnimInstance());
 	}
 	return m_AnimationInstance;
+}
+
+void ADBCharacter::UpdateCameraEffect()
+{
+	FPostProcessSettings & PPS = m_CameraComp->PostProcessSettings;
+	PPS.FilmSaturation = Health / GetDefault<ADBCharacter>(GetClass())->Health;
+	PPS.SceneFringeIntensity = FMath::GetMappedRangeValueClamped(FVector2D(0.f, 30.f), FVector2D(5.f, 0.f), Health);
+	PPS.VignetteIntensity = FMath::GetMappedRangeValueClamped(FVector2D(0.f, 50.f), FVector2D(1.f, 0.f), Health);
 }
 
 void ADBCharacter::InteractQueryTick()

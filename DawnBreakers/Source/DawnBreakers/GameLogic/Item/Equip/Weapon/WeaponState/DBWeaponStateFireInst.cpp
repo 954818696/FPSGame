@@ -60,7 +60,7 @@ void UDBWeaponStateFireInst::Fire()
 		SpawnImpactEffects(Hit);
 	}
 
-	//FireShot(damage, loc, Rot)
+	DealInstDamage(Hit, FiringDir);
 
 #ifdef DEBUG_FIRE
 	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
@@ -86,28 +86,34 @@ void UDBWeaponStateFireInst::SpawnImpactEffects(const FHitResult& Impact)
 
 void UDBWeaponStateFireInst::DealInstDamage(const FHitResult& Impact, const FVector& ShootDir)
 {
-	//float ActualHitDamage = HitDamage;
+	float ActualHitDamage = m_HitDamage;
+	if (m_DamageType == nullptr)
+	{
+		return;
+	}
 
-	///* Handle special damage location on the zombie body (types are setup in the Physics Asset of the zombie */
-	//USDamageType* DmgType = Cast<USDamageType>(DamageType->GetDefaultObject());
-	//UPhysicalMaterial * PhysMat = Impact.PhysMaterial.Get();
-	//if (PhysMat && DmgType)
-	//{
-	//	if (PhysMat->SurfaceType == SURFACE_ZOMBIEHEAD)
-	//	{
-	//		ActualHitDamage *= DmgType->GetHeadDamageModifier();
-	//	}
-	//	else if (PhysMat->SurfaceType == SURFACE_ZOMBIELIMB)
-	//	{
-	//		ActualHitDamage *= DmgType->GetLimbDamageModifier();
-	//	}
-	//}
+	UDBDamageType* DmgType = Cast<UDBDamageType>(m_DamageType->GetDefaultObject());
+	UPhysicalMaterial * PhysMat = Impact.PhysMaterial.Get();
+	if (PhysMat && DmgType)
+	{
+		if (PhysMat->SurfaceType == SURFACE_ZOMBIEHEAD)
+		{
+			ActualHitDamage *= DmgType->GetHeadDamageModifier();
+		}
+		else if (PhysMat->SurfaceType == SURFACE_ZOMBIELIMB)
+		{
+			ActualHitDamage *= DmgType->GetLimbDamageModifier();
+		}
+	}
 
-	//FPointDamageEvent PointDmg;
-	//PointDmg.DamageTypeClass = DamageType;
-	//PointDmg.HitInfo = Impact;
-	//PointDmg.ShotDirection = ShootDir;
-	//PointDmg.Damage = ActualHitDamage;
+	FPointDamageEvent PointDmg;
+	PointDmg.DamageTypeClass = m_DamageType;
+	PointDmg.HitInfo = Impact;
+	PointDmg.ShotDirection = ShootDir;
+	PointDmg.Damage = ActualHitDamage;
 
-	//Impact.GetActor()->TakeDamage(PointDmg.Damage, PointDmg, MyPawn->Controller, this);
+	if (Impact.GetActor())
+	{
+		Impact.GetActor()->TakeDamage(PointDmg.Damage, PointDmg, GetWeaponOwner()->GetController(), GetWeapon());
+	}
 }

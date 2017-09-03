@@ -36,7 +36,7 @@ ADBZombieCharacter::ADBZombieCharacter(const class FObjectInitializer& ObjectIni
 	AudioLoopComp->bAutoDestroy = false;
 	AudioLoopComp->SetupAttachment(RootComponent);
 
-	Health = 100;
+	Health = 1000;
 	MeleeDamage = 20.0f;
 	MeleeStrikeCooldown = 4.0f;
 	SprintingSpeedModifier = 3.0f;
@@ -175,7 +175,7 @@ void ADBZombieCharacter::PerformMeleeStrike(AActor* HitActor)
 			DmgEvent.Damage = MeleeDamage;
 
 			HitActor->TakeDamage(DmgEvent.Damage, DmgEvent, GetController(), this);
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s attacked"), *HitActor->GetName()));
+			//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s attacked"), *HitActor->GetName()));
 
 			SimulateMeleeStrike();
 		}

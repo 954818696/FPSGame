@@ -91,6 +91,9 @@ public:
 
 	class UDBCharacterAnimInstance* GetAnimInstance();
 
+	UFUNCTION(BlueprintCallable, Category = ADBCharacter)
+	void UpdateCameraEffect();
+
 private:
 	void InteractQueryTick();
 

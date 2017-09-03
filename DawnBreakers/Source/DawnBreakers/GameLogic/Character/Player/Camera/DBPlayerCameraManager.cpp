@@ -15,7 +15,7 @@ ADBPlayerCameraManager::ADBPlayerCameraManager(const class FObjectInitializer& O
 void ADBPlayerCameraManager::UpdateCamera(float DeltaTime)
 {
 	ADBCharacter* TCharacter = PCOwner ? Cast<ADBCharacter>(PCOwner->GetPawn()) : nullptr;
-	if (TCharacter)
+	if (TCharacter && TCharacter->IsAlive())
 	{
 		float NewFOV;
 		if (TCharacter->IsTargeting())

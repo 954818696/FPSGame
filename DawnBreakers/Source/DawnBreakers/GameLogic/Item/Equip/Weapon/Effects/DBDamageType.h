@@ -12,9 +12,23 @@
 UCLASS()
 class DAWNBREAKERS_API UDBDamageType : public UDamageType
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
-	
-	
+public:
+	bool GetCanDieFrom();
+
+	float GetHeadDamageModifier();
+
+	float GetLimbDamageModifier();
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	bool bCanDieFrom;
+
+	UPROPERTY(EditDefaultsOnly)
+	float HeadDmgModifier;
+
+	UPROPERTY(EditDefaultsOnly)
+	float LimbDmgModifier;
 	
 };

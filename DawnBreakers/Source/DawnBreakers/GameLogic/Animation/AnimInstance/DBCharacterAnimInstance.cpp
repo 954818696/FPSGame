@@ -18,7 +18,7 @@ void UDBCharacterAnimInstance::NativeInitializeAnimation()
 
 void UDBCharacterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 {
-	if (m_CharacterOwner != nullptr)
+	if (m_CharacterOwner != nullptr && m_CharacterOwner->IsAlive())
 	{
 		m_CharacterOwner->GetArmRotation(m_ArmsRotation);
 		m_ViewPitch = FMath::ClampAngle(m_CharacterOwner->GetViewPitch(), -90.f, 90.f);

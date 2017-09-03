@@ -47,6 +47,9 @@ UParticleSystem* AWeaponImpactEffect::GetImpactEffect(EPhysicalSurface SurfaceTy
 	case SURFACE_DEFAULT:
 		return m_DefaultFX;
 	case SURFACE_HUMAN_FLESH:
+	case SURFACE_ZOMBIEBODY:
+	case SURFACE_ZOMBIEHEAD:
+	case SURFACE_ZOMBIELIMB:
 		return m_HumanFleshFX;
 	default:
 		return nullptr;

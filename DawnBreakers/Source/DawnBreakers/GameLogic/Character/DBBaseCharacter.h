@@ -38,10 +38,12 @@ protected:
 	virtual void SetRagdollPhysics();
 
 	virtual bool CanDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) const;
-	
 
+	UFUNCTION(BlueprintImplementableEvent, Category = ShootWeapon)
+	void OnRefreshHP();
+	
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Attr")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Attr")
 	float Health;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Attr")

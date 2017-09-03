@@ -28,7 +28,7 @@ private:
 
 	void DealInstDamage(const FHitResult& Impact, const FVector& ShootDir);
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = WeaponState)
 	float m_HitDamage;
 
