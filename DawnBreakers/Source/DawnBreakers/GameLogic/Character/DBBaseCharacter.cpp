@@ -154,7 +154,6 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 
 	PlayHit(KillingDamage, DamageEvent, PawnInstigator, DamageCauser, true);
 
-	DetachFromControllerPendingDestroy();
 
 	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
 	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -163,6 +162,7 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 	USkeletalMeshComponent* Mesh3P = GetMesh();
 	if (Mesh3P)
 	{
+		Mesh3P->AnimScriptInstance->Montage_Stop(0.0f);
 		Mesh3P->SetCollisionProfileName(TEXT("Ragdoll"));
 	}
 	SetActorEnableCollision(true);
@@ -173,16 +173,19 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 	{
 		FPointDamageEvent PointDmg = *((FPointDamageEvent*)(&DamageEvent));
 		{
-			GetMesh()->AddImpulseAtLocation(PointDmg.ShotDirection * 1200, PointDmg.HitInfo.ImpactPoint, PointDmg.HitInfo.BoneName);
+			//GetMesh()->AddImpulseAtLocation(PointDmg.ShotDirection , PointDmg.HitInfo.ImpactPoint, PointDmg.HitInfo.BoneName);
 		}
 	}
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
 		FRadialDamageEvent RadialDmg = *((FRadialDamageEvent const*)(&DamageEvent));
 		{
-			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 10000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
+			//GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 10000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
 		}
 	}
+
+	//DetachFromControllerPendingDestroy();
+	SetLifeSpan(5.f);
 }
 
 void ADBBaseCharacter::SetRagdollPhysics()
