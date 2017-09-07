@@ -190,6 +190,11 @@ void ADBCharacter::InteractWithItem()
 	}
 }
 
+void ADBCharacter::DropItem()
+{
+
+}
+
 void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 {
 	if (NewItem == nullptr || NewItem->IsValidLowLevel() == false)
@@ -322,6 +327,11 @@ void ADBCharacter::CreateInventory()
 		m_Inventory->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		m_Inventory->SetItemOwner(this);
 	}
+}
+
+void ADBCharacter::DestroyInventory()
+{
+
 }
 
 float ADBCharacter::GetViewPitch() const

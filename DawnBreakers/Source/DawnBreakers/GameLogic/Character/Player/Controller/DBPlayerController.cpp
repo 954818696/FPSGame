@@ -69,7 +69,11 @@ void ADBPlayerController::SetupInputComponent()
 	InputComponent->BindAction("NextWeapon", IE_Pressed, this, &ADBPlayerController::OnNextWeapon);
 
 	InputComponent->BindAction("InteractWithItem", IE_Pressed, this, &ADBPlayerController::OnInteractWithItem);
+	InputComponent->BindAction("Drop", IE_Pressed, this, &ADBPlayerController::OnDropItem);
+
 	InputComponent->BindAction("SwitchCameraMode", IE_Pressed, this, &ADBPlayerController::OnSwitchCameraMode);
+
+
 }
 
 void ADBPlayerController::MoveForward(float Delta)
@@ -210,6 +214,14 @@ void ADBPlayerController::OnInteractWithItem()
 	if (m_ControlledCharacter)
 	{
 		m_ControlledCharacter->InteractWithItem();
+	}
+}
+
+void ADBPlayerController::OnDropItem()
+{
+	if (m_ControlledCharacter)
+	{
+		m_ControlledCharacter->DropItem();
 	}
 }
 

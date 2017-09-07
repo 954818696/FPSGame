@@ -82,6 +82,8 @@ struct FInventory
 
 	bool Put(ADBInventoryItemBase* NewItem);
 
+	void GetAllItems(TArray<ADBInventoryItemBase*>& OutItems);
+
 	void RemoveOne(ADBInventoryItemBase* RemovedItem);
 
 	void RemoveAllTypeSlot();

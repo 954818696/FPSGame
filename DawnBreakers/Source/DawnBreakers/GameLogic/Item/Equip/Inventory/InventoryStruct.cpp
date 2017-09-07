@@ -34,6 +34,14 @@ bool FInventory::Put(ADBInventoryItemBase* NewItem)
 	return Result;
 }
 
+void FInventory::GetAllItems(TArray<ADBInventoryItemBase*>& OutItems)
+{
+	for (int32 i = 0; i < m_SlotsContainer.Num(); ++i)
+	{
+		OutItems.Append(m_SlotsContainer[i].m_ItemsContainer);
+	}
+}
+
 void FInventory::RemoveOne(ADBInventoryItemBase* RemovedItem)
 {
 	EInventorySlot SlotType = RemovedItem->GetStorageSlotType();

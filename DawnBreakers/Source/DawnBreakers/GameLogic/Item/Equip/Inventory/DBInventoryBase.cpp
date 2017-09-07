@@ -45,11 +45,38 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 	return Result;
 }
 
-void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment)
+void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment, bool bDrop)
 {
 	if (RemovedEquipment && RemovedEquipment->IsValidLowLevel())
 	{
 		m_Inventory.RemoveOne(RemovedEquipment);
+	}
+
+	if (bDrop)
+	{
+		DropItem(RemovedEquipment);
+	}
+}
+
+void ADBInventoryBase::RemoveAllFromInventory(bool bDrop)
+{
+	TArray<ADBInventoryItemBase *> OutDroppedItems;
+	m_Inventory.GetAllItems(OutDroppedItems);
+	m_Inventory.RemoveAllTypeSlot();
+
+	if (!bDrop)
+	{
+		for (int32 i = 0; i < OutDroppedItems.Num(); ++i)
+		{
+			OutDroppedItems[i]->Destroy();
+		}
+	}
+	else
+	{
+		for (int32 i = 0; i < OutDroppedItems.Num(); ++i)
+		{
+			DropItem(OutDroppedItems[i]);
+		}
 	}
 }
 
@@ -127,5 +154,10 @@ int32 ADBInventoryBase::GetTotalAmmoForWeapon(EAmmoType AmmoType)
 	}
 
 	return 0;
+}
+
+void ADBInventoryBase::DropItem(ADBInventoryItemBase* Item)
+{
+	
 }
 

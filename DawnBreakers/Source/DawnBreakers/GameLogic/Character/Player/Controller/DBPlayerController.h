@@ -94,6 +94,8 @@ protected:
 
 	void OnInteractWithItem();
 
+	void OnDropItem();
+
 	//////////////////////////////////////
 
 protected:

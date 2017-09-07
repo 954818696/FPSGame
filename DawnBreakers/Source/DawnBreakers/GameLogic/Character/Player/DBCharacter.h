@@ -50,6 +50,8 @@ public:
 
 	void InteractWithItem();
 
+	void DropItem();
+
 	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
 
 	void EquipHandWeapon(class ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory);
@@ -78,6 +80,8 @@ public:
 	void CreateInventory();
 
 	FORCEINLINE class ADBInventoryBase* GetInventory() { return m_Inventory;  }
+
+	void DestroyInventory();
 
 	//////////////////////////////////////
 

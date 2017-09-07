@@ -20,7 +20,10 @@ public:
 
 	bool AddToInventory(class ADBInventoryItemBase* NewEquipment);
 
-	void RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment);
+	void RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment, bool bDrop);
+
+	// If bDrop false, directly destroy all items.
+	void RemoveAllFromInventory(bool bDrop);
 
 	ADBInventoryItemBase* GetOneItemByItemSequence(const ADBInventoryItemBase* FindBaseItem, bool bNext);
 
@@ -31,6 +34,9 @@ public:
 	int32 GetAmmoForWeapon(EAmmoType AmmoType, int32 AmmoClipSize, int32 CurAmmosInClip);
 
 	int32 GetTotalAmmoForWeapon(EAmmoType AmmoType);
+
+private:
+	void DropItem(ADBInventoryItemBase* Item);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = ADBInventoryBase)
