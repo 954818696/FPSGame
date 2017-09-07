@@ -25,3 +25,11 @@ void UEventSets::Clear()
 		m_EventSetsInstance = nullptr;
 	}
 }
+
+void UEventSets::ClearAllBind()
+{
+	OnSendLevelEvent.Clear();
+	OnLevelStreamLoadPercent.Clear();
+	OnPreparedForGetInGame.Clear();
+	OnRestartPlayer.Clear();
+}

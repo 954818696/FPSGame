@@ -38,7 +38,7 @@ ADBZombieCharacter::ADBZombieCharacter(const class FObjectInitializer& ObjectIni
 
 	Health = 1000;
 	MeleeDamage = 20.0f;
-	MeleeStrikeCooldown = 4.0f;
+	MeleeStrikeCooldown = 2.0f;
 	SprintingSpeedModifier = 3.0f;
 
 	SenseTimeOut = 2.5f;

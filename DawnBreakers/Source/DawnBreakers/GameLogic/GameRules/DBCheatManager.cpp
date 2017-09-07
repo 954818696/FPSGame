@@ -42,3 +42,13 @@ void UDBCheatManager::KillSelf()
 		}
 	}
 }
+
+void UDBCheatManager::SpawnPlayer()
+{
+	ADBPlayerController* MyPC = Cast<ADBPlayerController>(GetOuterADBBasePlayerController());
+
+	if (MyPC)
+	{
+		MyPC->Spawn();
+	}
+}

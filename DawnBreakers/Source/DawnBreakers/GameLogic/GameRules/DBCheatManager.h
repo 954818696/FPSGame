@@ -21,5 +21,8 @@ class DAWNBREAKERS_API UDBCheatManager : public UCheatManager
 
 	UFUNCTION(exec)
 	void KillSelf();
+
+	UFUNCTION(exec)
+	void SpawnPlayer();
 	
 };

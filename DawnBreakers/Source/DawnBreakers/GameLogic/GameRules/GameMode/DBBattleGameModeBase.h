@@ -23,7 +23,9 @@ public:
 	// Override Default Game sequence.
 	virtual void RestartPlayer(AController* NewPlayer) override;
 
-	void SpawnPlayer(ADBBasePlayerController * PC);
+	virtual void SpawnPlayer(class ADBBasePlayerController * PC);
+
+	virtual void Killed(AController* Killer, AController* VictimPlayer, APawn* VictimPawn, const UDamageType* DamageType);
 
 protected:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;

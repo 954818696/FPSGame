@@ -105,11 +105,19 @@ void ADBCharacter::MoveRight(float Delta)
 
 void ADBCharacter::AddYawInput(float Delta)
 {
+	if (!IsAlive())
+	{
+		return;
+	}
 	Super::AddControllerYawInput(Delta * m_CameraComp->FieldOfView / DEFAULT_FOV);
 }
 
 void ADBCharacter::AddPitchInput(float Delta)
 {
+	if (!IsAlive())
+	{
+		return;
+	}
 	Super::AddControllerPitchInput(Delta * m_CameraComp->FieldOfView / DEFAULT_FOV);
 }
 

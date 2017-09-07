@@ -3,6 +3,7 @@
 #include "DawnBreakers.h"
 #include "DBBaseCharacter.h"
 #include "DawnBreakers/GameLogic/Item/Equip/Weapon/Effects/DBDamageType.h"
+#include "GameLogic/GameRules/GameMode/DBBattleGameModeBase.h"
 
 
 // Sets default values
@@ -137,6 +138,12 @@ bool ADBBaseCharacter::Die(float KillingDamage, FDamageEvent const& DamageEvent,
 
 	AController* KilledPlayer = Controller ? Controller : Cast<AController>(GetOwner());
 
+	ADBBattleGameModeBase* CurGameMode = GetWorld()->GetAuthGameMode<ADBBattleGameModeBase>();
+	if (CurGameMode)
+	{
+		CurGameMode->Killed(Killer, KilledPlayer, this, DamageType);
+	}
+
 	OnDeath(KillingDamage, DamageEvent, Killer ? Killer->GetPawn() : NULL, DamageCauser);
 	return true;
 }
@@ -185,7 +192,7 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 	}
 
 	//DetachFromControllerPendingDestroy();
-	SetLifeSpan(5.f);
+	//SetLifeSpan(5.f);
 }
 
 void ADBBaseCharacter::SetRagdollPhysics()

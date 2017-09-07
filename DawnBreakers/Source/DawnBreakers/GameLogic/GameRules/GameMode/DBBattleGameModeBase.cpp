@@ -3,6 +3,8 @@
 #include "DawnBreakers.h"
 #include "DBBattleGameModeBase.h"
 #include "GameLogic/Character/Player/Controller/DBPlayerController.h"
+#include "GameLogic/GameRules/DBInGamePlayerStart.h"
+#include "GameLogic/Character/Player/Controller/DBBasePlayerController.h"
 
 ADBBattleGameModeBase::ADBBattleGameModeBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -41,7 +43,7 @@ void ADBBattleGameModeBase::RestartPlayer(AController* NewPlayer)
 void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
 {
 	TArray<AActor*> AllWaypoints;
-	UGameplayStatics::GetAllActorsOfClass(PC, ADBBotWayPoint::StaticClass(), AllWaypoints);
+	UGameplayStatics::GetAllActorsOfClass(PC, ADBInGamePlayerStart::StaticClass(), AllWaypoints);
 	AActor * PlayerStart = AllWaypoints[0];
 	if (PlayerStart)
 	{
@@ -54,6 +56,11 @@ void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
 			PC->Possess(PlayerPawn);
 		}
 	}
+
+}
+
+void ADBBattleGameModeBase::Killed(AController* Killer, AController* VictimPlayer, APawn* VictimPawn, const UDamageType* DamageType)
+{
 
 }
 
@@ -72,6 +79,8 @@ void ADBBattleGameModeBase::InitGameState()
 void ADBBattleGameModeBase::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
+
+	GetWorldTimerManager().SetTimer(TimerHandle_DefaultTimer, this, &ADBBattleGameModeBase::DefaultTimer, GetWorldSettings()->GetEffectiveTimeDilation(), true);
 }
 
 void ADBBattleGameModeBase::DefaultTimer()
@@ -93,6 +102,7 @@ void ADBBattleGameModeBase::FinishMatch()
 {
 	if (IsMatchInProgress())
 	{
+		UEventSets::Instance()->ClearAllBind();
 		EndMatch();
 
 	}
