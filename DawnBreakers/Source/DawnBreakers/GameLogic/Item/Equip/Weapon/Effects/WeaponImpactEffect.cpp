@@ -6,7 +6,7 @@
 AWeaponImpactEffect::AWeaponImpactEffect()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
+	InitialLifeSpan = 3.f;
 	//SetLifeSpan();
 }
 
