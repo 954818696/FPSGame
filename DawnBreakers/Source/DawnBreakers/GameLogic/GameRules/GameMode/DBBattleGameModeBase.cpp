@@ -44,6 +44,11 @@ void ADBBattleGameModeBase::SpawnPlayer(ADBBasePlayerController * PC)
 {
 	TArray<AActor*> AllWaypoints;
 	UGameplayStatics::GetAllActorsOfClass(PC, ADBInGamePlayerStart::StaticClass(), AllWaypoints);
+	if (AllWaypoints.Num() < 0)
+	{
+		DAWNBREAKERS_LOG_ERROR("ADBBattleGameModeBase::SpawnPlayer AllWaypoints None");
+		return;
+	}
 	AActor * PlayerStart = AllWaypoints[0];
 	if (PlayerStart)
 	{

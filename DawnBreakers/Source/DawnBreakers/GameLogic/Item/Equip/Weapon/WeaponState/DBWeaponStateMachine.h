@@ -57,6 +57,9 @@ public:
 	UPROPERTY()
 	class UDBWeaponStateReload* m_WeaponStateReloading;
 
+	UPROPERTY()
+	class UDBWeaponStateDrop* m_WeaponStateDrop;
+
 private:
 	UDBWeaponStateBase* m_CurrentWeaponState;
 	UDBWeaponStateBase* m_PrevWeaponState;

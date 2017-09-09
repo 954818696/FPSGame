@@ -47,14 +47,20 @@ bool ADBInventoryBase::AddToInventory(ADBInventoryItemBase* NewEquipment)
 
 void ADBInventoryBase::RemoveFromInventory(ADBInventoryItemBase* RemovedEquipment, bool bDrop)
 {
-	if (RemovedEquipment && RemovedEquipment->IsValidLowLevel())
+	if (RemovedEquipment == nullptr || RemovedEquipment->IsValidLowLevel() == false)
 	{
-		m_Inventory.RemoveOne(RemovedEquipment);
+		DAWNBREAKERS_LOG_WARNING("RemoveFromInventory RemovedEquipment invalid.");
+		return;
 	}
 
+	m_Inventory.RemoveOne(RemovedEquipment);
 	if (bDrop)
 	{
 		DropItem(RemovedEquipment);
+	}
+	else
+	{
+		RemovedEquipment->Destroy();
 	}
 }
 
@@ -64,19 +70,9 @@ void ADBInventoryBase::RemoveAllFromInventory(bool bDrop)
 	m_Inventory.GetAllItems(OutDroppedItems);
 	m_Inventory.RemoveAllTypeSlot();
 
-	if (!bDrop)
+	for (int32 i = 0; i < OutDroppedItems.Num(); ++i)
 	{
-		for (int32 i = 0; i < OutDroppedItems.Num(); ++i)
-		{
-			OutDroppedItems[i]->Destroy();
-		}
-	}
-	else
-	{
-		for (int32 i = 0; i < OutDroppedItems.Num(); ++i)
-		{
-			DropItem(OutDroppedItems[i]);
-		}
+		RemoveFromInventory(OutDroppedItems[i], bDrop);
 	}
 }
 
@@ -100,6 +96,18 @@ ADBInventoryItemBase* ADBInventoryBase::GetOneItemByItemSequence(const ADBInvent
 				ReturnItem = ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
 			}
 		}
+	}
+
+	return ReturnItem;
+}
+
+ADBInventoryItemBase* ADBInventoryBase::GetOneSwitchableItem(int32 index)
+{
+	ADBInventoryItemBase* ReturnItem = nullptr;
+	const int32 ItemCount = m_Inventory.m_CachedForSwitch.Num();
+	if (index >= 0 && index < ItemCount)
+	{
+		ReturnItem = m_Inventory.m_CachedForSwitch[index];
 	}
 
 	return ReturnItem;
@@ -158,6 +166,12 @@ int32 ADBInventoryBase::GetTotalAmmoForWeapon(EAmmoType AmmoType)
 
 void ADBInventoryBase::DropItem(ADBInventoryItemBase* Item)
 {
-	
+	if (Item == nullptr || Item->IsValidLowLevel() == false)
+	{
+		return;
+	}
+
+	Item->SetItemOwner(nullptr);
+	Item->DetachFromTarget();
 }
 

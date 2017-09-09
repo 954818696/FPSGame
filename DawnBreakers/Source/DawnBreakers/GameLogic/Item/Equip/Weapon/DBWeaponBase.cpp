@@ -68,6 +68,11 @@ void ADBWeaponBase::OnUnEquip()
 	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Unequiping);
 }
 
+void ADBWeaponBase::OnDrop()
+{
+	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Drop);
+}
+
 void ADBWeaponBase::OnStartFire()
 {
 	m_WeaponStateMachine->GotoState(EWeaponState::EWeaponState_Attack);

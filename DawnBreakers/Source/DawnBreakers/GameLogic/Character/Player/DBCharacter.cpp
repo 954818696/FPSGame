@@ -190,9 +190,30 @@ void ADBCharacter::InteractWithItem()
 	}
 }
 
-void ADBCharacter::DropItem()
+void ADBCharacter::DropItem(bool bDropAll)
 {
-
+	if (bDropAll)
+	{
+		m_Inventory->RemoveAllFromInventory(true);
+		m_HoldWeapon = nullptr;
+	}
+	else
+	{
+		if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevel())
+		{
+			m_IsTargeting = false;
+			m_HoldWeapon->OnDrop();
+			m_HoldWeapon = nullptr;
+		}
+		if (m_Inventory && m_Inventory->IsValidLowLevel())
+		{
+			ADBWeaponBase* SwitchWeapon = Cast<ADBWeaponBase>(m_Inventory->GetOneSwitchableItem(0));
+			if (SwitchWeapon)
+			{
+				SwitchWeapon->OnEquip(true);
+			}
+		}
+	}
 }
 
 void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
@@ -364,6 +385,13 @@ void ADBCharacter::UpdateCameraEffect()
 	PPS.FilmSaturation = Health / GetDefault<ADBCharacter>(GetClass())->Health;
 	PPS.SceneFringeIntensity = FMath::GetMappedRangeValueClamped(FVector2D(0.f, 30.f), FVector2D(5.f, 0.f), Health);
 	PPS.VignetteIntensity = FMath::GetMappedRangeValueClamped(FVector2D(0.f, 50.f), FVector2D(1.f, 0.f), Health);
+}
+
+void ADBCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
+{
+	DropItem(true);
+
+	Super::OnDeath(KillingDamage, DamageEvent, PawnInstigator, DamageCauser);
 }
 
 void ADBCharacter::InteractQueryTick()

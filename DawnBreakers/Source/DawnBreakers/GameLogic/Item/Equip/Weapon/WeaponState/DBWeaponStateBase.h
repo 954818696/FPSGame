@@ -18,8 +18,9 @@ namespace EWeaponState
 		EWeaponState_Unequiping = 5,										// 从手上移到背包
 		EWeaponState_SwitchMode = 6,										// 切换开火模式
 		EWeaponState_Reloading = 7,											// 装填子弹
+		EWeaponState_Drop = 8,
 
-		EWeaponState_Max = 8,
+		EWeaponState_Max = 9,
 	};
 }
 

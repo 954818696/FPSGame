@@ -6,6 +6,8 @@
 AWeaponImpactEffect::AWeaponImpactEffect()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	//SetLifeSpan();
 }
 
 void AWeaponImpactEffect::PostInitializeComponents()

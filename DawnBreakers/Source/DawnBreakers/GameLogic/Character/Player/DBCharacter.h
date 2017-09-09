@@ -50,7 +50,7 @@ public:
 
 	void InteractWithItem();
 
-	void DropItem();
+	void DropItem(bool bDropAll);
 
 	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
 
@@ -97,6 +97,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = ADBCharacter)
 	void UpdateCameraEffect();
+
+protected:
+	virtual void OnDeath(float KillingDamage, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser) override;
 
 private:
 	void InteractQueryTick();

@@ -190,9 +190,6 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 			//GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 10000 /*RadialDmg.DamageTypeClass->DamageImpulse*/, ERadialImpulseFalloff::RIF_Linear);
 		}
 	}
-
-	//DetachFromControllerPendingDestroy();
-	//SetLifeSpan(5.f);
 }
 
 void ADBBaseCharacter::SetRagdollPhysics()

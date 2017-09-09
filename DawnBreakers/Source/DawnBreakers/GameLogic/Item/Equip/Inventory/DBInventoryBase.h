@@ -27,6 +27,8 @@ public:
 
 	ADBInventoryItemBase* GetOneItemByItemSequence(const ADBInventoryItemBase* FindBaseItem, bool bNext);
 
+	ADBInventoryItemBase* GetOneSwitchableItem(int32 index);
+
 	bool AddAmmo() { return true; }
 
 	bool IsHaveAmmo(EAmmoType AmmoType) const;

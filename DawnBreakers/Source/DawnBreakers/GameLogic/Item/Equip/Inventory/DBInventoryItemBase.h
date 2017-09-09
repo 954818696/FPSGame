@@ -35,6 +35,8 @@ public:
 
 	void AttachToTarget(EItemAttachToTargetType TargetType, USceneComponent* ParentComp);
 
+	void DetachFromTarget();
+
 	bool IsNeedAttachToTarget() const { return m_AttachToTargetConfigs.Num() > 0; }
 
 	void ConfigAttachToTargetSceneComponent(USceneComponent* AttachToTargetSceneComponent);

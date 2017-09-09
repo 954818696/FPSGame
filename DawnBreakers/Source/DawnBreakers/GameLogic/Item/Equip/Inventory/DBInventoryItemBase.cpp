@@ -74,6 +74,13 @@ void ADBInventoryItemBase::AttachToTarget(EItemAttachToTargetType TargetType, US
 	}
 }
 
+void ADBInventoryItemBase::DetachFromTarget()
+{
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	m_SkeletalMeshComp->SetSimulatePhysics(true);
+	m_SkeletalMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+}
+
 void ADBInventoryItemBase::ConfigAttachToTargetSceneComponent(USceneComponent* AttachToTargetSceneComponent)
 {
 

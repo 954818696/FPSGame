@@ -221,7 +221,7 @@ void ADBPlayerController::OnDropItem()
 {
 	if (m_ControlledCharacter)
 	{
-		m_ControlledCharacter->DropItem();
+		m_ControlledCharacter->DropItem(false);
 	}
 }
 

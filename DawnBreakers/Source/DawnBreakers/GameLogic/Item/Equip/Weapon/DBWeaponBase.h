@@ -27,6 +27,8 @@ public:
 
 	virtual void OnUnEquip();
 
+	virtual void OnDrop();
+
 	// 近战，投掷武器使用激发也是走此
 	virtual void OnStartFire();
 

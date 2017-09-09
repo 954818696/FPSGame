@@ -10,6 +10,7 @@
 #include "DBWeaponStateUnEquiping.h"
 #include "DBWeaponStateSwitchMode.h"
 #include "DBWeaponStateReload.h"
+#include "DBWeaponStateDrop.h"
 
 UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer),
@@ -23,6 +24,7 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	m_WeaponStateUnequiping = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateUnEquiping>(this, TEXT("WeaponStateUnEquiping"), false);
 	m_WeaponStateSwitchMode = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateSwitchMode>(this, TEXT("WeaponStateSwitchMode"), false);
 	m_WeaponStateReloading = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateReload>(this, TEXT("WeaponStateReloading"), false);
+	m_WeaponStateDrop = ObjectInitializer.CreateDefaultSubobject<UDBWeaponStateDrop>(this, TEXT("WeaponStateDrop"), false);
 
 	m_WeaponStateActive->SetOuterWeaponStateMachine(this);
 	m_WeaponStateEquipDirectly->SetOuterWeaponStateMachine(this);
@@ -31,6 +33,7 @@ UDBWeaponStateMachine::UDBWeaponStateMachine(const FObjectInitializer& ObjectIni
 	m_WeaponStateSwitchMode->SetOuterWeaponStateMachine(this);
 	m_WeaponStateReloading->SetOuterWeaponStateMachine(this);
 	m_WeaponStateInactive->SetOuterWeaponStateMachine(this);
+	m_WeaponStateDrop->SetOuterWeaponStateMachine(this);
 }
 
 void UDBWeaponStateMachine::InitStateMachine()
@@ -70,6 +73,9 @@ UDBWeaponStateBase* UDBWeaponStateMachine::GetState(EWeaponState::Type WeaponSta
 			break;
 		case EWeaponState::EWeaponState_Reloading:
 			TWeaponState = m_WeaponStateReloading;
+			break;
+		case EWeaponState::EWeaponState_Drop:
+			TWeaponState = m_WeaponStateDrop;
 			break;
 		default:
 		{
