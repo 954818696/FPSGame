@@ -41,7 +41,8 @@ void ULevelLoadAssist::OpenMultiplayerLevel(const FName& LevelName)
 
 void ULevelLoadAssist::LoadLoadingLevelFinish()
 {
-	FName SubLevel(TEXT("Level1_Main"));
+	//FName SubLevel(TEXT("Level1_Main"));
+	FName SubLevel(TEXT("Demo_Map_01"));
 	FLatentActionInfo LatentInfo;
 	LatentInfo.CallbackTarget = this;
 	LatentInfo.ExecutionFunction = FName("AllSubLevelLoadFinish");
