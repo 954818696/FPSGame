@@ -2,12 +2,24 @@
 
 #include "DawnBreakers.h"
 #include "DBZombieSurviveGameMode.h"
+#include "ZombieSurvivalGameState.h"
+#include "ZombieSurvivalPlayerState.h"
 
 ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	PlayerControllerClass = ADBZombieModePlayerController::StaticClass();
+	GameStateClass = AZombieSurvivalGameState::StaticClass();
+	PlayerStateClass = AZombieSurvivalPlayerState::StaticClass();
+
 	NeedRespawn = false;
+}
+
+void ADBZombieSurviveGameMode::PreInitializeComponents()
+{
+	AGameMode::PreInitializeComponents();
+
+	GetWorldTimerManager().SetTimer(TimerHandle_WorldDayTimer, this, &ADBZombieSurviveGameMode::WorldDayTimer, GetWorldSettings()->GetEffectiveTimeDilation(), true);
 }
 
 void ADBZombieSurviveGameMode::Tick(float DeltaSeconds)
@@ -54,11 +66,18 @@ void ADBZombieSurviveGameMode::Killed(AController* Killer, AController* VictimPl
 	{
 		UEventSets::Instance()->OnRestartPlayer.Broadcast();
 		NeedRespawn = true;
-		//VictimPawn->DetachFromControllerPendingDestroy();
 	}
 }
 
-void ADBZombieSurviveGameMode::DefaultTimer()
+void ADBZombieSurviveGameMode::FinishMatch()
+{
+	//DAWNBREAKERS_LOG_ERROR("***************ADBZombieSurviveGameMode::FinishMatch");
+	GetWorldTimerManager().ClearTimer(TimerHandle_WorldDayTimer);
+
+	Super::FinishMatch();
+}
+
+void ADBZombieSurviveGameMode::WorldDayTimer()
 {
 
 }

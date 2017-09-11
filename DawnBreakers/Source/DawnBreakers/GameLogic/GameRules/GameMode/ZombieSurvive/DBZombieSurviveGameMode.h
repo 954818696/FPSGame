@@ -15,6 +15,8 @@ class DAWNBREAKERS_API ADBZombieSurviveGameMode : public ADBBattleGameModeBase
 	GENERATED_UCLASS_BODY()
 	
 public:
+	virtual void PreInitializeComponents() override;
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	UFUNCTION(BlueprintCallable, Category = ADBZombieSurviveGameMode)
@@ -24,12 +26,16 @@ public:
 
 	virtual void Killed(AController* Killer, AController* VictimPlayer, APawn* VictimPawn, const UDamageType* DamageType);
 
-protected:
-	virtual void DefaultTimer() override;
+	UFUNCTION(BlueprintCallable, Category = ADBZombieSurviveGameMode)
+	virtual void FinishMatch() override;
+
+private:
+	void WorldDayTimer();
 
 private:
 	const float RespawnTime= 6.f;
 
 	bool NeedRespawn;
 	
+	FTimerHandle TimerHandle_WorldDayTimer;
 };
