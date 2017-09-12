@@ -96,6 +96,10 @@ ADBInventoryItemBase* ADBInventoryBase::GetOneItemByItemSequence(const ADBInvent
 				ReturnItem = ItemsContainer[(ItemCount + CurrentItemIndex - 1) % ItemCount];
 			}
 		}
+		else
+		{
+			ReturnItem = ItemsContainer.Last();
+		}
 	}
 
 	return ReturnItem;

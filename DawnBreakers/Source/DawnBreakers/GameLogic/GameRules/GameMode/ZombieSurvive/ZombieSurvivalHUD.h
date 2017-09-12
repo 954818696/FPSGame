@@ -15,6 +15,10 @@ class DAWNBREAKERS_API AZombieSurvivalHUD : public AHUD
 	GENERATED_BODY()
 	
 	
-	
+public:
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "HUDEvents")
+	void HandleMsg(const FString& Msg);
 	
 };

@@ -292,8 +292,12 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 			if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
 			{
 				m_HoldWeapon->OnUnEquip();
+				UDBCharacterAnimInstance* TAnimInstance = GetAnimInstance();
+				if (TAnimInstance)
+				{
+					TAnimInstance->SetWeaponHoldStance(0);
+				}
 			}
-			m_HoldWeapon = nullptr;
 		}
 	}
 }
