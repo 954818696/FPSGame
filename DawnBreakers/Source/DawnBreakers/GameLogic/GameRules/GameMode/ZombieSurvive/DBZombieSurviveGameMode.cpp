@@ -4,6 +4,7 @@
 #include "DBZombieSurviveGameMode.h"
 #include "ZombieSurvivalGameState.h"
 #include "ZombieSurvivalPlayerState.h"
+#include "ZombieSurvivalHUD.h"
 
 ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -11,6 +12,7 @@ ADBZombieSurviveGameMode::ADBZombieSurviveGameMode(const FObjectInitializer& Obj
 	PlayerControllerClass = ADBZombieModePlayerController::StaticClass();
 	GameStateClass = AZombieSurvivalGameState::StaticClass();
 	PlayerStateClass = AZombieSurvivalPlayerState::StaticClass();
+	HUDClass = AZombieSurvivalHUD::StaticClass();
 
 	NeedRespawn = false;
 }
@@ -79,6 +81,11 @@ void ADBZombieSurviveGameMode::FinishMatch()
 
 void ADBZombieSurviveGameMode::WorldDayTimer()
 {
-
+	AZombieSurvivalGameState* TGameState = Cast<AZombieSurvivalGameState>(GameState);
+	if (TGameState)
+	{
+		TGameState->m_iElapsedGameMinutes += TGameState->GetTimeOfDayIncrement();
+		TGameState->GetAndUpdateNightState();
+	}
 }
 

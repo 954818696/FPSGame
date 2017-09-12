@@ -287,6 +287,14 @@ void ADBCharacter::SwitchEquipHandWeapon(bool bNext)
 			m_bPendEquipFromInventory = true;
 			m_PendEquipWeapon = SwitchWeapon;
 		}
+		else
+		{
+			if (m_HoldWeapon && m_HoldWeapon->IsValidLowLevelFast())
+			{
+				m_HoldWeapon->OnUnEquip();
+			}
+			m_HoldWeapon = nullptr;
+		}
 	}
 }
 
