@@ -25,7 +25,7 @@ void AZombieSurvivalGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProper
 
 //------------------------- Шеее----------------------------//
 
-void AZombieSurvivalGameState::SetTime(float time)
+void AZombieSurvivalGameState::SetTime(int32 time)
 {
 	m_iElapsedGameMinutes = time;
 }

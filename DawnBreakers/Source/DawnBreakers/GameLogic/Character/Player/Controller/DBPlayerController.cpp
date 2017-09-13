@@ -6,7 +6,6 @@
 #include "GameModule/Event/EventSets.h"
 #include "GameLogic/GameRules/GameMode/DBBattleGameModeBase.h"
 
-
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

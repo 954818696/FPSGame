@@ -29,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = ADBZombieSurviveGameMode)
 	virtual void FinishMatch() override;
 
+public:
+	UPROPERTY(VisibleAnywhere, Category = ADBZombieSurviveGameMode)
+	int32 BeginDayTime = 5;
+
 private:
 	void WorldDayTimer();
 
@@ -38,4 +42,6 @@ private:
 	bool NeedRespawn;
 	
 	FTimerHandle TimerHandle_WorldDayTimer;
+
+	class AZombieSurvivalGameState* ZombieGameState;
 };

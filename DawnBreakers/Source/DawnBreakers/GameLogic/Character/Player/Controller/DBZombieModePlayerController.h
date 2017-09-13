@@ -15,7 +15,7 @@ class ADBZombieModePlayerController : public ADBPlayerController
 	GENERATED_UCLASS_BODY()
 	
 public:
-
-	
+	UFUNCTION(Reliable, Client)
+	void SendHUDMsg(const FString& Msg);
 	
 };

@@ -4,5 +4,9 @@
 #include "ZombieSurvivalPlayerState.h"
 
 
+AZombieSurvivalPlayerState::AZombieSurvivalPlayerState(const class FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
 
+}
 

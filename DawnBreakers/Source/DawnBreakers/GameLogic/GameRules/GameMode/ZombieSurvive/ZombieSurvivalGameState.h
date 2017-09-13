@@ -34,7 +34,7 @@ public:
 	int32 GetElapsedDaysInMinutes();
 
 	UFUNCTION(exec)
-	void SetTime(float time);
+	void SetTime(int32 time);
 
 	UPROPERTY(BlueprintReadOnly, Replicated, Category = "DayLightSys")
 	int32 m_iElapsedGameMinutes;

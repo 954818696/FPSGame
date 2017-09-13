@@ -12,9 +12,12 @@
 UCLASS()
 class DAWNBREAKERS_API AZombieSurvivalPlayerState : public APlayerState
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
-	
-	
-	
+public:
+	UPROPERTY(BlueprintReadOnly, Category = AZombieSurvivalPlayerState)
+	int32 Death = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = AZombieSurvivalPlayerState)
+	int32 Killed = 0;
 };

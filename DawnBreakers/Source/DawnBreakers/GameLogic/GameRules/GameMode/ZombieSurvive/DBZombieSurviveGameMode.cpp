@@ -22,6 +22,8 @@ void ADBZombieSurviveGameMode::PreInitializeComponents()
 	AGameMode::PreInitializeComponents();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_WorldDayTimer, this, &ADBZombieSurviveGameMode::WorldDayTimer, GetWorldSettings()->GetEffectiveTimeDilation(), true);
+
+	ZombieGameState = Cast<AZombieSurvivalGameState>(GameState);
 }
 
 void ADBZombieSurviveGameMode::Tick(float DeltaSeconds)
@@ -45,7 +47,6 @@ void ADBZombieSurviveGameMode::Tick(float DeltaSeconds)
 					SpawnPlayer(PlayerController);
 				}
 			}
-
 		}
 	}
 }
@@ -59,15 +60,31 @@ void ADBZombieSurviveGameMode::SpawnPlayer(ADBBasePlayerController * PC)
 {
 	UEventSets::Instance()->OnRestartPlayer.Broadcast();
 
+	if (ZombieGameState)
+	{
+		ZombieGameState->SetTime(BeginDayTime);
+	}
+
 	Super::SpawnPlayer(PC);
 }
 
 void ADBZombieSurviveGameMode::Killed(AController* Killer, AController* VictimPlayer, APawn* VictimPawn, const UDamageType* DamageType)
 {
+	AZombieSurvivalPlayerState* ZombieModePlayerState = Cast<AZombieSurvivalPlayerState>(VictimPlayer->PlayerState);
+	if (ZombieModePlayerState == nullptr)
+	{
+		return;
+	}
+
 	if (VictimPlayer->IsA(ADBPlayerController::StaticClass()))
 	{
+		ZombieModePlayerState->Death += 1;
 		UEventSets::Instance()->OnRestartPlayer.Broadcast();
 		NeedRespawn = true;
+	}
+	else
+	{
+		ZombieModePlayerState->Killed += 1;
 	}
 }
 
@@ -76,16 +93,24 @@ void ADBZombieSurviveGameMode::FinishMatch()
 	//DAWNBREAKERS_LOG_ERROR("***************ADBZombieSurviveGameMode::FinishMatch");
 	GetWorldTimerManager().ClearTimer(TimerHandle_WorldDayTimer);
 
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		ADBZombieModePlayerController* PlayerController = Cast<ADBZombieModePlayerController>(*It);
+		if (PlayerController)
+		{
+			PlayerController->SendHUDMsg("FinishMatch");
+		}
+	}
+
 	Super::FinishMatch();
 }
 
 void ADBZombieSurviveGameMode::WorldDayTimer()
 {
-	AZombieSurvivalGameState* TGameState = Cast<AZombieSurvivalGameState>(GameState);
-	if (TGameState)
+	if (ZombieGameState)
 	{
-		TGameState->m_iElapsedGameMinutes += TGameState->GetTimeOfDayIncrement();
-		TGameState->GetAndUpdateNightState();
+		ZombieGameState->m_iElapsedGameMinutes += ZombieGameState->GetTimeOfDayIncrement();
+		ZombieGameState->GetAndUpdateNightState();
 	}
 }
 
