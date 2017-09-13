@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = ShootWeapon)
 	void OnRefreshAmmoForBP();
 
+	UFUNCTION(BlueprintCallable, Category = ShootWeapon)
+	int32 GetTotalAmmo(EAmmoType AmmoType);
+
 private:
 	void PlayOutOfAmmoSound();
 

@@ -117,6 +117,16 @@ ADBInventoryItemBase* ADBInventoryBase::GetOneSwitchableItem(int32 index)
 	return ReturnItem;
 }
 
+bool ADBInventoryBase::AddAmmo(int32 Amount)
+{
+	for (int32 i = 0; i < m_Ammo.Num(); ++i)
+	{
+		m_Ammo[i].m_CurrentAmount = FMath::Min(m_Ammo[i].m_CurrentAmount + Amount, m_Ammo[i].m_MaxAmount);
+	}
+
+	return true;
+}
+
 bool ADBInventoryBase::IsHaveAmmo(EAmmoType AmmoType) const
 {
 	for (int32 i = 0; i < m_Ammo.Num(); ++i)

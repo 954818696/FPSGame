@@ -29,7 +29,7 @@ public:
 
 	ADBInventoryItemBase* GetOneSwitchableItem(int32 index);
 
-	bool AddAmmo() { return true; }
+	bool AddAmmo(int32 Amount);
 
 	bool IsHaveAmmo(EAmmoType AmmoType) const;
 

@@ -62,6 +62,7 @@ void ADBZombieSurviveGameMode::SpawnPlayer(ADBBasePlayerController * PC)
 
 	if (ZombieGameState)
 	{
+		ZombieGameState->m_fTimeScale = TimeScale;
 		ZombieGameState->SetTime(BeginDayTime);
 	}
 
@@ -70,21 +71,23 @@ void ADBZombieSurviveGameMode::SpawnPlayer(ADBBasePlayerController * PC)
 
 void ADBZombieSurviveGameMode::Killed(AController* Killer, AController* VictimPlayer, APawn* VictimPawn, const UDamageType* DamageType)
 {
-	AZombieSurvivalPlayerState* ZombieModePlayerState = Cast<AZombieSurvivalPlayerState>(VictimPlayer->PlayerState);
-	if (ZombieModePlayerState == nullptr)
-	{
-		return;
-	}
-
 	if (VictimPlayer->IsA(ADBPlayerController::StaticClass()))
 	{
-		ZombieModePlayerState->Death += 1;
+		AZombieSurvivalPlayerState* ZombieModePlayerState = Cast<AZombieSurvivalPlayerState>(VictimPlayer->PlayerState);
+		if (ZombieModePlayerState)
+		{
+			ZombieModePlayerState->Death += 1;
+		}
 		UEventSets::Instance()->OnRestartPlayer.Broadcast();
 		NeedRespawn = true;
 	}
 	else
 	{
-		ZombieModePlayerState->Killed += 1;
+		AZombieSurvivalPlayerState* ZombieModePlayerState = Cast<AZombieSurvivalPlayerState>(Killer->PlayerState);
+		if (ZombieModePlayerState)
+		{
+			ZombieModePlayerState->Killed += 1;
+		}
 	}
 }
 
@@ -98,6 +101,8 @@ void ADBZombieSurviveGameMode::FinishMatch()
 		ADBZombieModePlayerController* PlayerController = Cast<ADBZombieModePlayerController>(*It);
 		if (PlayerController)
 		{
+			PlayerController->StopMovement();
+			PlayerController->UnPossess();
 			PlayerController->SendHUDMsg("FinishMatch");
 		}
 	}

@@ -30,8 +30,11 @@ public:
 	virtual void FinishMatch() override;
 
 public:
-	UPROPERTY(VisibleAnywhere, Category = ADBZombieSurviveGameMode)
-	int32 BeginDayTime = 5;
+	UPROPERTY(EditAnywhere, Category = ADBZombieSurviveGameMode)
+	int32 BeginDayTime = 600;
+
+	UPROPERTY(EditAnywhere, Category = ADBZombieSurviveGameMode)
+	int32 TimeScale = 20;
 
 private:
 	void WorldDayTimer();

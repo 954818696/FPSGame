@@ -12,13 +12,21 @@
 UCLASS()
 class DAWNBREAKERS_API AZombieSurvivalHUD : public AHUD
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 	
 public:
+	virtual void DrawHUD() override;
 
+	FCanvasIcon DebugCenterDotIcon;
+	void DrawDebugCrossHair();
+
+	void DrawDefaultCrossHair();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "HUDEvents")
 	void HandleMsg(const FString& Msg);
+
+private:
+	class UTexture2D* CrosshairTex;
 	
 };

@@ -124,6 +124,17 @@ void ADBShootWeaponBase::WeaponReloadAmmo()
 	}
 }
 
+int32 ADBShootWeaponBase::GetTotalAmmo(EAmmoType AmmoType)
+{
+	ADBCharacter* TOwner = GetItemOwner();
+	if (TOwner)
+	{
+		return TOwner->GetInventory()->GetTotalAmmoForWeapon(AmmoType);
+	}
+
+	return 0;
+}
+
 void ADBShootWeaponBase::PlayOutOfAmmoSound()
 {
 	UDBWeaponStateFiring* TFiringState = Cast<UDBWeaponStateFiring>(m_WeaponStateMachine->GetState(EWeaponState::EWeaponState_Attack));

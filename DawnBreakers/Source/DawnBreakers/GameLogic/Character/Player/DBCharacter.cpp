@@ -249,6 +249,19 @@ void ADBCharacter::OnPickUpItem(class ADBInventoryItemBase* NewItem)
 	}
 }
 
+void ADBCharacter::AddAmmo(int32 Amount)
+{
+	if (m_Inventory)
+	{
+		m_Inventory->AddAmmo(Amount);
+		ADBShootWeaponBase* ShootWeap = Cast<ADBShootWeaponBase>(m_HoldWeapon);
+		if (ShootWeap)
+		{
+			ShootWeap->OnRefreshAmmoForBP();
+		}
+	}
+}
+
 void ADBCharacter::EquipHandWeapon(ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory)
 {
 	if (NewWeapon && NewWeapon->IsValidLowLevel())

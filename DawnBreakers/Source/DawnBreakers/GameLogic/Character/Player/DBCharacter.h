@@ -54,6 +54,10 @@ public:
 
 	void OnPickUpItem(class ADBInventoryItemBase* NewItem);
 
+	//Temp
+	UFUNCTION(BlueprintCallable, Category = ADBCharacter)
+	void AddAmmo(int32 Amount);
+
 	void EquipHandWeapon(class ADBWeaponBase* NewWeapon, bool bEquipedWeaponFromInventory);
 
 	void SwitchEquipHandWeapon(bool bNext);
