@@ -19,7 +19,11 @@ void AZombieSurvivalHUD::DrawHUD()
 	Super::DrawHUD();
 
 	ADBCharacter* ControlledPawn = Cast<ADBCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (ControlledPawn && (ControlledPawn->GetHoldWeapon() == nullptr || m_ShowHUD))
+	if (m_ShowHUD == false)
+	{
+		return;
+	}
+	if (ControlledPawn && ControlledPawn->GetHoldWeapon() == nullptr)
 	{
 		DrawDebugCrossHair();
 	}

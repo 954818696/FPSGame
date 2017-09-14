@@ -20,6 +20,13 @@ ADBZombieAIController::ADBZombieAIController(const class FObjectInitializer& Obj
 	TargetEnemyKeyName = TEXT("TargetEnemy");
 }
 
+void ADBZombieAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+
+}
+
 void ADBZombieAIController::Possess(APawn* InPawn)
 {
 	Super::Possess(InPawn);
@@ -31,6 +38,22 @@ void ADBZombieAIController::Possess(APawn* InPawn)
 		BehaviorComp)
 	{
 		BlackboardComp->InitializeBlackboard(*ZombieBot->BehaviorTree->BlackboardAsset);
+		
+
+		TArray<AActor*> AllWaypoints;
+		UGameplayStatics::GetAllActorsOfClass(this, ADBBotWayPoint::StaticClass(), AllWaypoints);
+
+		float Dist = FLT_MAX;
+		for (int32 i = 0; i < AllWaypoints.Num(); ++i)
+		{
+			float fDist = FVector::DistSquared(InPawn->GetActorLocation(), AllWaypoints[i]->GetActorLocation());
+			if (fDist < Dist)
+			{
+				Dist = fDist;
+				ZombieWayPoint = AllWaypoints[i];
+			}
+		}
+
 		BehaviorComp->StartTree(*ZombieBot->BehaviorTree);
 	}
 }

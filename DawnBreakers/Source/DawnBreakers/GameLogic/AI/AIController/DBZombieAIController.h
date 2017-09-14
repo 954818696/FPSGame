@@ -18,6 +18,8 @@ class DAWNBREAKERS_API ADBZombieAIController : public AAIController
 	GENERATED_UCLASS_BODY()
 	
 public:
+	virtual void BeginPlay() override;
+
 	virtual void Possess(class APawn* InPawn) override;
 
 	virtual void UnPossess() override;
@@ -52,4 +54,7 @@ private:
 	UBehaviorTreeComponent* BehaviorComp;
 
 	UBlackboardComponent* BlackboardComp;
+
+public:
+	AActor* ZombieWayPoint;
 };

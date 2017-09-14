@@ -20,5 +20,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = ADBZombieModePlayerController)
 	void SetHUDVisible(bool bShow);
+
+public:
+	class ADBBotWayPoint* BotWayPoint;
 	
 };
