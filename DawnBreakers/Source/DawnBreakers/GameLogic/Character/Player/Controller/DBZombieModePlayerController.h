@@ -17,5 +17,8 @@ class ADBZombieModePlayerController : public ADBPlayerController
 public:
 	UFUNCTION(Reliable, Client)
 	void SendHUDMsg(const FString& Msg);
+
+	UFUNCTION(BlueprintCallable, Category = ADBZombieModePlayerController)
+	void SetHUDVisible(bool bShow);
 	
 };

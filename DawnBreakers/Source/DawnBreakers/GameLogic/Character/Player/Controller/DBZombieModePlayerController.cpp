@@ -19,3 +19,12 @@ void ADBZombieModePlayerController::SendHUDMsg_Implementation(const FString& Msg
 	}
 }
 
+void ADBZombieModePlayerController::SetHUDVisible(bool bShow)
+{
+	AZombieSurvivalHUD* THUD = Cast<AZombieSurvivalHUD>(GetHUD());
+	if (THUD)
+	{
+		THUD->SetHUDVisibility(bShow);
+	}
+}
+

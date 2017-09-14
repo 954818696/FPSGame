@@ -23,10 +23,14 @@ public:
 
 	void DrawDefaultCrossHair();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "HUDEvents")
+	UFUNCTION(BlueprintImplementableEvent, Category = AZombieSurvivalHUD)
 	void HandleMsg(const FString& Msg);
+
+	FORCEINLINE void SetHUDVisibility(bool bShow);
 
 private:
 	class UTexture2D* CrosshairTex;
+
+	bool m_ShowHUD;
 	
 };

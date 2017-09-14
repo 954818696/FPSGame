@@ -510,6 +510,20 @@ void ADBCharacter::SwitchCamaraMode()
 	{
 		SetFPSCamera();
 	}
+
+	// Temp-------------
+	ADBZombieModePlayerController* TPlayerController = Cast<ADBZombieModePlayerController>(Controller);
+	if (TPlayerController)
+	{
+		if (m_CurCameraMode == ECameraMode::E_FirstPersonPerspective)
+		{
+			TPlayerController->SetHUDVisible(false);
+		}
+		else
+		{
+			TPlayerController->SetHUDVisible(true);
+		}
+	}
 }
 
 void ADBCharacter::SetFPSCamera()

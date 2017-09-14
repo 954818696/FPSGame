@@ -81,7 +81,7 @@ void ADBZombieSurviveGameMode::Killed(AController* Killer, AController* VictimPl
 		UEventSets::Instance()->OnRestartPlayer.Broadcast();
 		NeedRespawn = true;
 	}
-	else
+	else if (Killer)
 	{
 		AZombieSurvivalPlayerState* ZombieModePlayerState = Cast<AZombieSurvivalPlayerState>(Killer->PlayerState);
 		if (ZombieModePlayerState)

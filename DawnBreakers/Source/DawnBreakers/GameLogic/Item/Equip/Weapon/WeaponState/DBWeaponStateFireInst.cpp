@@ -61,7 +61,7 @@ void UDBWeaponStateFireInst::Fire()
 	}
 
 	DealInstDamage(Hit, FiringDir);
-
+//#define DEBUG_FIRE
 #ifdef DEBUG_FIRE
 	DrawDebugLine(TCurrentWorld, TraceStart, TraceEnd, FColor::Red, false, 1.f);
 	DrawDebugPoint(TCurrentWorld, Hit.Location, 10, FColor(255, 0, 255), false, 1.f);

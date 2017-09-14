@@ -5,7 +5,8 @@
 
 
 AZombieSurvivalHUD::AZombieSurvivalHUD(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_ShowHUD(true)
 {
 	static ConstructorHelpers::FObjectFinder<UTexture2D> CrosshiarTexObjDebug(TEXT("/Game/UI/HUD/T_CenterDot_M.T_CenterDot_M"));
 	CrosshairTex = CrosshiarTexObjDebug.Object;
@@ -18,7 +19,7 @@ void AZombieSurvivalHUD::DrawHUD()
 	Super::DrawHUD();
 
 	ADBCharacter* ControlledPawn = Cast<ADBCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (ControlledPawn && ControlledPawn->GetHoldWeapon() == nullptr)
+	if (ControlledPawn && (ControlledPawn->GetHoldWeapon() == nullptr || m_ShowHUD))
 	{
 		DrawDebugCrossHair();
 	}
@@ -45,4 +46,9 @@ void AZombieSurvivalHUD::DrawDefaultCrossHair()
 	FCanvasTileItem TileItem(CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
 	TileItem.BlendMode = SE_BLEND_Translucent;
 	Canvas->DrawItem(TileItem);
+}
+
+void AZombieSurvivalHUD::SetHUDVisibility(bool bShow)
+{
+	m_ShowHUD = bShow;
 }
