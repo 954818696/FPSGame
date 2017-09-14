@@ -34,6 +34,10 @@ void UDBWeaponStateFireInst::RefireTimer()
 
 void UDBWeaponStateFireInst::Fire()
 {
+	if (GetWeaponOwner() == nullptr)
+	{
+		return;
+	}
 	// Calculate Direction and Firing location.
 	float TSpread = m_FireBaseSpread + m_CurFireSpread;
 	m_CurFireSpread = FMath::Min(m_FireMaxSpread, m_CurFireSpread + m_FireSpreadIncrement);

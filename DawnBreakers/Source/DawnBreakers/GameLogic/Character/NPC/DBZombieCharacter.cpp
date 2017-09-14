@@ -78,6 +78,20 @@ void ADBZombieCharacter::Tick(float DeltaSeconds)
 	}
 }
 
+float ADBZombieCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+{
+	if (EventInstigator)
+	{
+		ADBZombieAIController* TController = Cast<ADBZombieAIController>(Controller);
+		if (TController)
+		{
+			TController->SetTargetEnemy(EventInstigator->GetPawn());
+		}
+	}
+
+	return Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+}
+
 bool ADBZombieCharacter::IsSprinting() const
 {
 	return bSensedTarget && !GetVelocity().IsZero();

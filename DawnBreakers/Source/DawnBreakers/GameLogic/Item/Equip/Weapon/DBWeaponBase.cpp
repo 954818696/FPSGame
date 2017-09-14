@@ -86,7 +86,7 @@ void ADBWeaponBase::OnStopFire()
 UAudioComponent* ADBWeaponBase::PlayWeaponSound(USoundBase* Sound)
 {
 	UAudioComponent* TAuidioComp = nullptr;
-	if (Sound)
+	if (Sound && GetItemOwner())
 	{
 		TAuidioComp = UGameplayStatics::SpawnSoundAttached(Sound, GetItemOwner()->GetRootComponent());
 	}

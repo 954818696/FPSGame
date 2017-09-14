@@ -74,7 +74,7 @@ void UDBWeaponStateFiring::PlayFiringEffect()
 	}
 	m_Weapon->PlayWeaponSound(m_FiringSound);
 
-	if (m_FiringCameraShake != nullptr)
+	if (m_FiringCameraShake != nullptr && GetWeaponOwner())
 	{
 		GetWeaponOwner()->PlayCameraShake(m_FiringCameraShake, 1);
 	}

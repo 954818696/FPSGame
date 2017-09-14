@@ -13,19 +13,12 @@ EBTNodeResult::Type UBTTask_FindPatrolLocation::ExecuteTask(UBehaviorTreeCompone
 		return EBTNodeResult::Failed;
 	}
 
-	ADBBotWayPoint* MyWaypoint = AIController->GetWaypoint();
-	if (MyWaypoint)
-	{
-		const float SearchRadius = 200.0f;
-		const FVector SearchOrigin = AIController->ZombieWayPoint->GetActorLocation();
-		FVector RandLoc;
-		RandLoc = UNavigationSystem::GetRandomPointInNavigableRadius(AIController, SearchOrigin, SearchRadius);
-		//if (FindResult)
-		{
-			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), RandLoc);
-			return EBTNodeResult::Succeeded;
-		}
-	}
 
-	return EBTNodeResult::Failed;
+	const float SearchRadius = 1000.0f;
+	const FVector SearchOrigin = AIController->ZombieWayPoint->GetActorLocation();
+	FVector RandLoc;
+	RandLoc = UNavigationSystem::GetRandomPointInNavigableRadius(AIController, SearchOrigin, SearchRadius);
+
+	OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), RandLoc);
+	return EBTNodeResult::Succeeded;
 }

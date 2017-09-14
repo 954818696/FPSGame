@@ -194,7 +194,7 @@ void ADBCharacter::DropItem(bool bDropAll)
 {
 	if (bDropAll)
 	{
-		m_Inventory->RemoveAllFromInventory(true);
+		m_Inventory->RemoveAllFromInventory(false);
 		m_HoldWeapon = nullptr;
 	}
 	else

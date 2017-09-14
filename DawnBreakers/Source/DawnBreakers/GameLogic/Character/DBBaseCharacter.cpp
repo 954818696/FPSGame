@@ -187,7 +187,7 @@ void ADBBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEv
 	{
 		FRadialDamageEvent RadialDmg = *((FRadialDamageEvent const*)(&DamageEvent));
 		{
-			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 200000, ERadialImpulseFalloff::RIF_Constant);
+			GetMesh()->AddRadialImpulse(RadialDmg.Origin, RadialDmg.Params.GetMaxRadius(), 150000, ERadialImpulseFalloff::RIF_Constant);
 		}
 	}
 }

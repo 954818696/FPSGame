@@ -20,6 +20,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+
 protected:
 	virtual bool IsSprinting() const override;
 	UFUNCTION()
