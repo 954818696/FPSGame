@@ -26,7 +26,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = AZombieSurvivalHUD)
 	void HandleMsg(const FString& Msg);
 
-	FORCEINLINE void SetHUDVisibility(bool bShow);
+	UFUNCTION(BlueprintCallable, Category = AZombieSurvivalHUD)
+	void SetHUDVisibility(bool bShow);
 
 private:
 	class UTexture2D* CrosshairTex;

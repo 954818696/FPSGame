@@ -17,6 +17,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSendLevelEvent, UObject*, HostOb
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelStreamLoadPercent, float, Percent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPreparedForGetInGame);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRestartPlayer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCallESC);
 
 UCLASS()
 class DAWNBREAKERS_API UEventSets : public UObject
@@ -43,6 +44,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "DBEventSets")
 	FOnRestartPlayer OnRestartPlayer;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "DBEventSets")
+	FOnCallESC OnCallESC;
 
 private:
 	static UEventSets* m_EventSetsInstance;

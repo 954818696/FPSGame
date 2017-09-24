@@ -7,7 +7,8 @@
 #include "GameLogic/GameRules/GameMode/DBBattleGameModeBase.h"
 
 ADBPlayerController::ADBPlayerController(const class FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+	: Super(ObjectInitializer),
+	m_CanReceiveInput(true)
 {
 	PlayerCameraManagerClass = ADBPlayerCameraManager::StaticClass();
 }
@@ -72,12 +73,14 @@ void ADBPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("SwitchCameraMode", IE_Pressed, this, &ADBPlayerController::OnSwitchCameraMode);
 
+	InputComponent->BindAction("Esc", IE_Pressed, this, &ADBPlayerController::OnConsultESC);
+
 
 }
 
 void ADBPlayerController::MoveForward(float Delta)
 {
-	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->MoveForward(Delta);
 	}
@@ -85,7 +88,7 @@ void ADBPlayerController::MoveForward(float Delta)
 
 void ADBPlayerController::MoveRight(float Delta)
 {
-	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->MoveRight(Delta);
 	}
@@ -93,7 +96,7 @@ void ADBPlayerController::MoveRight(float Delta)
 
 void ADBPlayerController::CustomAddPitchInput(float Delta)
 {
-	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->AddPitchInput(Delta);
 	}
@@ -101,7 +104,7 @@ void ADBPlayerController::CustomAddPitchInput(float Delta)
 
 void ADBPlayerController::CustomAddYawInput(float Delta)
 {
-	if (Delta != 0.f && m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && Delta != 0.f && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->AddYawInput(Delta);
 	}
@@ -124,7 +127,7 @@ void ADBPlayerController::OnCrouchToggle()
 
 void ADBPlayerController::OnStartFire()
 {
-	if (m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter != nullptr)
 	{
 		new(m_DeferredFireInputs)FDeferredFireInput(true);
 	}
@@ -132,7 +135,7 @@ void ADBPlayerController::OnStartFire()
 
 void ADBPlayerController::OnStopFire()
 {
-	if (m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter != nullptr)
 	{
 		new(m_DeferredFireInputs)FDeferredFireInput(false);
 	}
@@ -140,7 +143,7 @@ void ADBPlayerController::OnStopFire()
 
 void ADBPlayerController::OnReload()
 {
-	if (m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->OnReloadAmmo();
 	}
@@ -148,7 +151,7 @@ void ADBPlayerController::OnReload()
 
 void ADBPlayerController::ApplyDeferredFireInputs()
 {
-	if (m_ControlledCharacter == nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter == nullptr)
 	{
 		return;
 	}
@@ -170,7 +173,7 @@ void ADBPlayerController::ApplyDeferredFireInputs()
 
 void ADBPlayerController::OnStartTargeting()
 {
-	if (m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->OnStartTargeting();
 	}
@@ -178,7 +181,7 @@ void ADBPlayerController::OnStartTargeting()
 
 void ADBPlayerController::OnStopTargeting()
 {
-	if (m_ControlledCharacter != nullptr)
+	if (m_CanReceiveInput && m_ControlledCharacter != nullptr)
 	{
 		m_ControlledCharacter->OnStopTargeting();
 	}
@@ -186,7 +189,7 @@ void ADBPlayerController::OnStopTargeting()
 
 void ADBPlayerController::OnPrevWeapon()
 {
-	if (m_ControlledCharacter)
+	if (m_CanReceiveInput && m_ControlledCharacter)
 	{
 		m_ControlledCharacter->SwitchEquipHandWeapon(false);
 	}
@@ -194,7 +197,7 @@ void ADBPlayerController::OnPrevWeapon()
 
 void ADBPlayerController::OnNextWeapon()
 {
-	if (m_ControlledCharacter)
+	if (m_CanReceiveInput && m_ControlledCharacter)
 	{
 		m_ControlledCharacter->SwitchEquipHandWeapon(true);
 	}
@@ -202,7 +205,7 @@ void ADBPlayerController::OnNextWeapon()
 
 void ADBPlayerController::OnSwitchCameraMode()
 {
-	if (m_ControlledCharacter)
+	if (m_CanReceiveInput && m_ControlledCharacter)
 	{
 		m_ControlledCharacter->SwitchCamaraMode();
 	}
@@ -210,7 +213,7 @@ void ADBPlayerController::OnSwitchCameraMode()
 
 void ADBPlayerController::OnInteractWithItem()
 {
-	if (m_ControlledCharacter)
+	if (m_CanReceiveInput && m_ControlledCharacter)
 	{
 		m_ControlledCharacter->InteractWithItem();
 	}
@@ -218,9 +221,17 @@ void ADBPlayerController::OnInteractWithItem()
 
 void ADBPlayerController::OnDropItem()
 {
-	if (m_ControlledCharacter)
+	if (m_CanReceiveInput && m_ControlledCharacter)
 	{
 		m_ControlledCharacter->DropItem(false);
+	}
+}
+
+void ADBPlayerController::OnConsultESC()
+{
+	if (m_ControlledCharacter)
+	{
+		UEventSets::Instance()->OnCallESC.Broadcast();
 	}
 }
 
@@ -250,4 +261,9 @@ void ADBPlayerController::Spawn()
 	{
 		GameMode->SpawnPlayer(this);
 	}
+}
+
+void ADBPlayerController::SetCanReceiveInput(bool CanReceive)
+{
+	m_CanReceiveInput = CanReceive;
 }

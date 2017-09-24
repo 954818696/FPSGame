@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = ADBPlayerController)
 	void Spawn();
 
+	UFUNCTION(BlueprintCallable, Category = ADBPlayerController)
+	void SetCanReceiveInput(bool CanReceive);
+
 protected:
 	
 	virtual void PlayerTick(float DeltaTime) override;
@@ -96,6 +99,8 @@ protected:
 
 	void OnDropItem();
 
+	void OnConsultESC();
+
 	//////////////////////////////////////
 
 protected:
@@ -106,5 +111,8 @@ private:
 	
 	// To Support Multikeys press trigger firing.
 	TArray< FDeferredFireInput, TInlineAllocator<2> > m_DeferredFireInputs;
+
+	bool m_CanReceiveInput;
+
 
 };
