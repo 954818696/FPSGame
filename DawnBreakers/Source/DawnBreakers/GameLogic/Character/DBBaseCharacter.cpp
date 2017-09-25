@@ -111,6 +111,15 @@ float ADBBaseCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dama
 	return ActualDamage;
 }
 
+void ADBBaseCharacter::AddHP(float Value)
+{
+	if (IsAlive())
+	{
+		Health += Value;
+		OnRefreshHP();
+	}
+}
+
 bool ADBBaseCharacter::CanDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser) const
 {
 	if (bIsDying ||
