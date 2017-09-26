@@ -102,7 +102,7 @@ void ADBZombieSurviveGameMode::FinishMatch()
 		if (PlayerController)
 		{
 			PlayerController->StopMovement();
-			PlayerController->UnPossess();
+			//PlayerController->UnPossess();
 			PlayerController->SendHUDMsg("FinishMatch");
 		}
 	}
