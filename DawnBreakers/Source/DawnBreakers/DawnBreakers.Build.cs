@@ -15,7 +15,9 @@ public class DawnBreakers : ModuleRules
                                                             "AIModule",
                                                             "UMG"
                                                             });
-															
-		OptimizeCode = CodeOptimization.Never;
+
+        PrivateDependencyModuleNames.Add("Basic");
+
+        OptimizeCode = CodeOptimization.Never;
 	}
 }

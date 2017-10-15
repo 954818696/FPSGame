@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "InventoryStruct.h"
+#include "GameLogic/Item/Equip/Inventory/DBInventoryItemBase.h"
 #include "DBInventoryBase.generated.h"
 
 // This Inventory means all things  equiped on the body.
