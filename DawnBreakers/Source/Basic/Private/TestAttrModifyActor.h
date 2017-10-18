@@ -31,6 +31,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = test)
+	float GetFloatAttr() { return FloatAttr; }
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attr)
 	UAttrModifyComponent* AttrModifyComp;

@@ -66,24 +66,38 @@ struct FAttrModifyItem
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	float ModifierValue;
 
+	bool IsEnable;
+
 	struct SCacheAffactTargetInfo
 	{
-		AActor* AffectTarget;
+		TWeakObjectPtr<AActor> AffectTarget;
 		float	FinalAddValue;
 
 		SCacheAffactTargetInfo()
 		{
-			AffectTarget = nullptr;
+			ResetData();
+		}
+
+		void ResetData()
+		{
+			AffectTarget.Reset();
 			FinalAddValue = 0.f;
 		}
 	};
 
-	TArray<SCacheAffactTargetInfo> AffectTargets;
+	TArray<SCacheAffactTargetInfo> AffectTargetsCachInfo;
 
 	FAttrModifyItem()
 	{
-		AffectTargets.Empty();
+		AffectTargetsCachInfo.Empty();
+		IsEnable = false;
 	}
+
+
+	void RemoveModify(int32 index);
+
+	TArray<int32> GetAffectTargetCachIndex(AActor* Target);
+
 
 };
 
@@ -92,7 +106,7 @@ class BASIC_API UAttrModifyComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, FString, AttrName);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, TArray<FAttrRegisterItem>, AttrName);
 public:	
 	UFUNCTION(BlueprintCallable, Category = AttrModifyComponent)
 	bool RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists);
@@ -112,9 +126,15 @@ public:
 	bool DisableAllAttrModifier();
 
 	UFUNCTION(BlueprintCallable, Category = AttrModifyComponent)
-	bool DisableRelevantActorAttrModifier(AActor* RelevantActor);
+	bool DisableModifierToActor(AActor* TargetActor);
+
+	FAttrRegisterItem* FindRegisterAttr(FString AttrName);
 
 private:
+	bool EnableAttrModifierByIndex(int32 ModifyConfigIndex);
+
+	bool DisableAttrModifierByIndex(int32 ModifyConfigIndex);
+
 	UFUNCTION(Client, Reliable)
 	void ReplicateNorRepAttr(const TArray<float>& ValueList);
 
@@ -129,7 +149,8 @@ protected:
 	TArray<FAttrModifyItem> ConfigAttrModifyList;
 
 private:
-	TArray<FAttrModifyItem*> InEffectiveModifyList;
 	TMap<FString, FAttrRegisterItem> AttrRegisterItemMap;
+
+	TArray<TWeakObjectPtr<AActor>> RelevantActors;
 	
 };

@@ -28,11 +28,8 @@ class BASIC_API IAttrModifyInterface
 
 
 public:
-	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = AttrModifyInterface)
-	//void RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists);
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = AttrModifyInterface)
-	UAttrModifyComponent* GetAttrModifyComponent();
+	class UAttrModifyComponent* GetAttrModifyComponent();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = AttrModifyInterface)
 	TArray<AActor*> GetRelevantActors();
