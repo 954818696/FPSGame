@@ -14,6 +14,7 @@ UAttrModifyComponent::UAttrModifyComponent(const FObjectInitializer& ObjectIniti
 	ConfigAttrModifyList.Empty();
 	AttrRegisterItemMap.Empty();
 	RelevantActors.Empty();
+	EnableAttrModifyIndexList.Empty();
 
 	SetActive(true);
 	SetIsReplicated(true);
@@ -23,7 +24,7 @@ void UAttrModifyComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProp
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-
+	DOREPLIFETIME(UAttrModifyComponent, EnableAttrModifyIndexList);
 }
 
 bool UAttrModifyComponent::RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists)
@@ -119,15 +120,12 @@ bool UAttrModifyComponent::RegisterModifyAbleAttr(const TArray<FAttrRegisterItem
 	return true;
 }
 
-void UAttrModifyComponent::ReplicateNorRepAttr_Implementation(const TArray<float>& ValueList)
-{
-
-}
-
 bool UAttrModifyComponent::EnableAttrModifierByIndex(int32 ModifyConfigIndex)
 {
 	bool Result = false;
-	if (ConfigAttrModifyList.IsValidIndex(ModifyConfigIndex) == false ||
+	AActor* Owner = GetOwner();
+	if (Owner == nullptr ||
+		ConfigAttrModifyList.IsValidIndex(ModifyConfigIndex) == false ||
 		ConfigAttrModifyList[ModifyConfigIndex].IsEnable)
 	{
 		return Result;
@@ -166,17 +164,21 @@ bool UAttrModifyComponent::EnableAttrModifierByIndex(int32 ModifyConfigIndex)
 						break;
 					}
 
-					if (ActorAttr->AttrVariableType == EAttrVariableType::Int)
+					if (Owner->Role == ROLE_Authority ||
+						ActorAttr->HasReplicatedTag == false)
 					{
-						*((int32 *)ActorAttr->AttrDataPtr) += FMath::FloorToInt(CalcModifyAddValue);
-					}
-					else if (ActorAttr->AttrVariableType == EAttrVariableType::Float)
-					{
-						*((float *)ActorAttr->AttrDataPtr) += CalcModifyAddValue;
-					}
-					else
-					{
-						continue;
+						if (ActorAttr->AttrVariableType == EAttrVariableType::Int)
+						{
+							*((int32 *)ActorAttr->AttrDataPtr) += FMath::FloorToInt(CalcModifyAddValue);
+						}
+						else if (ActorAttr->AttrVariableType == EAttrVariableType::Float)
+						{
+							*((float *)ActorAttr->AttrDataPtr) += CalcModifyAddValue;
+						}
+						else
+						{
+							continue;
+						}
 					}
 
 					FAttrModifyItem::SCacheAffactTargetInfo CacheAffactTargetInfo;
@@ -198,6 +200,7 @@ bool UAttrModifyComponent::EnableAttrModifierByIndex(int32 ModifyConfigIndex)
 	{
 		Result = true;
 		ConfigAttrModifyList[ModifyConfigIndex].IsEnable = true;
+		EnableAttrModifyIndexList.Add(ModifyConfigIndex);
 	}
 
 	return Result;
@@ -218,9 +221,20 @@ bool UAttrModifyComponent::DisableAttrModifierByIndex(int32 ModifyConfigIndex)
 
 		ConfigAttrModifyList[ModifyConfigIndex].AffectTargetsCachInfo.Empty();
 		ConfigAttrModifyList[ModifyConfigIndex].IsEnable = false;
+		EnableAttrModifyIndexList.Remove(ModifyConfigIndex);
 	}
 
 	return Result;
+}
+
+void UAttrModifyComponent::OnRep_EnableAttrModifyIndexList()
+{
+	DisableAllAttrModifier();
+
+	for (int32 i = 0; i < EnableAttrModifyIndexList.Num(); ++i)
+	{
+		EnableAttrModifierByIndex(i);
+	}
 }
 
 bool UAttrModifyComponent::EnableAttrModifier(FString AttrModifyItemName)
@@ -319,6 +333,7 @@ void FAttrModifyItem::RemoveModify(int32 index)
 		return;
 	}
 
+
 	IAttrModifyInterface* ActorAttrModifyInterface = Cast<IAttrModifyInterface>(AffactedTarget);
 	if (ActorAttrModifyInterface)
 	{
@@ -328,14 +343,18 @@ void FAttrModifyItem::RemoveModify(int32 index)
 			FAttrRegisterItem* ActorAttr = ActorAttrModifyComp->FindRegisterAttr(AttrName);
 			if (ActorAttr)
 			{
-				float MinusValue = AffectTargetsCachInfo[index].FinalAddValue;
-				if (ActorAttr->AttrVariableType == EAttrVariableType::Int)
+				if (AffactedTarget->Role == ROLE_Authority ||
+					ActorAttr->HasReplicatedTag == false)
 				{
-					*((int32 *)ActorAttr->AttrDataPtr) -= FMath::FloorToInt(MinusValue);
-				}
-				else if (ActorAttr->AttrVariableType == EAttrVariableType::Float)
-				{
-					*((float *)ActorAttr->AttrDataPtr) -= MinusValue;
+					float MinusValue = AffectTargetsCachInfo[index].FinalAddValue;
+					if (ActorAttr->AttrVariableType == EAttrVariableType::Int)
+					{
+						*((int32 *)ActorAttr->AttrDataPtr) -= FMath::FloorToInt(MinusValue);
+					}
+					else if (ActorAttr->AttrVariableType == EAttrVariableType::Float)
+					{
+						*((float *)ActorAttr->AttrDataPtr) -= MinusValue;
+					}
 				}
 			}
 		}

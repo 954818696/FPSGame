@@ -34,6 +34,9 @@ struct FAttrRegisterItem
 	UPROPERTY(BlueprintReadWrite, Category = AttrRegisterItem)
 	EAttrVariableType AttrVariableType = EAttrVariableType::Int;
 
+	UPROPERTY(BlueprintReadWrite, Category = AttrRegisterItem)
+	bool HasReplicatedTag = false;
+
 	void* AttrDataPtr;
 
 	float OriginalValue;
@@ -106,7 +109,7 @@ class BASIC_API UAttrModifyComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, TArray<FAttrRegisterItem>, AttrName);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, FString, AttrName);
 public:	
 	UFUNCTION(BlueprintCallable, Category = AttrModifyComponent)
 	bool RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists);
@@ -135,8 +138,9 @@ private:
 
 	bool DisableAttrModifierByIndex(int32 ModifyConfigIndex);
 
-	UFUNCTION(Client, Reliable)
-	void ReplicateNorRepAttr(const TArray<float>& ValueList);
+
+	UFUNCTION()
+	void OnRep_EnableAttrModifyIndexList();
 
 
 // Variable...
@@ -152,5 +156,8 @@ private:
 	TMap<FString, FAttrRegisterItem> AttrRegisterItemMap;
 
 	TArray<TWeakObjectPtr<AActor>> RelevantActors;
+
+	UPROPERTY(Transient, Replicated)
+	TArray<int32> EnableAttrModifyIndexList;
 	
 };
