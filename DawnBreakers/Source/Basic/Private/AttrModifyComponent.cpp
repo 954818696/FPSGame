@@ -3,6 +3,7 @@
 #include "AttrModifyComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "AttrModifyInterface.h"
+#include "GameFramework/Actor.h"
 
 DEFINE_LOG_CATEGORY(AttrModifyComponent);
 
@@ -14,7 +15,6 @@ UAttrModifyComponent::UAttrModifyComponent(const FObjectInitializer& ObjectIniti
 	ConfigAttrModifyList.Empty();
 	AttrRegisterItemMap.Empty();
 	RelevantActors.Empty();
-	EnableAttrModifyIndexList.Empty();
 
 	SetActive(true);
 	SetIsReplicated(true);
@@ -24,7 +24,7 @@ void UAttrModifyComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProp
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UAttrModifyComponent, EnableAttrModifyIndexList);
+	DOREPLIFETIME(UAttrModifyComponent, AttrModifyStateList);
 }
 
 bool UAttrModifyComponent::RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists)
@@ -117,6 +117,8 @@ bool UAttrModifyComponent::RegisterModifyAbleAttr(const TArray<FAttrRegisterItem
 		}
 	}
 
+	AttrModifyStateList.Init(0, ConfigAttrModifyList.Num());
+
 	return true;
 }
 
@@ -186,11 +188,6 @@ bool UAttrModifyComponent::EnableAttrModifierByIndex(int32 ModifyConfigIndex)
 					CacheAffactTargetInfo.FinalAddValue = CalcModifyAddValue;
 					
 					ConfigAttrModifyList[ModifyConfigIndex].AffectTargetsCachInfo.Add(CacheAffactTargetInfo);
-
-					if (ConfigAttrModifyList[ModifyConfigIndex].AffactToAllRelevant == false)
-					{
-						break;
-					}
 				}
 			}
 		}
@@ -200,7 +197,7 @@ bool UAttrModifyComponent::EnableAttrModifierByIndex(int32 ModifyConfigIndex)
 	{
 		Result = true;
 		ConfigAttrModifyList[ModifyConfigIndex].IsEnable = true;
-		EnableAttrModifyIndexList.Add(ModifyConfigIndex);
+		AttrModifyStateList[ModifyConfigIndex] = 1;
 	}
 
 	return Result;
@@ -221,20 +218,47 @@ bool UAttrModifyComponent::DisableAttrModifierByIndex(int32 ModifyConfigIndex)
 
 		ConfigAttrModifyList[ModifyConfigIndex].AffectTargetsCachInfo.Empty();
 		ConfigAttrModifyList[ModifyConfigIndex].IsEnable = false;
-		EnableAttrModifyIndexList.Remove(ModifyConfigIndex);
+		AttrModifyStateList[ModifyConfigIndex] = 0;
 	}
 
 	return Result;
 }
 
-void UAttrModifyComponent::OnRep_EnableAttrModifyIndexList()
+void UAttrModifyComponent::OnRep_AttrModifyStateList()
 {
-	DisableAllAttrModifier();
-
-	for (int32 i = 0; i < EnableAttrModifyIndexList.Num(); ++i)
+	TArray<FAttrAffected> AffectedAttr;
+	
+	for (int32 i = 0; i < AttrModifyStateList.Num(); ++i)
 	{
-		EnableAttrModifierByIndex(i);
+		if (AttrModifyStateList[i])
+		{
+			bool EnableSuccess = EnableAttrModifierByIndex(i);
+			if (EnableSuccess)
+			{
+				for (int32 AffactTargetIndex = 0; AffactTargetIndex < ConfigAttrModifyList[i].AffectTargetsCachInfo.Num(); ++AffactTargetIndex)
+				{
+					AffectedAttr.AddUnique(FAttrAffected(ConfigAttrModifyList[i].AttrName,
+						ConfigAttrModifyList[i].AffectTargetsCachInfo[AffactTargetIndex].AffectTarget.Get())
+					);
+				}
+			}
+		}
+		else
+		{
+			bool DisableSuccess = DisableAttrModifierByIndex(i);
+			if (DisableSuccess)
+			{
+				for (int32 AffactTargetIndex = 0; AffactTargetIndex < ConfigAttrModifyList[i].AffectTargetsCachInfo.Num(); ++AffactTargetIndex)
+				{
+					AffectedAttr.AddUnique(FAttrAffected(ConfigAttrModifyList[i].AttrName,
+						ConfigAttrModifyList[i].AffectTargetsCachInfo[AffactTargetIndex].AffectTarget.Get())
+					);
+				}
+			}
+		}
 	}
+
+	OnAttrModified.Broadcast(AffectedAttr);
 }
 
 bool UAttrModifyComponent::EnableAttrModifier(FString AttrModifyItemName)
@@ -267,8 +291,6 @@ bool UAttrModifyComponent::DisableAttrModifier(FString AttrModifyItemName)
 		}
 	}
 
-	// ToDo: for Event. replicate.
-
 	return Result;
 }
 
@@ -280,8 +302,6 @@ bool UAttrModifyComponent::EnableAllAttrModifier()
 		Result = EnableAttrModifierByIndex(i);
 	}
 
-	// ToDo: for Event. replicate.
-
 	return Result;
 }
 
@@ -292,8 +312,6 @@ bool UAttrModifyComponent::DisableAllAttrModifier()
 	{
 		Result = DisableAttrModifierByIndex(i);
 	}
-
-	// ToDo: for Event. replicate.
 
 	return Result;
 }

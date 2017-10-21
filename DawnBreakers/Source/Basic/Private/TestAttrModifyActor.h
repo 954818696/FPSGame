@@ -1,12 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+//#if WITH_DEV_AUTOMATION_TESTS
 #pragma once
+
+
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 
 #include "AttrModifyInterface.h"
 #include "TestAttrModifyActor.generated.h"
+
+
 
 UCLASS()
 class ATestAttrModifyActor : public AActor, public IAttrModifyInterface
@@ -48,3 +52,5 @@ private:
 	
 	
 };
+
+//#endif //WITH_DEV_AUTOMATION_TESTS

@@ -24,6 +24,35 @@ enum class EAttrVariableType : uint8
 };
 
 USTRUCT(BlueprintType)
+struct FAttrAffected
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = FAttrAffected)
+	FString AttrName;
+
+	UPROPERTY(BlueprintReadOnly, Category = FAttrAffected)
+	AActor* AffectedActor;
+
+	FAttrAffected(FString NewAttrName, AActor* NewAffactedActor)
+	{
+		AttrName = NewAttrName;
+		AffectedActor = NewAffactedActor;
+	}
+
+	FAttrAffected()
+	{
+		AttrName = TEXT("");
+		AffectedActor = nullptr;
+	}
+
+	bool operator == (const FAttrAffected& right) const
+	{
+		return AttrName == right.AttrName && AffectedActor == right.AffectedActor;
+	}
+};
+
+USTRUCT(BlueprintType)
 struct FAttrRegisterItem
 {
 	GENERATED_USTRUCT_BODY()
@@ -62,9 +91,6 @@ struct FAttrModifyItem
 
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	EAttrOperator ModifierOp = EAttrOperator::Set;
-
-	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
-	bool AffactToAllRelevant = false;
 
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	float ModifierValue;
@@ -109,7 +135,7 @@ class BASIC_API UAttrModifyComponent : public UActorComponent
 {
 	GENERATED_UCLASS_BODY()
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, FString, AttrName);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttrModifiedEvent, const TArray<FAttrAffected>&, AffectedAttrS);
 public:	
 	UFUNCTION(BlueprintCallable, Category = AttrModifyComponent)
 	bool RegisterModifyAbleAttr(const TArray<FAttrRegisterItem>& AttrRegists);
@@ -140,7 +166,7 @@ private:
 
 
 	UFUNCTION()
-	void OnRep_EnableAttrModifyIndexList();
+	void OnRep_AttrModifyStateList();
 
 
 // Variable...
@@ -157,7 +183,7 @@ private:
 
 	TArray<TWeakObjectPtr<AActor>> RelevantActors;
 
-	UPROPERTY(Transient, Replicated)
-	TArray<int32> EnableAttrModifyIndexList;
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_AttrModifyStateList)
+	TArray<int8> AttrModifyStateList;
 	
 };

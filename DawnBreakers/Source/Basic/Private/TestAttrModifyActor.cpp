@@ -2,6 +2,7 @@
 
 #include "TestAttrModifyActor.h"
 
+//#if WITH_DEV_AUTOMATION_TESTS
 
 // Sets default values
 ATestAttrModifyActor::ATestAttrModifyActor()
@@ -22,12 +23,14 @@ ATestAttrModifyActor::ATestAttrModifyActor()
 	IntegerReg.AttrVariableType = EAttrVariableType::Int;
 	IntegerReg.AttrDataPtr = &IntegerAttr;
 	IntegerReg.OriginalValue = IntegerAttr;
+	IntegerReg.HasReplicatedTag = false;
 	RegAttr.Add(IntegerReg);
 
 	FloatReg.AttrName = TEXT("FloatAttr");
 	FloatReg.AttrVariableType = EAttrVariableType::Float;
 	FloatReg.AttrDataPtr = &FloatAttr;
 	FloatReg.OriginalValue = FloatAttr;
+	IntegerReg.HasReplicatedTag = false;
 	RegAttr.Add(FloatReg);
 
 	AttrModifyComp->RegisterModifyAbleAttr(RegAttr);
@@ -36,7 +39,7 @@ ATestAttrModifyActor::ATestAttrModifyActor()
 
 UAttrModifyComponent* ATestAttrModifyActor::GetAttrModifyComponent_Implementation()
 {
-	UE_LOG(LogTemp, Error, TEXT("ATestAttrModifyActor GetAttrModifyComponent_Implementation"));
+	//UE_LOG(LogTemp, Error, TEXT("ATestAttrModifyActor GetAttrModifyComponent_Implementation"));
 
 	return AttrModifyComp;
 }
@@ -46,7 +49,7 @@ TArray<AActor*> ATestAttrModifyActor::GetRelevantActors_Implementation()
 	TArray<AActor*> OutTargets;
 	OutTargets.Add(this);
 
-	UE_LOG(LogTemp, Error, TEXT("ATestAttrModifyActor GetRelevantActors_Implementation"));
+	//UE_LOG(LogTemp, Error, TEXT("ATestAttrModifyActor GetRelevantActors_Implementation"));
 
 	return OutTargets;
 }
@@ -81,3 +84,4 @@ void ATestAttrModifyActor::Tick(float DeltaTime)
 
 }
 
+//#endif //WITH_DEV_AUTOMATION_TESTS
