@@ -78,13 +78,37 @@ struct FAttrRegisterItem
 	}
 };
 
+
+USTRUCT()
+struct FCacheAffactTargetInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+	TWeakObjectPtr<AActor> AffectTarget;
+
+	UPROPERTY()
+	float FinalAddValue;
+
+	FCacheAffactTargetInfo()
+	{
+		ResetData();
+	}
+
+	void ResetData()
+	{
+		AffectTarget.Reset();
+		FinalAddValue = 0.f;
+	}
+};
+
 USTRUCT()
 struct FAttrModifyItem
 {
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
-	FString AttrModifyItemName;
+	FString AttrModifyItemName; // or Id
 
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	FString AttrName;
@@ -95,26 +119,11 @@ struct FAttrModifyItem
 	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	float ModifierValue;
 
+	UPROPERTY(EditAnywhere, Category = AttrModifyItem)
 	bool IsEnable;
 
-	struct SCacheAffactTargetInfo
-	{
-		TWeakObjectPtr<AActor> AffectTarget;
-		float	FinalAddValue;
-
-		SCacheAffactTargetInfo()
-		{
-			ResetData();
-		}
-
-		void ResetData()
-		{
-			AffectTarget.Reset();
-			FinalAddValue = 0.f;
-		}
-	};
-
-	TArray<SCacheAffactTargetInfo> AffectTargetsCachInfo;
+	UPROPERTY()
+	TArray<FCacheAffactTargetInfo> AffectTargetsCachInfo;
 
 	FAttrModifyItem()
 	{
@@ -159,14 +168,30 @@ public:
 
 	FAttrRegisterItem* FindRegisterAttr(FString AttrName);
 
+	// For Dynamic Modifier config.
+	// Only Called by Server!!!!!!!!!!!!!!!!!!!!
+	void AddDynamicModifier(FAttrModifyItem& AttrModifyItem);
+
+	void RemoveDynamicModifier(const FString &AttrModifyId);
+
 private:
 	bool EnableAttrModifierByIndex(int32 ModifyConfigIndex);
 
 	bool DisableAttrModifierByIndex(int32 ModifyConfigIndex);
 
+	bool EnableByConfig(FAttrModifyItem* ConfigAttrModifier);
+
+	void EnableByConfigSimulate(FAttrModifyItem* ConfigAttrModifier);
+
+	TArray<TWeakObjectPtr<AActor>> GetRelevantActors();
+
 
 	UFUNCTION()
 	void OnRep_AttrModifyStateList();
+
+
+	UFUNCTION()
+	void OnRep_DynamicModifierList(TArray<FAttrModifyItem> LastDynamicModifierList);
 
 
 // Variable...
@@ -181,9 +206,10 @@ protected:
 private:
 	TMap<FString, FAttrRegisterItem> AttrRegisterItemMap;
 
-	TArray<TWeakObjectPtr<AActor>> RelevantActors;
-
 	UPROPERTY(Transient, ReplicatedUsing = OnRep_AttrModifyStateList)
 	TArray<int8> AttrModifyStateList;
-	
+
+	// Dynamic Modifier list.
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_DynamicModifierList)
+	TArray<FAttrModifyItem> DynamicModifierList;
 };
